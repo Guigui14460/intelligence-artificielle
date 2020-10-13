@@ -47,10 +47,10 @@ public class NbConstraintsVariableHeuristic implements VariableHeuristic {
         Variable best = null;
         int val = 0;
         Map<Variable, Integer> values = new HashMap<>();
-        for(Variable variable: this.variables){
+        for(Variable variable: variables){
             values.put(variable, 0);
         }
-        for(Variable var: this.variables){
+        for(Variable var: variables){
             int actualValue = 0;
             for(Constraint c: this.constraints){
                 if(c.getScope().contains(var)){
@@ -75,9 +75,6 @@ public class NbConstraintsVariableHeuristic implements VariableHeuristic {
                 }
             }
         }
-        System.out.println("---------------------");
-        System.out.println(best);
-        System.out.println(values);
         return best;
     }
 

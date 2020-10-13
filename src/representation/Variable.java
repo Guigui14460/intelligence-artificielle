@@ -29,7 +29,7 @@ public class Variable {
 
     @Override
     public String toString(){
-        return getClass().getName() + "[name=" + this.name + "]"/*, domain=" + this.domain + "]"*/;
+        return getClass().getName() + "[name=" + this.name + ", domain=" + this.domain + "]";
     }
 
     @Override

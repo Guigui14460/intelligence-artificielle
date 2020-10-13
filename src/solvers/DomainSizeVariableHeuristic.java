@@ -26,38 +26,38 @@ public class DomainSizeVariableHeuristic implements VariableHeuristic {
      * S'il est à {@code true}, c'est que l'on préfère que les variables aient le plus grand domaine possible.
      * S'il est à {@code false}, c'est que l'on préfère que les variables aient le plus petit domaine possible.
      */
-    private final boolean haveGreatDomainSize;
+    private final boolean greatest;
 
     /**
      * Constructeur par défaut.
      * @param variables ensemble de variables
      * @param constraints ensemble de contraintes
-     * @param haveGreatDomainSize booléen représentant une préférence au niveau du choix de classement
+     * @param greatest booléen représentant une préférence au niveau du choix de classement
      */
     public DomainSizeVariableHeuristic(Set<Variable> variables, Set<Constraint> constraints,
-            boolean haveGreatDomainSize) {
+            boolean greatest) {
         this.variables = variables;
         this.constraints = constraints;
-        this.haveGreatDomainSize = haveGreatDomainSize;
+        this.greatest = greatest;
     }
 
     @Override
     public Variable best(Set<Variable> variables, Map<Variable, Set<Object>> domains) {
         Variable best = null;
         int val = 0;
-        for(Variable var: this.variables){
-            int valActual = domains.get(var).size();
-            if(this.haveGreatDomainSize){
+        for(Variable var: variables){
+            int actualValue = domains.get(var).size();
+            if(this.greatest){
                 // on vérifie pour avoir le maximum
-                if(valActual > val){
-                    val = valActual;
+                if(actualValue > val){
+                    val = actualValue;
                     best = var;
                 }
             } else {
                 // on vérifie s'il n'y a pas encore de variable
                 // et s'il n'y en a pas, on fait la vérification pour avoir le minimum
-                if(best == null || valActual < val){
-                    val = valActual;
+                if(best == null || actualValue < val){
+                    val = actualValue;
                     best = var;
                 }
             }
@@ -70,10 +70,10 @@ public class DomainSizeVariableHeuristic implements VariableHeuristic {
      * S'il est à {@code true}, c'est que l'on préfère que les variables aient le plus grand domaine possible.
      * S'il est à {@code false}, c'est que l'on préfère que les variables aient le plus petit domaine possible.
      * @return booléen
-     * @see #haveGreatDomainSize
+     * @see #greatest
      */
-    public boolean isHaveGreatDomainSize(){
-        return this.haveGreatDomainSize;
+    public boolean isgreatest(){
+        return this.greatest;
     }
 
     /**
