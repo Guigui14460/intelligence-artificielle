@@ -26,7 +26,7 @@ public class Test {
 
         // Backtracking
         ok = ok && AbstractSolverTests.testIsConsistent();
-        // ok = ok && BacktrackSolverTests.testSolve(); // fonctionne pas
+        ok = ok && BacktrackSolverTests.testSolve(); // fonctionne pas
         ok = ok && ArcConsistencyTests.testFilter();
         ok = ok && ArcConsistencyTests.testEnforce();
         ok = ok && ArcConsistencyTests.testEnforceArcConsistency();
@@ -42,7 +42,7 @@ public class Test {
         ok = ok && BasicActionTests.testGetCost();
         ok = ok && BasicGoalTests.testIsSatisfiedBy();
         ok = ok && DFSPlannerTests.testPlan();
-        // ok = ok && BFSPlannerTests.testPlan(); // fonctionne pas
+       // ok = ok && BFSPlannerTests.testPlan(); // fonctionne pas
         ok = ok && DijkstraPlannerTests.testPlan();
         ok = ok && AStarPlannerTests.testPlan();
 
