@@ -1,7 +1,6 @@
 package solvers;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -46,18 +45,11 @@ public class NbConstraintsVariableHeuristic implements VariableHeuristic {
     public Variable best(Set<Variable> variables, Map<Variable, Set<Object>> domains) {
         Variable best = null;
         int val = 0;
-        Map<Variable, Integer> values = new HashMap<>();
-        for(Variable variable: variables){
-            values.put(variable, 0);
-        }
         for(Variable var: variables){
             int actualValue = 0;
             for(Constraint c: this.constraints){
                 if(c.getScope().contains(var)){
                     actualValue++;
-                    if(values.containsKey(var)){
-                        values.put(var, values.get(var) + 1);
-                    }
                 }
             }
             if(this.greatest){

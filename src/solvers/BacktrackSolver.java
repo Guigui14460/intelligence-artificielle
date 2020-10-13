@@ -25,8 +25,9 @@ public class BacktrackSolver extends AbstractSolver {
     @Override
     public boolean isConsistent(Map<Variable, Object> affectation){
         for(Constraint constraint: this.constraints){
-            // vérifie que toutes les variables sont instanciées
-            if(constraint.getScope().equals(affectation.keySet())){
+            // vérifie que toutes les variables de la contrainte se trouvent dans l'affectation
+            // (ici contraposée => l'ensemble des variables de la contraintes sont inclues dans l'ensemble de clés de l'instanciation)
+            if(affectation.keySet().containsAll(constraint.getScope())){
                 if(!constraint.isSatisfiedBy(affectation)){
                     return false;
                 }
@@ -68,34 +69,38 @@ public class BacktrackSolver extends AbstractSolver {
         if(notInstanciatedVariables.size() == 0){
             return instanciation;
         }
-        // choisi la première variable parmi celle non instanciées
-        Variable chosenVariable = notInstanciatedVariables.remove(0);
 
-        // On crée une deuxième instanciation pour ne pas modifier l'ancien contexte
+        // On crée une deuxième instanciation pour ne pas modifier l'ancien contexte et on prend une variables non instanciée
+        Variable chosenVariable = null;
+        List<Variable> newNotInstanciatedVariables = new LinkedList<>();
+        for(Variable variable: notInstanciatedVariables){
+            if(chosenVariable == null){
+                chosenVariable = variable;
+            } else {
+                newNotInstanciatedVariables.add(variable);
+            }
+        }
         
         // On parcourt toutes les valeurs du domaine de la variable choisie
         for(Object value: chosenVariable.getDomain()){
+            // nouvelle instanciation pour garder le contexte
             Map<Variable, Object> instanciation2 = new HashMap<>();
             instanciation2.putAll(instanciation);
             instanciation2.put(chosenVariable, value);
+
             // vérifie que l'instanciation est valide
             if(isConsistent(instanciation2)){
                 if(this.variables.size() == instanciation2.keySet().size()){
                     // toutes les variables sont instanciées
                     return instanciation2;
                 }
-                else {
-                    instanciation2 = backtrack(instanciation2, notInstanciatedVariables);
-                    if(instanciation2 != null){
-                        // on la prend
-                        return instanciation2;
-                    }
-                    // on la rejette
+                instanciation2 = backtrack(instanciation2, newNotInstanciatedVariables);
+                if(instanciation2 != null){
+                    // solution trouvée
+                    return instanciation2;
                 }
             }
         }
-        // on remet la variable choisie pour ne pas la perdre
-        notInstanciatedVariables.add(chosenVariable);
         return null;
     }
 }

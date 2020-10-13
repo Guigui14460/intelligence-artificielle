@@ -72,7 +72,7 @@ public class DomainSizeVariableHeuristic implements VariableHeuristic {
      * @return booléen
      * @see #greatest
      */
-    public boolean isgreatest(){
+    public boolean isGreatest(){
         return this.greatest;
     }
 

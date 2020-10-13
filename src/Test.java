@@ -10,10 +10,13 @@ public class Test {
      * Méthode principale à lancer.
      * @param args arguments passés dans le terminal
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
+        // tester sur notre exemple avec comparaison des algorithmes (solveurs et de planification)
+        // faire un test pour la maison
+        
         boolean ok = true;
 
-        // Modélisation variable-valeur
+        // Partie 1 : Modélisation variable-valeur
         ok = ok && VariableTests.testEquals();
         ok = ok && VariableTests.testHashCode();
         ok = ok && BooleanVariableTests.testConstructor();
@@ -24,19 +27,19 @@ public class Test {
         ok = ok && BinaryExtensionConstraintTests.testGetScope();
         ok = ok && BinaryExtensionConstraintTests.testIsSatisfiedBy();
 
-        // Backtracking
+        // Partie 2 : Solveurs
         ok = ok && AbstractSolverTests.testIsConsistent();
-        // ok = ok && BacktrackSolverTests.testSolve(); // fonctionne pas
+        ok = ok && BacktrackSolverTests.testSolve();
         ok = ok && ArcConsistencyTests.testFilter();
         ok = ok && ArcConsistencyTests.testEnforce();
         ok = ok && ArcConsistencyTests.testEnforceArcConsistency();
-        // ok = ok && MACSolverTests.testSolve(); // fonctionne pas
+        // ok = ok && MACSolverTests.testSolve(); // à implémenter
         // ok = ok && HeuristicMACSolverTests.testSolve(); // à implémenter
         ok = ok && NbConstraintsVariableHeuristicTests.testBest();
         ok = ok && DomainSizeVariableHeuristicTests.testBest();
         ok = ok && RandomValueHeuristicTests.testOrdering();
 
-        // Planification
+        // Partie 3 : Planification
         ok = ok && BasicActionTests.testIsApplicable();
         ok = ok && BasicActionTests.testSuccessor();
         ok = ok && BasicActionTests.testGetCost();
@@ -45,9 +48,6 @@ public class Test {
         ok = ok && BFSPlannerTests.testPlan();
         ok = ok && DijkstraPlannerTests.testPlan();
         ok = ok && AStarPlannerTests.testPlan();
-        
-        // tester sur notre exemple avec comparaison des algorithmes
-        // faire un test pour la maison
 
         System.out.println(ok ? "All tests passed" : "At least one test failed");
     }

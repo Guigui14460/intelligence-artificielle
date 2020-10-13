@@ -104,6 +104,7 @@ public class BFSPlanner implements Planner {
                         if(this.goal.isSatisfiedBy(next)){ // on vérifie si le but est atteint
                             return this.getBFSPlan(father, plan, next); // retourne le plus court plan d'actions
                         }
+                        // ajout du next dans la liste des ouverts afin de montrer que l'on l'a vu
                         open.offer(next);
                     }
                 }
