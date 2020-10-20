@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import representation.BooleanVariable;
 
@@ -20,15 +21,13 @@ public class Apriori extends AbstractItemsetMiner {
     }
     
     public Set<Itemset> frequentSingletons(float minimalFrequency){
-        System.out.println("----------------------------------------");
-        System.out.println(this.database.getTransactions());
-        System.out.println(minimalFrequency);
         Set<Itemset> itemsets = new HashSet<>();
-        for(Set<BooleanVariable> transaction: this.database.getTransactions()){
-            float frequency = this.frequency(transaction);
-            System.out.println(transaction + " : " + frequency);
+        for(BooleanVariable item: this.database.getItems()){
+            SortedSet<BooleanVariable> itemset = new TreeSet<>(AbstractItemsetMiner.COMPARATOR);
+            itemset.add(item);
+            float frequency = this.frequency(itemset);
             if(frequency >= minimalFrequency){
-                itemsets.add(new Itemset(transaction, frequency));
+                itemsets.add(new Itemset(itemset, frequency));
             }
         }
         return itemsets;
