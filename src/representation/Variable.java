@@ -10,7 +10,7 @@ public class Variable {
     /**
      * Nom de la variable.
      */
-    private final String name;
+    public final String name;
 
     /**
      * Ensemble de valeurs possible pour instancier cette variable.

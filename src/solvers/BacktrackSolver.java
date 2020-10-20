@@ -38,8 +38,7 @@ public class BacktrackSolver extends AbstractSolver {
 
     @Override
     public Map<Variable, Object> solve() {
-        List<Variable> notInstanciatedVariables = new LinkedList<>();
-        notInstanciatedVariables.addAll(this.variables);
+        List<Variable> notInstanciatedVariables = new LinkedList<>(this.variables);
         return backtrack(new HashMap<>(), notInstanciatedVariables);
     }
     
@@ -84,13 +83,12 @@ public class BacktrackSolver extends AbstractSolver {
         // On parcourt toutes les valeurs du domaine de la variable choisie
         for(Object value: chosenVariable.getDomain()){
             // nouvelle instanciation pour garder le contexte
-            Map<Variable, Object> instanciation2 = new HashMap<>();
-            instanciation2.putAll(instanciation);
+            Map<Variable, Object> instanciation2 = new HashMap<>(instanciation);
             instanciation2.put(chosenVariable, value);
 
             // vérifie que l'instanciation est valide
             if(isConsistent(instanciation2)){
-                if(this.variables.size() == instanciation2.keySet().size()){
+                if(instanciation2.keySet().containsAll(this.variables)){
                     // toutes les variables sont instanciées
                     return instanciation2;
                 }

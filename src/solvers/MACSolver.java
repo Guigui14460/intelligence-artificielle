@@ -1,5 +1,6 @@
 package solvers;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -25,8 +26,7 @@ public class MACSolver extends AbstractSolver {
     public Map<Variable, Object> solve() {
         Map<Variable, Set<Object>> domains = new HashMap<>();
         for(Variable variable: this.variables){
-            Set<Object> domain = new HashSet<>();
-            domain.addAll(variable.getDomain());
+            Set<Object> domain = new HashSet<>(variable.getDomain());
             domains.put(variable, domain);
         }
         return this.mac(domains, new HashMap<>());
@@ -46,34 +46,29 @@ public class MACSolver extends AbstractSolver {
         }
 
         // toutes les variables sont instanciées
-        if(instanciation.keySet().size() == this.variables.size()){
+        if(instanciation.keySet().containsAll(this.variables)){
             return instanciation;
         }
 
-        // choisi la dernière variable parmi celle non instanciées
+        // choisi une variable parmi celle non instanciées
         Variable variableNotInstanciated = null;
         for(Variable variable: this.variables){
             if(!instanciation.containsKey(variable)){
                 variableNotInstanciated = variable;
+                break;
             }
         }
 
         for(Object value: domains.get(variableNotInstanciated)){
-            Set<Object> newDomainForVariable = new HashSet<>();
-            newDomainForVariable.add(value);
-            
-            Set<Object> newDomainForVariable2 = new HashSet<>();
-            for(Object value2: variableNotInstanciated.getDomain()){
-                if(!value.equals(value2)){
-                    newDomainForVariable2.add(value2);
-                }
-            }
-            newDomainForVariable2.addAll(newDomainForVariable);
+            Set<Object> newDomainForVariable = new HashSet<>(Arrays.asList(value));
 
-            Map<Variable, Object> instanciation2 = new HashMap<>();
-            instanciation2.putAll(instanciation);
+            Map<Variable, Set<Object>> domains2 = new HashMap<>(domains);
+            domains2.put(variableNotInstanciated, newDomainForVariable);
+
+            Map<Variable, Object> instanciation2 = new HashMap<>(instanciation);
             instanciation2.put(variableNotInstanciated, value);
 
+            // récusivité de l'algo
             instanciation2 = this.mac(domains, instanciation2);
             if(instanciation2 != null){
                 return instanciation2;

@@ -1,3 +1,4 @@
+import dataminingtests.*;
 import planningtests.*;
 import representationtests.*;
 import solvertests.*;
@@ -33,7 +34,7 @@ public class Test {
         ok = ok && ArcConsistencyTests.testFilter();
         ok = ok && ArcConsistencyTests.testEnforce();
         ok = ok && ArcConsistencyTests.testEnforceArcConsistency();
-        // ok = ok && MACSolverTests.testSolve(); // à implémenter
+        // ok = ok && MACSolverTests.testSolve(); // fonctionne pas
         // ok = ok && HeuristicMACSolverTests.testSolve(); // à implémenter
         ok = ok && NbConstraintsVariableHeuristicTests.testBest();
         ok = ok && DomainSizeVariableHeuristicTests.testBest();
@@ -48,6 +49,19 @@ public class Test {
         ok = ok && BFSPlannerTests.testPlan();
         ok = ok && DijkstraPlannerTests.testPlan();
         ok = ok && AStarPlannerTests.testPlan();
+
+        // Partie 4 : Extraction de connaissances
+        ok = ok && AbstractItemsetMinerTests.testFrequency();
+        ok = ok && AprioriTests.testFrequentSingletons();
+        // ok = ok && AprioriTests.testCombine();
+        // ok = ok && AprioriTests.testAllSubsetsFrequent();
+        // ok = ok && AprioriTests.testExtract();
+        // ok = ok && AbstractAssociationRuleMinerTests.testFrequency();
+        // ok = ok && AbstractAssociationRuleMinerTests.testConfidence();
+        // ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises();
+        // ok = ok && BruteForceAssociationRuleMinerTests.testExtract();
+        // ok = ok && DatabaseTests.testItemTable();
+        // ok = ok && DatabaseTests.testPropositionalize();
 
         System.out.println(ok ? "All tests passed" : "At least one test failed");
     }

@@ -123,7 +123,7 @@ public class DijkstraPlanner implements Planner {
      * @return meilleure liste d'actions reconstruite dans le bon ordre (celle qui a le coup le plus petit)
      * @see #argmin(Map, List)
      */
-    private List<Action>getDijkstraPlan(Map<Map<Variable, Object>, Map<Variable, Object>> father, Map<Map<Variable, Object>, Action> plan, List<Map<Variable, Object>> goals, Map<Map<Variable, Object>, Double> distance){
+    private List<Action> getDijkstraPlan(Map<Map<Variable, Object>, Map<Variable, Object>> father, Map<Map<Variable, Object>, Action> plan, List<Map<Variable, Object>> goals, Map<Map<Variable, Object>, Double> distance){
         List<Action> dijPlan = new LinkedList<>();
         // on prend le but le plus proche
         Map<Variable, Object> goal = this.argmin(distance, goals);
