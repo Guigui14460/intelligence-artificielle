@@ -37,6 +37,9 @@ public class Apriori extends AbstractItemsetMiner {
         if(set1.size() != set2.size()){
             return null;
         }
+        if(set1.size() == 0){
+            return null;
+        }
         int k = set1.size();
         Iterator<BooleanVariable> set1Iterator = set1.iterator();
         Iterator<BooleanVariable> set2Iterator = set2.iterator();
@@ -45,9 +48,16 @@ public class Apriori extends AbstractItemsetMiner {
                 return null;
             }
         }
-        SortedSet<BooleanVariable> toReturn = set1.headSet(set1.last());
-        toReturn.add(set1.last());
-        toReturn.add(set2.last());
+        if(set1Iterator.next().equals(set2Iterator.next())){
+            return null;
+        }
+        SortedSet<BooleanVariable> toReturn = new TreeSet<>(AbstractItemsetMiner.COMPARATOR);
+        for(BooleanVariable variable: set1){
+            toReturn.add(variable);
+        }
+        for(BooleanVariable variable: set2){
+            toReturn.add(variable);
+        }
         return toReturn;
     }
 
