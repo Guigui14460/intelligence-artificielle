@@ -54,14 +54,14 @@ public class Test {
         ok = ok && AbstractItemsetMinerTests.testFrequency();
         ok = ok && AprioriTests.testFrequentSingletons();
         ok = ok && AprioriTests.testCombine();
-        // ok = ok && AprioriTests.testAllSubsetsFrequent();
-        // ok = ok && AprioriTests.testExtract();
-        // ok = ok && AbstractAssociationRuleMinerTests.testFrequency();
-        // ok = ok && AbstractAssociationRuleMinerTests.testConfidence();
-        // ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises();
-        // ok = ok && BruteForceAssociationRuleMinerTests.testExtract();
-        // ok = ok && DatabaseTests.testItemTable();
-        // ok = ok && DatabaseTests.testPropositionalize();
+        ok = ok && AprioriTests.testAllSubsetsFrequent();
+        ok = ok && AprioriTests.testExtract(); // fonctionne pas
+        // ok = ok && AbstractAssociationRuleMinerTests.testFrequency(); // pas implémentée
+        // ok = ok && AbstractAssociationRuleMinerTests.testConfidence(); // pas implémentée
+        // ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises(); // pas implémentée
+        // ok = ok && BruteForceAssociationRuleMinerTests.testExtract(); // pas implémentée
+        // ok = ok && DatabaseTests.testItemTable(); // pas implémentée
+        // ok = ok && DatabaseTests.testPropositionalize(); // pas implémentée
 
         System.out.println(ok ? "All tests passed" : "At least one test failed");
     }
