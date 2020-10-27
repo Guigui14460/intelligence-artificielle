@@ -1,8 +1,7 @@
 package examples;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import representation.Constraint;
@@ -33,14 +32,14 @@ public class HouseExample {
     private Set<String> otherRooms;
 
     /**
-     * Liste de variables.
+     * Ensemble de variables.
      */
-    private List<Variable> variables;
+    private Set<Variable> variables;
 
     /**
-     * Liste de contraintes à satisfaire.
+     * Ensemble de contraintes à satisfaire.
      */
-    private List<Constraint> constraints;
+    private Set<Constraint> constraints;
 
     /**
      * Constructeur par défaut.
@@ -54,12 +53,12 @@ public class HouseExample {
         this.length = length;
         this.waterRooms = waterRooms;
         this.otherRooms = otherRooms;
-        this.variables = new ArrayList<>();
-        this.constraints = new ArrayList<>();
+        this.variables = new HashSet<>();
+        this.constraints = new HashSet<>();
     }
 
     /**
-     * Ajoute des variables à la liste de variables.
+     * Ajoute des variables à la ensemble de variables.
      * @param vars variables à ajouter (une ou plus)
      */
     public void addVariables(Variable... vars){
@@ -67,7 +66,7 @@ public class HouseExample {
     }
 
     /**
-     * Enlève des variables de la liste de variables.
+     * Enlève des variables de la ensemble de variables.
      * @param vars variables à enlever (une ou plus)
      */
     public void removeVariables(Variable... vars){
@@ -75,7 +74,7 @@ public class HouseExample {
     }
 
     /**
-     * Ajoute des contraintes à la liste de contraintes.
+     * Ajoute des contraintes à la ensemble de contraintes.
      * @param cons contraintes à ajouter (une ou plus)
      */
     public void addConstraints(Constraint... cons){
@@ -83,7 +82,7 @@ public class HouseExample {
     }
 
     /**
-     * Enlève des contraintes de la liste de contraintes.
+     * Enlève des contraintes de la ensemble de contraintes.
      * @param cons contraintes à enlever (une ou plus)
      */
     public void removeConstraints(Constraint... cons){
@@ -91,18 +90,18 @@ public class HouseExample {
     }
 
     /**
-     * Retourne la liste des variables.
-     * @return liste des variables
+     * Retourne la ensemble des variables.
+     * @return ensemble des variables
      */
-    public List<Variable> getVariables(){
+    public Set<Variable> getVariables(){
         return this.variables;
     }
 
     /**
-     * Retourne la liste des contraintes à satisfaire.
-     * @return liste des contraintes à satisfaire
+     * Retourne la ensemble des contraintes à satisfaire.
+     * @return ensemble des contraintes à satisfaire
      */
-    public List<Constraint> getConstraints(){
+    public Set<Constraint> getConstraints(){
         return this.constraints;
     }
 

@@ -11,7 +11,7 @@ public interface Heuristic {
     /**
      * Donne une estimation d'un coup.
      * @param state état
-     * @return un nombre réel correspondant à une estimation du coup menant ) l'état suivant
+     * @return un nombre réel correspondant à une estimation du coup menant à l'état suivant
      */
     public float estimate(Map<Variable, Object> state);
 }
