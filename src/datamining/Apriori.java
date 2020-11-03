@@ -73,9 +73,6 @@ public class Apriori extends AbstractItemsetMiner {
      * @return motifs fréquents dans la base de données
      */
     public Set<Itemset> frequentSingletons(float minimalFrequency){
-        // System.out.println("--------------------------------");
-        // System.out.println(this.database.getItems());
-        // System.out.println(this.database.getTransactions());
         Set<Itemset> itemsets = new HashSet<>();
         for(BooleanVariable item: this.database.getItems()){
             // on itère chaque variable et on la converti en un ensemble ne contenant que la variable itérée
@@ -87,7 +84,6 @@ public class Apriori extends AbstractItemsetMiner {
                 itemsets.add(new Itemset(itemset, frequency));
             }
         }
-        // System.out.println("Result : " + itemsets);
         return itemsets;
     }
 

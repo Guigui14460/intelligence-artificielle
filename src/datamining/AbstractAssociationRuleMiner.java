@@ -28,36 +28,42 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
 
     /**
      * Retourne la fréquence d'un motif parmi un ensemble de motifs.
-     * @param itemset motif que l'on souhaite calculer sa fréquence
+     * 
+     * @param itemset  motif que l'on souhaite calculer sa fréquence
      * @param itemsets ensemble de motifs
      * @return fréquence de {@code itemset} dans {@code itemsets}
+     * @throws Exception levée lorsque le motif recherché ne se trouve pas dans l'ensemble de motifs
      */
-    public static float frequency(Set<BooleanVariable> itemset, Set<Itemset> itemsets){
-        float numberOfOccurence = 0;
+    public static float frequency(Set<BooleanVariable> itemset, Set<Itemset> itemsets) throws Exception {
         for(Itemset transaction: itemsets){
-            if(transaction.getItems().containsAll(itemset)){
-                numberOfOccurence++;
+            if(itemset.equals(transaction.getItems())){ // on prend que si c'est exactement égal
+                return transaction.getFrequency();
             }
         }
-        return numberOfOccurence / itemsets.size();
+        throw new Exception("searched itemset is not present in itemsets");
     }
 
     /**
-     * Retourne la confiance de la règle d'association en fonction de la prémisse et des candidates donnés.
-     * @param premise prémisse de la règle d'association
+     * Retourne la confiance de la règle d'association en fonction de la prémisse et
+     * des candidates donnés.
+     * 
+     * @param premise    prémisse de la règle d'association
      * @param conclusion candidates de la règle d'association
-     * @param itemsets ensemble de motifs
+     * @param itemsets   ensemble de motifs
      * @return confiance de la règle d'association
      */
-    public float confidence(Set<BooleanVariable> premise, Set<BooleanVariable> conclusion, Set<Itemset> itemsets){
-        float numberOfOccurence = 0;
-        float frequencies = 0;
+    public static float confidence(Set<BooleanVariable> premise, Set<BooleanVariable> conclusion, Set<Itemset> itemsets) {
+        float part1 = 0, part2 = 0;
         for(Itemset transaction: itemsets){
-            if(transaction.getItems().containsAll(premise)){
-                numberOfOccurence++;
-                frequencies += transaction.getFrequency();
+            if(transaction.getItems().containsAll(premise) && transaction.getItems().containsAll(conclusion)){
+                // probabilité que prémisse et conclusion se trouve ensemble dans le même motif
+                part1++;
+            }
+            if(transaction.getItems().containsAll(premise)){ // probabilité de prémisse
+                part2++;
             }
         }
-        return frequencies / numberOfOccurence;
+        System.out.println(part1 + " : " + part2);
+        return part1 / part2; // probabilité de conclusion sachant prémisse
     }
 }

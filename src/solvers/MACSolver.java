@@ -26,8 +26,7 @@ public class MACSolver extends AbstractSolver {
     public Map<Variable, Object> solve() {
         Map<Variable, Set<Object>> domains = new HashMap<>();
         for(Variable variable: this.variables){
-            Set<Object> domain = new HashSet<>(variable.getDomain());
-            domains.put(variable, domain);
+            domains.put(variable, new HashSet<>(variable.getDomain()));
         }
         return this.mac(domains, new HashMap<>());
     }
@@ -36,7 +35,7 @@ public class MACSolver extends AbstractSolver {
         ArcConsistency arc = new ArcConsistency(this.constraints);
         arc.enforceArcConsistency(domains);
 
-        // P inconsistant et ayant un domain vide
+        // vérifie si P inconsistant et ayant un domaine vide
         if(!this.isConsistent(instanciation)){
             for(Set<Object> domain: domains.values()){
                 if(domain.size() == 0){
@@ -45,7 +44,7 @@ public class MACSolver extends AbstractSolver {
             }
         }
 
-        // toutes les variables sont instanciées
+        // vérifie si toutes les variables sont instanciées
         if(instanciation.keySet().containsAll(this.variables)){
             return instanciation;
         }
@@ -63,8 +62,10 @@ public class MACSolver extends AbstractSolver {
             Set<Object> newDomainForVariable = new HashSet<>(Arrays.asList(value));
 
             Map<Variable, Set<Object>> domains2 = new HashMap<>(domains);
+            domains2.remove(variableNotInstanciated);
             domains2.put(variableNotInstanciated, newDomainForVariable);
 
+            // copie pour garder le contexte
             Map<Variable, Object> instanciation2 = new HashMap<>(instanciation);
             instanciation2.put(variableNotInstanciated, value);
 

@@ -23,20 +23,6 @@ public class BacktrackSolver extends AbstractSolver {
     }
 
     @Override
-    public boolean isConsistent(Map<Variable, Object> affectation){
-        for(Constraint constraint: this.constraints){
-            // vérifie que toutes les variables de la contrainte se trouvent dans l'affectation
-            // (ici contraposée => l'ensemble des variables de la contraintes sont inclues dans l'ensemble de clés de l'instanciation)
-            if(affectation.keySet().containsAll(constraint.getScope())){
-                if(!constraint.isSatisfiedBy(affectation)){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    @Override
     public Map<Variable, Object> solve() {
         List<Variable> notInstanciatedVariables = new LinkedList<>(this.variables);
         return backtrack(new HashMap<>(), notInstanciatedVariables);

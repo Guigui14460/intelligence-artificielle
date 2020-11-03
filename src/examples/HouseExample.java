@@ -24,12 +24,12 @@ public class HouseExample {
     /**
      * Ensemble de pièces d'eau.
      */
-    private Set<String> waterRooms;
+    private Set<String> wetRooms;
 
     /**
      * Ensemble d'autres pièces autre que des pièces d'eau.
      */
-    private Set<String> otherRooms;
+    private Set<String> dryRooms;
 
     /**
      * Ensemble de variables.
@@ -45,14 +45,14 @@ public class HouseExample {
      * Constructeur par défaut.
      * @param width largeur de la maison
      * @param length longueur de la maison
-     * @param waterRooms ensemble de pièce d'eau
-     * @param otherRooms ensemble d'autre pièces
+     * @param wetRooms ensemble de pièce d'eau
+     * @param dryRooms ensemble d'autre pièces
      */
-    public HouseExample(int width, int length, Set<String> waterRooms, Set<String> otherRooms) {
+    public HouseExample(int width, int length, Set<String> wetRooms, Set<String> dryRooms) {
         this.width = width;
         this.length = length;
-        this.waterRooms = waterRooms;
-        this.otherRooms = otherRooms;
+        this.wetRooms = wetRooms;
+        this.dryRooms = dryRooms;
         this.variables = new HashSet<>();
         this.constraints = new HashSet<>();
     }
@@ -125,15 +125,15 @@ public class HouseExample {
      * Retourne un ensemble de pièces d'eau.
      * @return ensemble de pièces d'eau
      */
-    public Set<String> getWaterRooms(){
-        return this.waterRooms;
+    public Set<String> getWetRooms(){
+        return this.wetRooms;
     }
 
     /**
      * Retourne un ensemble d'autres pièces autre que des pièces d'eau.
      * @return ensemble d'autres pièces autre que des pièces d'eau
      */
-    public Set<String> getOtherRooms(){
-        return this.otherRooms;
+    public Set<String> getDryRooms(){
+        return this.dryRooms;
     }
 }

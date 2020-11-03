@@ -26,19 +26,19 @@ public class NbConstraintsVariableHeuristic implements VariableHeuristic {
      * S'il est à {@code true}, c'est que l'on préfère que les variables apparaissent dans le plus de contraintes possibles.
      * S'il est à {@code false}, c'est que l'on préfère que les variables apparaissent dans le moins de contraintes possibles.
      */
-    private final boolean greatest;
+    private final boolean most;
 
     /**
      * Constructeur par défaut.
      * @param variables ensemble de variables
      * @param constraints ensemble de contraintes
-     * @param greatest booléen représentant une préférence au niveau du choix de classement
+     * @param most booléen représentant une préférence au niveau du choix de classement
      */
     public NbConstraintsVariableHeuristic(Set<Variable> variables, Set<Constraint> constraints,
-            boolean greatest) {
+            boolean most) {
         this.variables = variables;
         this.constraints = constraints;
-        this.greatest = greatest;
+        this.most = most;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class NbConstraintsVariableHeuristic implements VariableHeuristic {
                     actualValue++;
                 }
             }
-            if(this.greatest){
+            if(this.most){
                 // on vérifie pour avoir le maximum
                 if(actualValue > val){
                     val = actualValue;
@@ -75,10 +75,10 @@ public class NbConstraintsVariableHeuristic implements VariableHeuristic {
      * S'il est à {@code true}, c'est que l'on préfère que les variables apparaissent dans le plus de contraintes possibles.
      * S'il est à {@code false}, c'est que l'on préfère que les variables apparaissent dans le moins de contraintes possibles.
      * @return booléen
-     * @see #greatest
+     * @see #most
      */
-    public boolean isGreatest(){
-        return this.greatest;
+    public boolean isMost(){
+        return this.most;
     }
 
     /**

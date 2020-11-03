@@ -12,9 +12,6 @@ public class Test {
      * @param args arguments passés dans le terminal
      */
     public static void main(String[] args) {
-        // tester sur notre exemple avec comparaison des algorithmes (solveurs et de planification)
-        // faire un test pour la maison
-        
         boolean ok = true;
 
         // Partie 1 : Modélisation variable-valeur
@@ -56,12 +53,12 @@ public class Test {
         ok = ok && AprioriTests.testCombine();
         ok = ok && AprioriTests.testAllSubsetsFrequent();
         // ok = ok && AprioriTests.testExtract(); // fonctionne pas
-        // ok = ok && AbstractAssociationRuleMinerTests.testFrequency(); // pas implémentée
-        // ok = ok && AbstractAssociationRuleMinerTests.testConfidence(); // pas implémentée
-        // ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises(); // pas implémentée
-        // ok = ok && BruteForceAssociationRuleMinerTests.testExtract(); // pas implémentée
-        // ok = ok && DatabaseTests.testItemTable(); // pas implémentée
-        // ok = ok && DatabaseTests.testPropositionalize(); // pas implémentée
+        ok = ok && AbstractAssociationRuleMinerTests.testFrequency();
+        // ok = ok && AbstractAssociationRuleMinerTests.testConfidence(); // fonctionne pas
+        ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises();
+        // ok = ok && BruteForceAssociationRuleMinerTests.testExtract(); // fonctionne pas
+        // ok = ok && DatabaseTests.testItemTable(); // fonctionne pas
+        // ok = ok && DatabaseTests.testPropositionalize(); // fonctionne pas
 
         System.out.println(ok ? "All tests passed" : "At least one test failed");
     }
