@@ -52,7 +52,7 @@ public class Test {
         ok = ok && AprioriTests.testFrequentSingletons();
         ok = ok && AprioriTests.testCombine();
         ok = ok && AprioriTests.testAllSubsetsFrequent();
-        // ok = ok && AprioriTests.testExtract(); // fonctionne pas
+        ok = ok && AprioriTests.testExtract();
         ok = ok && AbstractAssociationRuleMinerTests.testFrequency();
         // ok = ok && AbstractAssociationRuleMinerTests.testConfidence(); // fonctionne pas
         ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises();

@@ -1,9 +1,9 @@
 package datamining;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -22,46 +22,44 @@ public class Apriori extends AbstractItemsetMiner {
     public Apriori(BooleanDatabase database) {
         super(database);
     }
-
+    
     @Override
     public Set<Itemset> extract(float minimalFrequency) {
-        // initialisation de collections utiles à l'algorithme apriori
+        // on crée l'ensemble des résultats (contenant l'ensemble vide)
         Set<Itemset> results = new HashSet<>();
-        List<SortedSet<BooleanVariable>> listOfDiscoveredItemsets = new ArrayList<>(); // stocke les ensembles d'items fréquents découverts au niveau k
-        
-        // on récupère les ensembles à 1 éléments les plus fréquents
-        Set<Itemset> firstLevel = this.frequentSingletons(minimalFrequency);
-        results.addAll(firstLevel);
-        // System.out.println(firstLevel);
+        results.add(new Itemset(new HashSet<>(), this.frequency(new HashSet<>())));
 
-        // on les ajoute à notre liste de motifs découverts
-        SortedSet<BooleanVariable> lastFoundSortedSet = new TreeSet<>(AbstractItemsetMiner.COMPARATOR);
-        for(Itemset itemset: firstLevel){
-            lastFoundSortedSet.addAll(itemset.getItems());
+        // motifs fréquents de taille 1
+        Set<Itemset> frequentSize1 = this.frequentSingletons(minimalFrequency);
+        results.addAll(frequentSize1);
+
+        // trace des motifs fréquents de taille n
+        List<SortedSet<BooleanVariable>> itemsetTrace = new LinkedList<>();
+        for(Itemset itemset: frequentSize1){
+            SortedSet<BooleanVariable> size1 = new TreeSet<>(AbstractItemsetMiner.COMPARATOR);
+            size1.addAll(itemset.getItems());
+            itemsetTrace.add(size1);
         }
-        listOfDiscoveredItemsets.add(lastFoundSortedSet);
 
-        // System.out.println(results);
+        for(int i = 1; i < this.database.getItems().size(); i++){
+            // trace des motifs fréquents de taille n+1
+            List<SortedSet<BooleanVariable>> itemsetTrace2 = new LinkedList<>();
+            int itemSize = itemsetTrace.size();
 
-        // on regarde pour chaque motifs découverts
-        int k = 0;
-        while(k < listOfDiscoveredItemsets.size()){
-            SortedSet<BooleanVariable> lastLevel = new TreeSet<>(listOfDiscoveredItemsets.get(k));
-            for(BooleanVariable variable: this.database.getItems()){
-                if(!lastLevel.contains(variable)){
-                    lastLevel.add(variable); // on ajoute la variable itérée
-                    if(Apriori.allSubsetsFrequent(lastLevel, listOfDiscoveredItemsets)){
-                        SortedSet<BooleanVariable> set = new TreeSet<>(lastLevel);
-                        listOfDiscoveredItemsets.add(set); // on l'ajoute à ceux découverts
-                        Itemset itemset = new Itemset(set, this.frequency(set)); // on crée le motif avec sa fréquence dans la base de données
+            // on crée les motifs
+            for(int j = 0; j < itemSize; j++){
+                for(int k = j + 1; k < itemSize; k++){
+                    SortedSet<BooleanVariable> set = Apriori.combine(itemsetTrace.get(j), itemsetTrace.get(k)); // combination
+                    if(set != null && Apriori.allSubsetsFrequent(set, itemsetTrace)){ // le sous-ensemble est fréquent
+                        itemsetTrace2.add(set);
+                        Itemset itemset = new Itemset(set, this.frequency(set));
                         if(itemset.getFrequency() >= minimalFrequency){
                             results.add(itemset); // on l'ajoute aux résultats trouvés
                         }
                     }
-                    lastLevel.remove(variable); // on la retire pour garder la même structure de base
                 }
             }
-            k++;
+            itemsetTrace = itemsetTrace2; // remplacement car on passe à un autre niveau
         }
         return results;
     }

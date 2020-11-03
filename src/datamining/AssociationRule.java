@@ -2,21 +2,19 @@ package datamining;
 
 import java.util.Set;
 
-import representation.BooleanVariable;
-
 /**
  * Classe représentant une règle d'association.
  */
-public class AssociationRule {
+public class AssociationRule<E> {
     /**
      * Représente de prémisse de cette règle d'association.
      */
-    private Set<BooleanVariable> premise;
+    private Set<E> premise;
 
     /**
      * Représente des candidates de cette règle d'association.
      */
-    private Set<BooleanVariable> conclusion;
+    private Set<E> conclusion;
 
     /**
      * Représente la fréquence d'apparition de cette règle dans les transactions.
@@ -35,7 +33,7 @@ public class AssociationRule {
      * @param frequency fréquence d'apparition dans la base de données
      * @param confidence confiance de la règle
      */
-    public AssociationRule(Set<BooleanVariable> premise, Set<BooleanVariable> conclusion, float frequency, float confidence){
+    public AssociationRule(Set<E> premise, Set<E> conclusion, float frequency, float confidence){
         this.premise = premise;
         this.conclusion = conclusion;
         this.frequency = frequency;
@@ -47,7 +45,7 @@ public class AssociationRule {
      * @return prémisse
      * @see #premise
      */
-    public Set<BooleanVariable> getPremise(){
+    public Set<E> getPremise(){
         return this.premise;
     }
 
@@ -56,7 +54,7 @@ public class AssociationRule {
      * @return candidates
      * @see #conclusion
      */
-    public Set<BooleanVariable> getConclusion(){
+    public Set<E> getConclusion(){
         return this.conclusion;
     }
 
