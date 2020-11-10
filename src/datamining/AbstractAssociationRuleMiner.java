@@ -12,7 +12,7 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
     /**
      * Base de données transactionnelles.
      */
-    private BooleanDatabase database;
+    protected BooleanDatabase database;
 
     /**
      * Constructeur par défaut.
@@ -34,16 +34,14 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
      * @param itemset  motif que l'on souhaite calculer sa fréquence
      * @param itemsets ensemble de motifs
      * @return fréquence de {@code itemset} dans {@code itemsets}
-     * @throws Exception levée lorsque le motif recherché ne se trouve pas dans
-     *                   l'ensemble de motifs
      */
-    public static float frequency(Set<BooleanVariable> itemset, Set<Itemset> itemsets) throws Exception {
+    public static float frequency(Set<BooleanVariable> itemset, Set<Itemset> itemsets) {
         for (Itemset transaction : itemsets) {
             if (itemset.equals(transaction.getItems())) { // on prend que si c'est exactement égal
                 return transaction.getFrequency();
             }
         }
-        throw new Exception("searched itemset is not present in itemsets");
+        return 0.0f;
     }
 
     /**
@@ -57,7 +55,7 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
      */
     public static float confidence(Set<BooleanVariable> premise, Set<BooleanVariable> conclusion,
             Set<Itemset> itemsets) {
-        float premiseFreq = 0, conclusionFreq = 0;
+        float premiseFreq = 0, ruleFreq = 0;
         for (Itemset itemset : itemsets) {
             Set<BooleanVariable> set = new HashSet<>(premise);
             set.addAll(conclusion);
@@ -65,9 +63,9 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
                 premiseFreq = itemset.getFrequency();
             }
             if (itemset.getItems().equals(set)) {
-                conclusionFreq = itemset.getFrequency();
+                ruleFreq = itemset.getFrequency();
             }
         }
-        return conclusionFreq / premiseFreq;
+        return ruleFreq / premiseFreq;
     }
 }

@@ -28,51 +28,62 @@ public class AssociationRule<E> {
 
     /**
      * Constructeur par défaut.
-     * @param premise prémisse
+     * 
+     * @param premise    prémisse
      * @param conclusion candidates
-     * @param frequency fréquence d'apparition dans la base de données
+     * @param frequency  fréquence d'apparition dans la base de données
      * @param confidence confiance de la règle
      */
-    public AssociationRule(Set<E> premise, Set<E> conclusion, float frequency, float confidence){
+    public AssociationRule(Set<E> premise, Set<E> conclusion, float frequency, float confidence) {
         this.premise = premise;
         this.conclusion = conclusion;
         this.frequency = frequency;
         this.confidence = confidence;
     }
 
+    @Override
+    public String toString() {
+        return "AssociationRule[premise=" + this.premise + ", conclusion=" + this.conclusion + ", frequency="
+                + this.frequency + ", confidence=" + this.confidence + "]";
+    }
+
     /**
      * Récupère la prémisse de la règle.
+     * 
      * @return prémisse
      * @see #premise
      */
-    public Set<E> getPremise(){
+    public Set<E> getPremise() {
         return this.premise;
     }
 
     /**
      * Récupère les candidates de la règle.
+     * 
      * @return candidates
      * @see #conclusion
      */
-    public Set<E> getConclusion(){
+    public Set<E> getConclusion() {
         return this.conclusion;
     }
 
     /**
      * Récupère la fréquence d'apparition dans la base de données.
+     * 
      * @return fréquence
      * @see #frequency
      */
-    public float getFrequency(){
+    public float getFrequency() {
         return this.frequency;
     }
 
     /**
      * Récupère la confiance dans cette règle.
+     * 
      * @return confiance
      * @see #confidence
      */
-    public float getConfidence(){
+    public float getConfidence() {
         return this.confidence;
     }
 }

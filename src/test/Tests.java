@@ -80,8 +80,7 @@ public class Tests {
 		ok = ok && AbstractAssociationRuleMinerTests.testFrequency();
 		ok = ok && AbstractAssociationRuleMinerTests.testConfidence();
 		ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises();
-		ok = ok && BruteForceAssociationRuleMinerTests.testExtract(); // fonctionne
-		// pas
+		ok = ok && BruteForceAssociationRuleMinerTests.testExtract();
 		// ok = ok && DatabaseTests.testItemTable(); // fonctionne pas
 		// ok = ok && DatabaseTests.testPropositionalize(); // fonctionne pas
 

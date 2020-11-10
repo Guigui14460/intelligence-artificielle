@@ -22,9 +22,33 @@ public class BruteForceAssociationRuleMiner extends AbstractAssociationRuleMiner
 
     @Override
     public Set<AssociationRule<BooleanVariable>> extract(float minimalFrequency, float minimalConfidence) {
+        // initialisation des structures de données
         Set<AssociationRule<BooleanVariable>> results = new HashSet<>();
-        Set<BooleanVariable> items = this.getDatabase().getItems();
-        Set<Itemset> itemsets = new HashSet<>();
+        Set<Itemset> frequentItemsets = (new Apriori(this.database)).extract(minimalFrequency);
+
+        for (Itemset itemset : frequentItemsets) {
+            Set<Set<BooleanVariable>> allPremises = BruteForceAssociationRuleMiner
+                    .allCandidatePremises(itemset.getItems()); // récupère tous les sous-ensembles possibles
+            for (Set<BooleanVariable> premise : allPremises) {
+                // on récupère la conclusion associée à cette prémisse
+                Set<BooleanVariable> conclusion = null;
+                for (Set<BooleanVariable> set : allPremises) {
+                    // on prend le complémentaire de la prémisse
+                    boolean isNotInPremise = true;
+                    for (BooleanVariable var : premise) {
+                        isNotInPremise = isNotInPremise && !set.contains(var);
+                    }
+                    if (isNotInPremise) {
+                        conclusion = set;
+                    }
+                }
+                float confidence = AbstractAssociationRuleMiner.confidence(premise, conclusion, frequentItemsets);
+                if (confidence >= minimalConfidence) {
+                    results.add(new AssociationRule<>(premise, conclusion,
+                            AbstractAssociationRuleMiner.frequency(itemset.getItems(), frequentItemsets), confidence));
+                }
+            }
+        }
         return results;
     }
 
