@@ -7,11 +7,13 @@ import java.util.Set;
 import representation.BooleanVariable;
 
 /**
- * Classe représentant un extracteur de règle utilisant un algorithme <em>brute-force</em> d'énumération des règles d'association fréquentes.
+ * Classe représentant un extracteur de règle utilisant un algorithme
+ * <em>brute-force</em> d'énumération des règles d'association fréquentes.
  */
 public class BruteForceAssociationRuleMiner extends AbstractAssociationRuleMiner {
     /**
      * Constructeur par défaut.
+     * 
      * @param database base de données transactionnelles
      */
     public BruteForceAssociationRuleMiner(BooleanDatabase database) {
@@ -19,25 +21,29 @@ public class BruteForceAssociationRuleMiner extends AbstractAssociationRuleMiner
     }
 
     @Override
-    public Set<AssociationRule> extract(float minimalFrequency, float minimalConfidence) {
-        // TODO Auto-generated method stub
-        return null;
+    public Set<AssociationRule<BooleanVariable>> extract(float minimalFrequency, float minimalConfidence) {
+        Set<AssociationRule<BooleanVariable>> results = new HashSet<>();
+        Set<BooleanVariable> items = this.getDatabase().getItems();
+        Set<Itemset> itemsets = new HashSet<>();
+        return results;
     }
-    
+
     /**
-     * Retourne l'ensemble de tous ses sous-ensembles à l'exception de l'ensemble vide et de l'ensemble lui-même.
+     * Retourne l'ensemble de tous ses sous-ensembles à l'exception de l'ensemble
+     * vide et de l'ensemble lui-même.
+     * 
      * @param itemset motif
      * @return l'ensemble de ses sous-ensembles
      */
-    public static Set<Set<BooleanVariable>> allCandidatePremises(Set<BooleanVariable> itemset){
+    public static Set<Set<BooleanVariable>> allCandidatePremises(Set<BooleanVariable> itemset) {
         Set<Set<BooleanVariable>> subsets = new HashSet<>();
         int max = 1 << itemset.size(); // 2 puissance N
-        for(int i = 0; i < max; i++){ // génère tous les sous-ensembles
+        for (int i = 0; i < max; i++) { // génère tous les sous-ensembles
             Set<BooleanVariable> subset = new HashSet<>();
             Iterator<BooleanVariable> iterator = itemset.iterator();
-            for(int j = 0; j < itemset.size(); j++){
+            for (int j = 0; j < itemset.size(); j++) {
                 BooleanVariable item = iterator.next();
-                if(((i >> j) & 1) == 1){
+                if (((i >> j) & 1) == 1) {
                     subset.add(item);
                 }
             }

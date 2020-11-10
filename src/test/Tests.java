@@ -78,15 +78,13 @@ public class Tests {
 		ok = ok && AprioriTests.testAllSubsetsFrequent();
 		ok = ok && AprioriTests.testExtract();
 		ok = ok && AbstractAssociationRuleMinerTests.testFrequency();
-		// ok = ok && AbstractAssociationRuleMinerTests.testConfidence(); // fonctionne
-		// pas
+		ok = ok && AbstractAssociationRuleMinerTests.testConfidence();
 		ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises();
-		// ok = ok && BruteForceAssociationRuleMinerTests.testExtract(); // fonctionne
+		ok = ok && BruteForceAssociationRuleMinerTests.testExtract(); // fonctionne
 		// pas
 		// ok = ok && DatabaseTests.testItemTable(); // fonctionne pas
 		// ok = ok && DatabaseTests.testPropositionalize(); // fonctionne pas
 
 		System.out.println(ok ? "All tests passed" : "At least one test failed");
 	}
-
 }

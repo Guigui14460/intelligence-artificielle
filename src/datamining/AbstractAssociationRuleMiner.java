@@ -1,5 +1,6 @@
 package datamining;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import representation.BooleanVariable;
@@ -15,14 +16,15 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
 
     /**
      * Constructeur par défaut.
+     * 
      * @param database base de données transactionnelles
      */
-    public AbstractAssociationRuleMiner(BooleanDatabase database){
+    public AbstractAssociationRuleMiner(BooleanDatabase database) {
         this.database = database;
     }
 
     @Override
-    public BooleanDatabase getDatabase(){
+    public BooleanDatabase getDatabase() {
         return this.database;
     }
 
@@ -32,11 +34,12 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
      * @param itemset  motif que l'on souhaite calculer sa fréquence
      * @param itemsets ensemble de motifs
      * @return fréquence de {@code itemset} dans {@code itemsets}
-     * @throws Exception levée lorsque le motif recherché ne se trouve pas dans l'ensemble de motifs
+     * @throws Exception levée lorsque le motif recherché ne se trouve pas dans
+     *                   l'ensemble de motifs
      */
     public static float frequency(Set<BooleanVariable> itemset, Set<Itemset> itemsets) throws Exception {
-        for(Itemset transaction: itemsets){
-            if(itemset.equals(transaction.getItems())){ // on prend que si c'est exactement égal
+        for (Itemset transaction : itemsets) {
+            if (itemset.equals(transaction.getItems())) { // on prend que si c'est exactement égal
                 return transaction.getFrequency();
             }
         }
@@ -52,18 +55,19 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
      * @param itemsets   ensemble de motifs
      * @return confiance de la règle d'association
      */
-    public static float confidence(Set<BooleanVariable> premise, Set<BooleanVariable> conclusion, Set<Itemset> itemsets) {
-        float part1 = 0, part2 = 0;
-        for(Itemset transaction: itemsets){
-            if(transaction.getItems().containsAll(premise) && transaction.getItems().containsAll(conclusion)){
-                // probabilité que prémisse et conclusion se trouve ensemble dans le même motif
-                part1++;
+    public static float confidence(Set<BooleanVariable> premise, Set<BooleanVariable> conclusion,
+            Set<Itemset> itemsets) {
+        float premiseFreq = 0, conclusionFreq = 0;
+        for (Itemset itemset : itemsets) {
+            Set<BooleanVariable> set = new HashSet<>(premise);
+            set.addAll(conclusion);
+            if (itemset.getItems().equals(premise)) {
+                premiseFreq = itemset.getFrequency();
             }
-            if(transaction.getItems().containsAll(premise)){ // probabilité de prémisse
-                part2++;
+            if (itemset.getItems().equals(set)) {
+                conclusionFreq = itemset.getFrequency();
             }
         }
-        System.out.println(part1 + " : " + part2);
-        return part1 / part2; // probabilité de conclusion sachant prémisse
+        return conclusionFreq / premiseFreq;
     }
 }
