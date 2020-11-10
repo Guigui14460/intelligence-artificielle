@@ -1,8 +1,9 @@
 package solvers;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,12 +11,14 @@ import representation.Constraint;
 import representation.Variable;
 
 /**
- * Cette classe décrit un solveur permettant de vérifier l'arc-cohérence de domaines de variables en fonction des contraintes.
+ * Cette classe décrit un solveur permettant de vérifier l'arc-cohérence de
+ * domaines de variables en fonction des contraintes.
  */
 public class MACSolver extends AbstractSolver {
     /**
      * Constructeur par défaut.
-     * @param variables ensemble de variables
+     * 
+     * @param variables   ensemble de variables
      * @param constraints ensemble de contraintes
      */
     public MACSolver(Set<Variable> variables, Set<Constraint> constraints) {
@@ -25,56 +28,66 @@ public class MACSolver extends AbstractSolver {
     @Override
     public Map<Variable, Object> solve() {
         Map<Variable, Set<Object>> domains = new HashMap<>();
-        for(Variable variable: this.variables){
+        for (Variable variable : this.variables) {
             domains.put(variable, new HashSet<>(variable.getDomain()));
         }
         return this.mac(domains, new HashMap<>());
     }
-    
-    public Map<Variable, Object> mac(Map<Variable, Set<Object>> domains, Map<Variable, Object> instanciation){
-        ArcConsistency arc = new ArcConsistency(this.constraints);
-        arc.enforceArcConsistency(domains);
 
-        // vérifie si P inconsistant et ayant un domaine vide
-        if(!this.isConsistent(instanciation)){
-            for(Set<Object> domain: domains.values()){
-                if(domain.size() == 0){
-                    return null;
-                }
-            }
+    /**
+     * Algorithme Maintaining Arc Consistency (MAC). Permet d'élaguer l'arbre de
+     * recherche de solutions à des problème computationnels, notamment pour les
+     * problèmes de satisfaction de contraintes.
+     * 
+     * @param domains       domaines des variables
+     * @param instanciation instanciation vide ou partielle
+     * @return une instanciation partielle, totale ou vide (dépendant de l'exécution
+     *         de l'agorithme sur les contraintes du problème)
+     * @see AbstractSolver#variables
+     * @see AbstractSolver#constraints
+     * @see ArcConsistency#enforceArcConsistency(Map)
+     */
+    private Map<Variable, Object> mac(Map<Variable, Set<Object>> domains, Map<Variable, Object> instanciation) {
+        List<Variable> notInstanciatedVariables = new LinkedList<>();
+        for (Variable variable : this.variables) {
+            if (!instanciation.containsKey(variable))
+                notInstanciatedVariables.add(variable);
         }
 
-        // vérifie si toutes les variables sont instanciées
-        if(instanciation.keySet().containsAll(this.variables)){
+        if (notInstanciatedVariables.size() == 0 && this.isConsistent(instanciation)) {
             return instanciation;
         }
 
-        // choisi une variable parmi celle non instanciées
-        Variable variableNotInstanciated = null;
-        for(Variable variable: this.variables){
-            if(!instanciation.containsKey(variable)){
-                variableNotInstanciated = variable;
-                break;
-            }
+        // copie des domaines et arc-consistance de celui-ci
+        Map<Variable, Set<Object>> domainsCopy = new HashMap<>(domains);
+        ArcConsistency arc = new ArcConsistency(this.constraints);
+        boolean result = arc.enforceArcConsistency(domainsCopy);
+        if (!result) {
+            return null;
         }
 
-        for(Object value: domains.get(variableNotInstanciated)){
-            Set<Object> newDomainForVariable = new HashSet<>(Arrays.asList(value));
+        // choisi la première variable parmi celles non instanciées
+        Variable variableNotInstanciated = notInstanciatedVariables.get(0);
 
-            Map<Variable, Set<Object>> domains2 = new HashMap<>(domains);
-            domains2.remove(variableNotInstanciated);
-            domains2.put(variableNotInstanciated, newDomainForVariable);
-
-            // copie pour garder le contexte
+        // on parcourt toutes les valeurs du domaine de la variable choisie
+        for (Object value : domainsCopy.get(variableNotInstanciated)) {
+            // nouvelle instanciation pour garder le contexte
             Map<Variable, Object> instanciation2 = new HashMap<>(instanciation);
             instanciation2.put(variableNotInstanciated, value);
 
-            // récusivité de l'algo
-            instanciation2 = this.mac(domains, instanciation2);
-            if(instanciation2 != null){
-                return instanciation2;
+            // vérifie que l'instanciation est valide
+            if (this.isConsistent(instanciation2)) {
+                if (instanciation2.keySet().containsAll(this.variables)) {
+                    // toutes les variables sont instanciées
+                    return instanciation2;
+                }
+                instanciation2 = this.mac(domainsCopy, instanciation2);
+                if (instanciation2 != null) {
+                    // solution trouvée
+                    return instanciation2;
+                }
             }
         }
         return null;
-    } 
+    }
 }

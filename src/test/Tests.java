@@ -25,15 +25,16 @@ import solvertests.MACSolverTests;
 import solvertests.NbConstraintsVariableHeuristicTests;
 import solvertests.RandomValueHeuristicTests;
 
-
 /**
- * Cette classe permet de lancer les tests sur les différentes classes de notre application.
+ * Cette classe permet de lancer les tests sur les différentes classes de notre
+ * application.
  */
 public class Tests {
-    /**
-     * Méthode principale à lancer.
-     * @param args arguments passés dans le terminal
-     */
+	/**
+	 * Méthode principale à lancer.
+	 * 
+	 * @param args arguments passés dans le terminal
+	 */
 	public static void main(String[] args) {
 		boolean ok = true;
 
@@ -54,8 +55,8 @@ public class Tests {
 		ok = ok && ArcConsistencyTests.testFilter();
 		ok = ok && ArcConsistencyTests.testEnforce();
 		ok = ok && ArcConsistencyTests.testEnforceArcConsistency();
-		// ok = ok && MACSolverTests.testSolve(); // fonctionne pas
-		// ok = ok && HeuristicMACSolverTests.testSolve(); // fonctionne pas
+		ok = ok && MACSolverTests.testSolve();
+		ok = ok && HeuristicMACSolverTests.testSolve();
 		ok = ok && NbConstraintsVariableHeuristicTests.testBest();
 		ok = ok && DomainSizeVariableHeuristicTests.testBest();
 		ok = ok && RandomValueHeuristicTests.testOrdering();
@@ -77,9 +78,11 @@ public class Tests {
 		ok = ok && AprioriTests.testAllSubsetsFrequent();
 		ok = ok && AprioriTests.testExtract();
 		ok = ok && AbstractAssociationRuleMinerTests.testFrequency();
-		// ok = ok && AbstractAssociationRuleMinerTests.testConfidence(); // fonctionne pas
+		// ok = ok && AbstractAssociationRuleMinerTests.testConfidence(); // fonctionne
+		// pas
 		ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises();
-		// ok = ok && BruteForceAssociationRuleMinerTests.testExtract(); // fonctionne pas
+		// ok = ok && BruteForceAssociationRuleMinerTests.testExtract(); // fonctionne
+		// pas
 		// ok = ok && DatabaseTests.testItemTable(); // fonctionne pas
 		// ok = ok && DatabaseTests.testPropositionalize(); // fonctionne pas
 
