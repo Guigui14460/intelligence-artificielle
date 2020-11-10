@@ -1,2 +1,2 @@
 [ ! -d bin ] && mkdir bin
-javac -d bin -cp lib/\* src/*.java src/*/*.java
+javac -d bin -cp lib/\* src/*/*.java
