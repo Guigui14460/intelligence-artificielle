@@ -81,8 +81,8 @@ public class Tests {
 		ok = ok && AbstractAssociationRuleMinerTests.testConfidence();
 		ok = ok && BruteForceAssociationRuleMinerTests.testAllCandidatePremises();
 		ok = ok && BruteForceAssociationRuleMinerTests.testExtract();
-		// ok = ok && DatabaseTests.testItemTable(); // fonctionne pas
-		// ok = ok && DatabaseTests.testPropositionalize(); // fonctionne pas
+		ok = ok && DatabaseTests.testItemTable();
+		ok = ok && DatabaseTests.testPropositionalize(); // fonctionne pas
 
 		System.out.println(ok ? "All tests passed" : "At least one test failed");
 	}

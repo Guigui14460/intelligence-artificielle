@@ -54,26 +54,22 @@ public class Database {
     public Map<Variable, Map<Object, BooleanVariable>> itemTable() {
         Map<Variable, Map<Object, BooleanVariable>> map = new HashMap<>();
         for (Variable variable : this.variables) {
-            Map<Object, BooleanVariable> map2 = new HashMap<>();
+            Map<Object, BooleanVariable> map2 = new HashMap<>(); // sous-dictionnaire
             for (Object value : variable.getDomain()) {
-                // on regarde dans chaque instance
-                for (Map<Variable, Object> instance : this.instances) {
-                    if (instance.containsKey(variable)) { // si la variable est dans l'instance
-                        if (instance.get(variable).equals(value)) { // si l'objet associé à la variable est le même
-                                                                    // qu'itéré
-                            map2.put(value, new BooleanVariable(variable.getName())); // on créé une variable booléenne
-                                                                                      // pour représenter la précense
-                        } else {
-                            map2.put(value, null); // représente l'absence de l'item dans l'instance
-                        }
+                if (value instanceof Boolean) {
+                    BooleanVariable boolVar = new BooleanVariable(variable.getName());
+                    if (value.equals(false)) {
+                        map2.put(value, null);
+                    } else {
+                        map2.put(value, boolVar);
                     }
+                } else {
+                    map2.put(value, new BooleanVariable(variable.getName() + "" + value)); // avoir des variables
+                                                                                           // différentes liées à leur
+                                                                                           // nom et à leur valeur
                 }
             }
-            if (map.containsKey(variable)) {
-                map.get(variable).putAll(map2);
-            } else {
-                map.put(variable, map2);
-            }
+            map.put(variable, map2);
         }
         return map;
     }
@@ -84,13 +80,30 @@ public class Database {
      * @return base de données transactionnelles
      */
     public BooleanDatabase propositionalize() {
+        System.out.println("===================================");
+        System.out.println("Instanciations : " + this.instances);
+        System.out.println("---------------------------------------");
         Set<BooleanVariable> booleanVariables = new HashSet<>();
-
-        Map<Variable, Map<Object, BooleanVariable>> items = this.itemTable();
-
         BooleanDatabase booleanDatabase = new BooleanDatabase(booleanVariables);
-        for (int i = 0; i < this.instances.size(); i++) {
-            // ajouter les instances dans la base de données transactionnelle
+        Map<Variable, Map<Object, BooleanVariable>> items = this.itemTable();
+        // System.out.println("Items table : " + items);
+
+        for (Map.Entry<Variable, Map<Object, BooleanVariable>> entry : items.entrySet()) {
+            for (Map.Entry<Object, BooleanVariable> subEntry : entry.getValue().entrySet()) {
+                if (subEntry.getValue() != null) {
+                    booleanVariables.add(subEntry.getValue());
+                }
+            }
+        }
+
+        for (Map<Variable, Object> instance : this.instances) {
+            Set<BooleanVariable> booleanTransaction = new HashSet<>();
+            for (Map.Entry<Variable, Object> entry : instance.entrySet()) {
+                if (!items.get(entry.getKey()).equals(null)) {
+                    booleanTransaction.add(items.get(entry.getKey()).get(entry.getValue()));
+                }
+            }
+            booleanDatabase.add(booleanTransaction);
         }
         return booleanDatabase;
     }
