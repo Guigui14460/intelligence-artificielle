@@ -27,9 +27,8 @@ public class Apriori extends AbstractItemsetMiner {
 
     @Override
     public Set<Itemset> extract(float minimalFrequency) {
-        // on crée l'ensemble des résultats (contenant l'ensemble vide)
+        // on crée l'ensemble des résultats
         Set<Itemset> results = new HashSet<>();
-        results.add(new Itemset(new HashSet<>(), this.frequency(new HashSet<>())));
 
         // motifs fréquents de taille 1
         Set<Itemset> frequentSize1 = this.frequentSingletons(minimalFrequency);
