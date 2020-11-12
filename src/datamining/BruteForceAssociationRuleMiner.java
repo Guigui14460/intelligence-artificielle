@@ -22,7 +22,8 @@ public class BruteForceAssociationRuleMiner extends AbstractAssociationRuleMiner
 
     @Override
     public Set<AssociationRule<BooleanVariable>> extract(float minimalFrequency, float minimalConfidence) {
-        // initialisation des structures de données
+        // initialisation des structures de données et récupération de tous les motifs
+        // fréquents
         Set<AssociationRule<BooleanVariable>> results = new HashSet<>();
         Set<Itemset> frequentItemsets = (new Apriori(this.database)).extract(minimalFrequency);
 
