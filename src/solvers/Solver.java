@@ -10,7 +10,9 @@ import representation.Variable;
 public interface Solver {
     /**
      * Résout un problème à partir de contraintes et renvoie une solution.
-     * @return solution au problème (instanciation complète) ou {@code null} si aucune solution n'a été trouvée
+     * 
+     * @return solution au problème (instanciation complète) ou {@code null} si
+     *         aucune solution n'a été trouvée
      */
     public Map<Variable, Object> solve();
 }

@@ -5,11 +5,12 @@ import java.util.Map;
 import representation.Variable;
 
 /**
- * Interface définissant une action à effectuer sur des états (instanciations).
+ * Interface définissant une action à effectuer sur des états.
  */
 public interface Action {
     /**
      * Vérifie si une action est applicable pour un état donné.
+     * 
      * @param state état à tester
      * @return booléen représentant la validité de l'action
      */
@@ -17,6 +18,7 @@ public interface Action {
 
     /**
      * Renvoie le successeur de l'état actuel.
+     * 
      * @param state état actuel
      * @return état suivant
      */
@@ -24,6 +26,7 @@ public interface Action {
 
     /**
      * Récupère le coût de l'action.
+     * 
      * @return coût de l'action
      */
     public int getCost();

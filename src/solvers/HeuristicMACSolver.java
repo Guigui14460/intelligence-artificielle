@@ -11,8 +11,8 @@ import representation.Constraint;
 import representation.Variable;
 
 /**
- * Cette classe décrit un solveur permettant de résoudre un problème au sens de
- * l'heuristique.
+ * Cette classe est un solveur de contraintes permettant de résoudre un problème
+ * au sens de l'heuristique.
  */
 public class HeuristicMACSolver extends AbstractSolver {
     /**
@@ -53,6 +53,12 @@ public class HeuristicMACSolver extends AbstractSolver {
      * Algorithme Maintaining Arc Consistency (MAC) avec des heuristics. Permet
      * d'élaguer l'arbre de recherche de solutions à des problème computationnels,
      * notamment pour les problèmes de satisfaction de contraintes.
+     * 
+     * Cet algorithme ressemble à celui utiliser dans la classe {@link MACSolver}.
+     * La seule différence est qu'ici, on choisit la meilleure variable au sens de
+     * l'heuristique de variable donnée au constructeur et on ordonne les valeurs de
+     * la variable choisie au sens de l'heuristique de valeurs donnée au
+     * constructeur.
      * 
      * @param domains       domaines des variables
      * @param instanciation instanciation vide ou partielle
@@ -108,7 +114,7 @@ public class HeuristicMACSolver extends AbstractSolver {
                 }
             }
         }
-        return null;
+        return null; // pas de solution
     }
 
     /**

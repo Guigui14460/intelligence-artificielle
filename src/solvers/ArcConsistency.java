@@ -11,7 +11,7 @@ import representation.Constraint;
 import representation.Variable;
 
 /**
- * Cette classe décrit une consistence locale sur un arc de contraintes.
+ * Cette classe décrit une arc-consistence locale sur des contraintes.
  */
 public class ArcConsistency {
     /**
@@ -21,32 +21,37 @@ public class ArcConsistency {
 
     /**
      * Constructeur par défaut.
+     * 
      * @param constraints ensemble de contraintes
      */
-    public ArcConsistency(Set<Constraint> constraints){
+    public ArcConsistency(Set<Constraint> constraints) {
         this.constraints = constraints;
     }
 
     /**
-     * Supprime les valeurs qui ne sont pas arc-cohérente avec la contrainte {@code constraint}.
-     * @param var1 première variable
+     * Supprime les valeurs qui ne sont pas arc-cohérente avec la contrainte
+     * {@code constraint}.
+     * 
+     * @param var1       première variable
      * @param var1Domain domain de la première variable
-     * @param var2 seconde variable
+     * @param var2       seconde variable
      * @param var2Domain domain de la seconde variable
-     * @param constraint contrainte qui porte sur les deux variables {@code var1} et {@code var2}
+     * @param constraint contrainte qui porte sur les deux variables {@code var1} et
+     *                   {@code var2}
      * @return booléen qui détermine si le domaine a changé
      */
-    public static boolean filter(Variable var1, Set<Object> var1Domain, Variable var2, Set<Object> var2Domain, Constraint constraint){
+    public static boolean filter(Variable var1, Set<Object> var1Domain, Variable var2, Set<Object> var2Domain,
+            Constraint constraint) {
         Map<Variable, Object> i = new HashMap<>(); // instanciation
         Set<Object> objectsToDelete = new HashSet<>(); // poubelle
-        for(Object obj1: var1Domain){
+        for (Object obj1 : var1Domain) {
             i.put(var1, obj1);
             boolean toDelete = true;
-            for(Object obj2: var2Domain){
+            for (Object obj2 : var2Domain) {
                 i.put(var2, obj2);
                 toDelete = toDelete && !constraint.isSatisfiedBy(i);
             }
-            if(toDelete){ // ajout d'une valeur du domain D(var1) à la poubelle
+            if (toDelete) { // ajout d'une valeur du domain D(var1) à la poubelle
                 objectsToDelete.add(obj1);
             }
         }
@@ -56,29 +61,30 @@ public class ArcConsistency {
 
     /**
      * Rend tous les domaines arc-cohérents.
+     * 
      * @param constraint contrainte
-     * @param domains domaines des variables concernées par la contrainte
+     * @param domains    domaines des variables concernées par la contrainte
      * @return booléen qui détermine si au moins un des domaines a été modifié
      */
-    public static boolean enforce(Constraint constraint, Map<Variable, Set<Object>> domains){
+    public static boolean enforce(Constraint constraint, Map<Variable, Set<Object>> domains) {
         // permet de récupérer les deux variables de la contrainte
         Iterator<Variable> iterator = constraint.getScope().iterator();
         Variable var1, var2;
-        if(!iterator.hasNext()){
+        if (!iterator.hasNext()) {
             return false;
         }
         var1 = iterator.next();
-        if(!domains.keySet().contains(var1)){
+        if (!domains.keySet().contains(var1)) {
             return false;
         }
-        if(!iterator.hasNext()){
+        if (!iterator.hasNext()) {
             return false;
         }
         var2 = iterator.next();
-        if(!domains.keySet().contains(var2)){
+        if (!domains.keySet().contains(var2)) {
             return false;
         }
-        if(iterator.hasNext()){
+        if (iterator.hasNext()) {
             return false;
         }
         // on filtre pour les couples (var1, var2) et (var2, var1)
@@ -88,26 +94,27 @@ public class ArcConsistency {
     }
 
     /**
-     * Rend tous les domaines arc-cohérents avec les contraintes stockées dans l'attribut {@link #constraints}.
+     * Rend tous les domaines arc-cohérents avec les contraintes stockées dans
+     * l'attribut {@link #constraints}.
+     * 
      * @param domains domaines des variables concernées par la contrainte
      * @return booléen qui détermine si au moins un des domaines a été modifié
      */
-    public boolean enforceArcConsistency(Map<Variable, Set<Object>> domains){
+    public boolean enforceArcConsistency(Map<Variable, Set<Object>> domains) {
         boolean hasChanged1TimeAtLeast = false, enforceHasChanged;
         // rend les domaines arc-cohérents
         do {
             enforceHasChanged = false;
-            for(Constraint constraint: this.constraints){
+            for (Constraint constraint : this.constraints) {
                 boolean b = ArcConsistency.enforce(constraint, domains);
                 enforceHasChanged = enforceHasChanged || b;
                 hasChanged1TimeAtLeast = hasChanged1TimeAtLeast || b;
             }
-        }
-        while(enforceHasChanged); // jusqu'à qu'il n'y est plus aucune modification sur les domaines
+        } while (enforceHasChanged); // jusqu'à qu'il n'y est plus aucune modification sur les domaines
 
         // vérifie si tous les domaines sont non vides
-        for(Set<Object> domain: domains.values()){
-            if(domain.size() == 0){
+        for (Set<Object> domain : domains.values()) {
+            if (domain.size() == 0) {
                 return false;
             }
         }
@@ -116,26 +123,29 @@ public class ArcConsistency {
 
     /**
      * Récupère l'ensemble des contraintes de l'instance.
+     * 
      * @return ensemble des contraintes de l'instance
      * @see #constraints
      */
-    public Set<Constraint> getConstraints(){
+    public Set<Constraint> getConstraints() {
         return this.constraints;
     }
 
     /**
      * Ajoute des contraintes à l'ensemble de contraintes {@link #constraints}.
+     * 
      * @param constraints contraintes à ajouter
      */
-    public boolean addConstraint(Constraint... constraints){
+    public boolean addConstraint(Constraint... constraints) {
         return this.constraints.addAll(Arrays.asList(constraints));
     }
 
     /**
      * Enlève des contraintes à l'ensemble de contraintes {@link #constraints}.
+     * 
      * @param constraints contraintes à enlever
      */
-    public boolean removeConstraint(Constraint... constraints){
+    public boolean removeConstraint(Constraint... constraints) {
         return this.constraints.removeAll(Arrays.asList(constraints));
     }
 }

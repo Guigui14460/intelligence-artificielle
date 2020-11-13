@@ -9,9 +9,10 @@ import java.util.HashSet;
 public class BooleanVariable extends Variable {
     /**
      * Constructeur par défaut.
+     * 
      * @param name nom de la variable
      */
-    public BooleanVariable(String name){
+    public BooleanVariable(String name) {
         super(name, new HashSet<Object>(Arrays.asList(true, false)));
     }
 }

@@ -10,6 +10,7 @@ import representation.Variable;
 public interface Goal {
     /**
      * Vérifie si le but est satisfait.
+     * 
      * @param state état actuel
      * @return booléen représentant la validation du but
      */

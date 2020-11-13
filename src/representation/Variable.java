@@ -19,47 +19,52 @@ public class Variable {
 
     /**
      * Conctructeur par défaut.
-     * @param name nom de la variable
+     * 
+     * @param name   nom de la variable
      * @param domain ensemble de valeurs possibles pour instancier la variable
      */
-    public Variable(String name, Set<Object> domain){
+    public Variable(String name, Set<Object> domain) {
         this.name = name;
         this.domain = domain;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getClass().getName() + "[name=" + this.name + ", domain=" + this.domain + "]";
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(this == obj) return true;
-        if(obj == null || getClass() != obj.getClass()) return false;
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
         Variable object = (Variable) obj;
         return object.name == this.name;
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return Objects.hash(this.name);
     }
 
     /**
      * Retourne le nom de la variable.
+     * 
      * @return nom de la variable
      * @see #name
      */
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
     /**
      * Retourne l'ensemble des valeurs possibles pour instancier la variable.
+     * 
      * @return l'ensemble des valeurs possibles pour instancier la variable
      * @see #domain
      */
-    public Set<Object> getDomain(){
+    public Set<Object> getDomain() {
         return this.domain;
     }
 }

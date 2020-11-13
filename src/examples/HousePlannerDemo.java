@@ -25,14 +25,14 @@ import representation.Variable;
 public class HousePlannerDemo {
     /**
      * Méthode principale.
+     * 
      * @param args arguments passés au terminal lors de l'exécution de cette classe
      */
-    public static void main(String[] args){
-        HouseExample house = new HouseExample(3, 4, 
-            new HashSet<>(Arrays.asList("Cuisine 1", "Salle de bain 1", "Salle de bain 2")), 
-            new HashSet<>(Arrays.asList("Chambre 1", "Chambre 2", "Chambre 3", "Salle à manger", "Salon"))
-        );
-        
+    public static void main(String[] args) {
+        HouseExample house = new HouseExample(3, 4,
+                new HashSet<>(Arrays.asList("Cuisine 1", "Salle de bain 1", "Salle de bain 2")),
+                new HashSet<>(Arrays.asList("Chambre 1", "Chambre 2", "Chambre 3", "Salle à manger", "Salon")));
+
         // variables de l'exemple
         BooleanVariable dalleCoulee = new BooleanVariable("Dalle coulée");
         BooleanVariable dalleCouleeSeche = new BooleanVariable("Dalle coulée sèche");
@@ -43,7 +43,7 @@ public class HousePlannerDemo {
         Constraint c1 = new Rule(dalleCouleeSeche, true, dalleCoulee, true);
         Constraint c2 = new Rule(mursEleves, true, dalleCouleeSeche, true);
         Constraint c3 = new Rule(toitureTerminee, true, mursEleves, true);
-    
+
         // on ajoute les vars et les cons au problème
         house.addConstraints(c1, c2, c3);
         house.addVariables(dalleCoulee, dalleCouleeSeche, mursEleves, toitureTerminee);
@@ -86,7 +86,7 @@ public class HousePlannerDemo {
         effects.put(toitureTerminee, true);
         actions.add((Action) new BasicAction(new HashMap<>(preconditions), new HashMap<>(effects), 1));
 
-        Planner planer = new AStarPlanner(initialState, actions, goal, new Heuristic(){
+        Planner planer = new AStarPlanner(initialState, actions, goal, new Heuristic() {
             @Override
             public float estimate(Map<Variable, Object> state) {
                 return 0.0f;
@@ -104,14 +104,15 @@ public class HousePlannerDemo {
 
     /**
      * Affiche les caractéristiques du plan trouvé.
-     * @param plan plan trouvé
+     * 
+     * @param plan      plan trouvé
      * @param houseName nom de la maison
      */
-    public static void printPlan(List<Action> plan, String houseName){
+    public static void printPlan(List<Action> plan, String houseName) {
         System.out.println("Plan pour construire la maison : " + houseName);
         System.out.println("Nombre d'actions à effectuer : " + plan.size());
         int cost = 0;
-        for(Action action: plan){
+        for (Action action : plan) {
             System.out.println(action);
             cost += action.getCost();
         }

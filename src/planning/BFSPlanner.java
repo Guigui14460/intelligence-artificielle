@@ -33,9 +33,10 @@ public class BFSPlanner implements Planner {
 
     /**
      * Constructeur par défaut.
+     * 
      * @param initialState état initial
-     * @param actions ensemble d'actions pouvant être effectuées
-     * @param goal but à atteindre
+     * @param actions      ensemble d'actions pouvant être effectuées
+     * @param goal         but à atteindre
      */
     public BFSPlanner(Map<Variable, Object> initialState, Set<Action> actions, Goal goal) {
         this.initialState = initialState;
@@ -44,8 +45,9 @@ public class BFSPlanner implements Planner {
     }
 
     @Override
-    public String toString(){
-        return "BFSPlanner[initialState=" + this.initialState + ", actions=" + this.actions + ", goal=" + this.goal + "]";
+    public String toString() {
+        return "BFSPlanner[initialState=" + this.initialState + ", actions=" + this.actions + ", goal=" + this.goal
+                + "]";
     }
 
     @Override
@@ -70,11 +72,12 @@ public class BFSPlanner implements Planner {
 
     /**
      * Implémentation de l'algorithme de recherche en largeur BFS.
+     * 
      * @return plan d'actions
      * @see #getBFSPlan(Map, Map, Map)
      */
-    private List<Action> bfs(){
-        // instanciation des différentes variables
+    private List<Action> bfs() {
+        // instanciation des différentes structures de données
         Map<Map<Variable, Object>, Map<Variable, Object>> father = new HashMap<>();
         Map<Map<Variable, Object>, Action> plan = new HashMap<>();
         List<Map<Variable, Object>> closed = new LinkedList<>();
@@ -84,10 +87,10 @@ public class BFSPlanner implements Planner {
         open.offer(this.initialState);
 
         // on vérifie que le but n'est pas déjà satisfait par l'état initial
-        if(this.goal.isSatisfiedBy(this.initialState)){
+        if (this.goal.isSatisfiedBy(this.initialState)) {
             return new LinkedList<>();
         }
-        
+
         // tant qu'il reste des états ouverts
         while (open.size() != 0) {
             // on défile
@@ -95,13 +98,13 @@ public class BFSPlanner implements Planner {
             closed.add(instanciation);
 
             // on teste toutes les actions
-            for(Action action: this.actions){
-                if(action.isApplicable(instanciation)){ // si on peut appliquer l'action
+            for (Action action : this.actions) {
+                if (action.isApplicable(instanciation)) { // si on peut appliquer l'action
                     Map<Variable, Object> next = action.successor(instanciation);
-                    if(!closed.contains(next) && !open.contains(next)){ // si le successeur n'a pas déjà été vu
+                    if (!closed.contains(next) && !open.contains(next)) { // si le successeur n'a pas déjà été vu
                         father.put(next, instanciation);
                         plan.put(next, action);
-                        if(this.goal.isSatisfiedBy(next)){ // on vérifie si le but est atteint
+                        if (this.goal.isSatisfiedBy(next)) { // on vérifie si le but est atteint
                             return this.getBFSPlan(father, plan, next); // retourne le plus court plan d'actions
                         }
                         // ajout du next dans la liste des ouverts afin de montrer que l'on l'a vu
@@ -114,16 +117,20 @@ public class BFSPlanner implements Planner {
     }
 
     /**
-     * Permet de reconstruire la liste d'actions utilisée pour passer de l'état initial à l'état but.
+     * Permet de reconstruire la liste d'actions utilisée pour passer de l'état
+     * initial à l'état but.
+     * 
      * @param father contient le père de chacun des états visités
-     * @param plan contient toutes les actions associées aux différents états visités
-     * @param goal prochain but à atteindre
+     * @param plan   contient toutes les actions associées aux différents états
+     *               visités
+     * @param goal   prochain but à atteindre
      * @return liste d'actions reconstruite dans le bon ordre
      */
-    private List<Action> getBFSPlan(Map<Map<Variable, Object>, Map<Variable, Object>> father, Map<Map<Variable, Object>, Action> plan, Map<Variable, Object> goal){
+    private List<Action> getBFSPlan(Map<Map<Variable, Object>, Map<Variable, Object>> father,
+            Map<Map<Variable, Object>, Action> plan, Map<Variable, Object> goal) {
         List<Action> bfsPlan = new LinkedList<>();
         // on ajoute les actions au plan tant qu'on a pas atteint l'état initial
-        while(goal != this.initialState){
+        while (goal != this.initialState) {
             bfsPlan.add(plan.get(goal));
             goal = father.get(goal);
         }

@@ -9,17 +9,19 @@ import java.util.Set;
 import representation.Variable;
 
 /**
- * Cette classe décrit une ordonnance aléatoire d'objets.
+ * Cette classe permet de faire une ordonnance aléatoire de valeurs.
  */
 public class RandomValueHeuristic implements ValueHeuristic {
     /**
-     * Instance d'un objet permettant d'utiliser du pseudo-aléatoire.
+     * Instance d'un objet permettant d'utiliser un générateur pseudo-aléatoire.
      */
     private final Random random;
 
     /**
      * Constructeur par défaut.
-     * @param random objet permettant d'utiliser de la génération pseudo-aléatoire
+     * 
+     * @param random instance d'un objet permettant d'utiliser un générateur
+     *               pseudo-aléatoire
      */
     public RandomValueHeuristic(Random random) {
         this.random = random;

@@ -6,7 +6,8 @@ import java.util.Map;
 import representation.Variable;
 
 /**
- * Cette classe décrit une action à faire en fonction de préconditions.
+ * Cette classe décrit une action à faire en fonction de la précondition et
+ * donne un effet lors de l'exécution de celle-ci.
  */
 public class BasicAction implements Action {
     /**
@@ -26,27 +27,28 @@ public class BasicAction implements Action {
 
     /**
      * Constructeur par défaut.
-     * @param precondition préconditions pour que l'action s'effectue
-     * @param effect effet à appliquer sur l'état
-     * @param cost coût de l'action
+     * 
+     * @param precondition précondition pour que l'action s'effectue
+     * @param effect       effet à appliquer sur l'état
+     * @param cost         coût de l'action
      */
-    public BasicAction(Map<Variable, Object> precondition, Map<Variable, Object> effect, int cost){
+    public BasicAction(Map<Variable, Object> precondition, Map<Variable, Object> effect, int cost) {
         this.precondition = precondition;
         this.effect = effect;
         this.cost = cost;
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return "BasicAction[precondition=" + this.precondition + ", effect=" + this.effect + "]";
     }
 
     @Override
     public boolean isApplicable(Map<Variable, Object> state) {
-        for(Map.Entry<Variable, Object> entry: this.precondition.entrySet()){
-            // vérifie que chaque variable des préconditions se trouvent dans l'état
+        for (Map.Entry<Variable, Object> entry : this.precondition.entrySet()) {
+            // vérifie que chaque variable de la précondition se trouvent dans l'état
             // et que chacun sont égaux (entre précondition et état)
-            if(state.get(entry.getKey()) == null || !state.get(entry.getKey()).equals(entry.getValue())){
+            if (state.get(entry.getKey()) == null || !state.get(entry.getKey()).equals(entry.getValue())) {
                 return false;
             }
         }
@@ -60,7 +62,7 @@ public class BasicAction implements Action {
         newState.putAll(state);
 
         // vérifie si l'action est applicable puis effectue l'action si c'est la cas
-        if(this.isApplicable(state)){
+        if (this.isApplicable(state)) {
             newState.putAll(this.effect);
         }
         return newState;

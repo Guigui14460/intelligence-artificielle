@@ -46,10 +46,10 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
 
     /**
      * Retourne la confiance de la règle d'association en fonction de la prémisse et
-     * des candidates donnés.
+     * de la conclusion donnés.
      * 
      * @param premise    prémisse de la règle d'association
-     * @param conclusion candidates de la règle d'association
+     * @param conclusion conclusion de la règle d'association
      * @param itemsets   ensemble de motifs
      * @return confiance de la règle d'association
      */

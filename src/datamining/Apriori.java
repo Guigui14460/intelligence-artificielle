@@ -27,7 +27,6 @@ public class Apriori extends AbstractItemsetMiner {
 
     @Override
     public Set<Itemset> extract(float minimalFrequency) {
-        // on crée l'ensemble des résultats
         Set<Itemset> results = new HashSet<>();
 
         // motifs fréquents de taille 1
@@ -149,6 +148,7 @@ public class Apriori extends AbstractItemsetMiner {
         boolean allFrequent = true;
         for (BooleanVariable variable : items) {
             Set<BooleanVariable> items2 = new HashSet<>(items); // copie pour éviter une ConcurrentModificationException
+                                                                // et une modification du contexte
             items2.remove(variable);
             allFrequent = allFrequent && itemsCollection.contains(items2);
         }

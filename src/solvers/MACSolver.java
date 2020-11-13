@@ -11,8 +11,8 @@ import representation.Constraint;
 import representation.Variable;
 
 /**
- * Cette classe décrit un solveur permettant de vérifier l'arc-cohérence de
- * domaines de variables en fonction des contraintes.
+ * Cette classe est un solveur de contraintes qui vérifie l'arc-cohérence des
+ * domaines de variables pour optimiser la recherche de solution.
  */
 public class MACSolver extends AbstractSolver {
     /**
@@ -38,6 +38,12 @@ public class MACSolver extends AbstractSolver {
      * Algorithme Maintaining Arc Consistency (MAC). Permet d'élaguer l'arbre de
      * recherche de solutions à des problème computationnels, notamment pour les
      * problèmes de satisfaction de contraintes.
+     * 
+     * Cet algorithme ressemble à celui utiliser dans la classe
+     * {@link BacktrackSolver}. La seule différence est qu'ici, on vérifie
+     * l'arc-cohérence des domaines en effectuant donc une filtration ce qui permet
+     * de réduire le nombre potentiel de feuille à visiter avant de trouver une
+     * solution au problème.
      * 
      * @param domains       domaines des variables
      * @param instanciation instanciation vide ou partielle
@@ -88,6 +94,6 @@ public class MACSolver extends AbstractSolver {
                 }
             }
         }
-        return null;
+        return null; // pas de solution
     }
 }

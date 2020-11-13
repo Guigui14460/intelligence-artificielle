@@ -7,12 +7,12 @@ import java.util.Set;
  */
 public class AssociationRule<E> {
     /**
-     * Représente de prémisse de cette règle d'association.
+     * Représente la prémisse de cette règle d'association.
      */
     private Set<E> premise;
 
     /**
-     * Représente des candidates de cette règle d'association.
+     * Représente la conclusion de cette règle d'association.
      */
     private Set<E> conclusion;
 
@@ -30,7 +30,7 @@ public class AssociationRule<E> {
      * Constructeur par défaut.
      * 
      * @param premise    prémisse
-     * @param conclusion candidates
+     * @param conclusion conclusion
      * @param frequency  fréquence d'apparition dans la base de données
      * @param confidence confiance de la règle
      */
@@ -58,9 +58,9 @@ public class AssociationRule<E> {
     }
 
     /**
-     * Récupère les candidates de la règle.
+     * Récupère la conclusion de la règle.
      * 
-     * @return candidates
+     * @return conclusion
      * @see #conclusion
      */
     public Set<E> getConclusion() {

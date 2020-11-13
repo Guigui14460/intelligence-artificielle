@@ -41,8 +41,9 @@ public class BacktrackSolver extends AbstractSolver {
      * une instanciation partielle. Le but de cet algorithme est de pouvoir repassé
      * à une instanciation plus ancienne en cas de non validité de la nouvelle. Ceci
      * peut être vu comme un parcours en profondeur d'un arbre (d'un graphe plus
-     * généralement) visant à s'arrêter à la feuille à laquelle toutes les variables
-     * sont instanciées et respectent toutes les contraintes du problème.
+     * généralement) visant à s'arrêter à la première feuille à laquelle toutes les
+     * variables sont instanciées et respectent toutes les contraintes du problème
+     * posé.
      * 
      * @param instanciation            instanciation vide ou partielle
      * @param notInstanciatedVariables liste de variables non instanciées
@@ -58,13 +59,13 @@ public class BacktrackSolver extends AbstractSolver {
             return instanciation;
         }
 
-        // On crée une deuxième instanciation pour ne pas modifier l'ancien contexte et
-        // on prend une variables non instanciée
+        // on prend une variables non instanciée et on copie la liste des variables non
+        // instanciées (sauvegarde de contexte)
         Variable chosenVariable = notInstanciatedVariables.get(0);
         List<Variable> newNotInstanciatedVariables = new LinkedList<>(notInstanciatedVariables);
         newNotInstanciatedVariables.remove(0);
 
-        // On parcourt toutes les valeurs du domaine de la variable choisie
+        // on parcourt toutes les valeurs du domaine de la variable choisie
         for (Object value : chosenVariable.getDomain()) {
             // nouvelle instanciation pour garder le contexte
             Map<Variable, Object> instanciation2 = new HashMap<>(instanciation);
@@ -83,6 +84,6 @@ public class BacktrackSolver extends AbstractSolver {
                 }
             }
         }
-        return null;
+        return null; // pas de solution
     }
 }
