@@ -1,6 +1,7 @@
 package examples;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,7 +60,7 @@ public class HouseExample {
     }
 
     /**
-     * Ajoute des variables à la ensemble de variables.
+     * Ajoute des variables à l'ensemble de variables.
      * 
      * @param vars variables à ajouter (une ou plus)
      */
@@ -68,7 +69,16 @@ public class HouseExample {
     }
 
     /**
-     * Enlève des variables de la ensemble de variables.
+     * Ajoute des variables à l'ensemble de variables.
+     * 
+     * @param vars collection de variables à ajouter (une ou plus)
+     */
+    public void addVariables(Collection<Variable> vars) {
+        this.variables.addAll(vars);
+    }
+
+    /**
+     * Enlève des variables de l'ensemble de variables.
      * 
      * @param vars variables à enlever (une ou plus)
      */
@@ -77,7 +87,16 @@ public class HouseExample {
     }
 
     /**
-     * Ajoute des contraintes à la ensemble de contraintes.
+     * Enlève des variables de l'ensemble de variables.
+     * 
+     * @param vars collection de variables à enlever (une ou plus)
+     */
+    public void removeVariables(Collection<Variable> vars) {
+        this.variables.removeAll(vars);
+    }
+
+    /**
+     * Ajoute des contraintes à l'ensemble de contraintes.
      * 
      * @param cons contraintes à ajouter (une ou plus)
      */
@@ -86,12 +105,30 @@ public class HouseExample {
     }
 
     /**
-     * Enlève des contraintes de la ensemble de contraintes.
+     * Ajoute des contraintes à l'ensemble de contraintes.
+     * 
+     * @param cons collection de contraintes à ajouter (une ou plus)
+     */
+    public void addConstraints(Collection<Constraint> cons) {
+        this.constraints.addAll(cons);
+    }
+
+    /**
+     * Enlève des contraintes de l'ensemble de contraintes.
      * 
      * @param cons contraintes à enlever (une ou plus)
      */
     public void removeConstraints(Constraint... cons) {
         this.constraints.removeAll(Arrays.asList(cons));
+    }
+
+    /**
+     * Enlève des contraintes de l'ensemble de contraintes.
+     * 
+     * @param cons collection de contraintes à enlever (une ou plus)
+     */
+    public void removeConstraints(Collection<Constraint> cons) {
+        this.constraints.removeAll(cons);
     }
 
     /**

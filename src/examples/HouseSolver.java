@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import representation.BinaryExtensionConstraint;
@@ -14,15 +15,69 @@ import representation.Constraint;
 import representation.DifferenceConstraint;
 import representation.Rule;
 import representation.Variable;
+import solvers.BacktrackSolver;
+import solvers.HeuristicMACSolver;
+import solvers.MACSolver;
+import solvers.NbConstraintsVariableHeuristic;
+import solvers.RandomValueHeuristic;
+import solvers.ValueHeuristic;
+import solvers.VariableHeuristic;
 
 /**
- * Démonstration primitive sur l'exemple de la maison du fil rouge.
+ * Démonstration d'un solveur de contraintes sur l'exemple de la maison du fil
+ * rouge.
  */
-public class HouseDemo {
+public class HouseSolver {
     /**
      * Largeur et hauteur par défaut pour cette classe là uniquement.
      */
     public static final int WIDTH = 3, HEIGHT = 2;
+
+    /**
+     * Résout le problème de maison avec l'algorithme "backtrack".
+     * 
+     * @param house maison
+     * @return solution
+     */
+    public static final Map<Variable, Object> solveWithBacktrack(HouseExample house) {
+        return (new BacktrackSolver(house.getVariables(), house.getConstraints())).solve();
+    }
+
+    /**
+     * Résout le problème de maison avec l'algorithme "MAC".
+     * 
+     * @param house maison
+     * @return solution
+     */
+    public static final Map<Variable, Object> solveWithMAC(HouseExample house) {
+        return (new MACSolver(house.getVariables(), house.getConstraints())).solve();
+    }
+
+    /**
+     * Résout le problème de maison avec l'algorithme "MAC" disposant d'heuristiques
+     * de variable et de valeur.
+     * 
+     * @param house maison
+     * @return solution
+     */
+    public static final Map<Variable, Object> solveWithHeuristicMAC(HouseExample house) {
+        return HouseSolver.solveWithHeuristicMAC(house,
+                new NbConstraintsVariableHeuristic(house.getVariables(), house.getConstraints(), true),
+                new RandomValueHeuristic(new Random()));
+    }
+
+    /**
+     * Résout le problème de maison avec l'algorithme "MAC" disposant d'heuristiques
+     * de variable et de valeur.
+     * 
+     * @param house maison
+     * @return solution
+     */
+    public static final Map<Variable, Object> solveWithHeuristicMAC(HouseExample house,
+            VariableHeuristic variableHeuristic, ValueHeuristic valueHeuristic) {
+        return (new HeuristicMACSolver(house.getVariables(), house.getConstraints(), variableHeuristic, valueHeuristic))
+                .solve();
+    }
 
     /**
      * Méthode principale.
@@ -30,15 +85,13 @@ public class HouseDemo {
      * @param args arguments passés au terminal lors de l'exécution de cette classe
      */
     public static void main(String[] args) {
-        String houseName = "Ma super Villa";
-
         Set<String> dryRooms = new HashSet<>(Arrays.asList("Chambre 1", "Chambre 2", "Salle", "Salon"));
         Set<String> wetRooms = new HashSet<>(Arrays.asList("Cuisine", "Salle de bain"));
         Set<Object> pieceDomaine = new HashSet<>();
         pieceDomaine.addAll(wetRooms);
         pieceDomaine.addAll(dryRooms);
 
-        HouseExample house = new HouseExample(HouseDemo.WIDTH, HouseDemo.HEIGHT, wetRooms, dryRooms);
+        HouseExample house = new HouseExample(HouseSolver.WIDTH, HouseSolver.HEIGHT, wetRooms, dryRooms);
 
         // variables de l'exemple
         BooleanVariable dalleCoulee = new BooleanVariable("Dalle coulée");
@@ -79,7 +132,20 @@ public class HouseDemo {
         house.addVariables(pieces.values());
         house.addConstraints(c1, c2, c3, c4, c5, c6);
 
-        Map<Variable, Object> resultatSolveur = HouseSolver.solveWithHeuristicMAC(house);
-        HouseSolver.printResults(resultatSolveur, houseName);
+        Map<Variable, Object> result = HouseSolver.solveWithHeuristicMAC(house);
+        HouseSolver.printResults(result, "Ma super villa");
+    }
+
+    /**
+     * Affiche les résultats du solveur.
+     * 
+     * @param results   résultats
+     * @param houseName nom de la maison
+     */
+    public static void printResults(Map<Variable, Object> results, String houseName) {
+        System.out.println("Résultats du solveur pour la maison : " + houseName);
+        for (Map.Entry<Variable, Object> entry : results.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
     }
 }

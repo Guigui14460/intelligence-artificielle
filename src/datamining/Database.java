@@ -105,6 +105,8 @@ public class Database {
             }
             booleanDatabase.add(booleanTransaction);
         }
+        // System.out.println(this.instances.size() + " : " +
+        // booleanDatabase.getTransactions().size());
         return booleanDatabase;
     }
 
