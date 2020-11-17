@@ -80,10 +80,8 @@ public class Database {
      * @return base de données transactionnelles
      */
     public BooleanDatabase propositionalize() {
-        System.out.println("===================================");
-        System.out.println("Instanciations : " + this.instances);
-        System.out.println("---------------------------------------");
-
+        // on récupère les variables booléennes pour créer la base de données
+        // transactionnelles
         Set<BooleanVariable> booleanVariables = new HashSet<>();
         Map<Variable, Map<Object, BooleanVariable>> items = this.itemTable();
         for (Map.Entry<Variable, Map<Object, BooleanVariable>> entry : items.entrySet()) {
@@ -94,12 +92,14 @@ public class Database {
             }
         }
 
+        // on crée toutes les transactions associées aux instanciations
         BooleanDatabase booleanDatabase = new BooleanDatabase(booleanVariables);
         for (Map<Variable, Object> instance : this.instances) {
             Set<BooleanVariable> booleanTransaction = new HashSet<>();
             for (Map.Entry<Variable, Object> entry : instance.entrySet()) {
-                if (!items.get(entry.getKey()).equals(null)) {
-                    booleanTransaction.add(items.get(entry.getKey()).get(entry.getValue()));
+                BooleanVariable booleanVariable = items.get(entry.getKey()).get(entry.getValue());
+                if (booleanVariable != null) {
+                    booleanTransaction.add(booleanVariable);
                 }
             }
             booleanDatabase.add(booleanTransaction);
