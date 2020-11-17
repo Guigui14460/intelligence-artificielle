@@ -83,11 +83,9 @@ public class Database {
         System.out.println("===================================");
         System.out.println("Instanciations : " + this.instances);
         System.out.println("---------------------------------------");
-        Set<BooleanVariable> booleanVariables = new HashSet<>();
-        BooleanDatabase booleanDatabase = new BooleanDatabase(booleanVariables);
-        Map<Variable, Map<Object, BooleanVariable>> items = this.itemTable();
-        // System.out.println("Items table : " + items);
 
+        Set<BooleanVariable> booleanVariables = new HashSet<>();
+        Map<Variable, Map<Object, BooleanVariable>> items = this.itemTable();
         for (Map.Entry<Variable, Map<Object, BooleanVariable>> entry : items.entrySet()) {
             for (Map.Entry<Object, BooleanVariable> subEntry : entry.getValue().entrySet()) {
                 if (subEntry.getValue() != null) {
@@ -96,6 +94,7 @@ public class Database {
             }
         }
 
+        BooleanDatabase booleanDatabase = new BooleanDatabase(booleanVariables);
         for (Map<Variable, Object> instance : this.instances) {
             Set<BooleanVariable> booleanTransaction = new HashSet<>();
             for (Map.Entry<Variable, Object> entry : instance.entrySet()) {
@@ -105,8 +104,6 @@ public class Database {
             }
             booleanDatabase.add(booleanTransaction);
         }
-        // System.out.println(this.instances.size() + " : " +
-        // booleanDatabase.getTransactions().size());
         return booleanDatabase;
     }
 

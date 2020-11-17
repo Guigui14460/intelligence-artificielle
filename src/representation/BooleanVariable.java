@@ -15,4 +15,13 @@ public class BooleanVariable extends Variable {
     public BooleanVariable(String name) {
         super(name, new HashSet<Object>(Arrays.asList(true, false)));
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        BooleanVariable object = (BooleanVariable) obj;
+        return object.getDomain().equals(this.getDomain());
+    }
 }

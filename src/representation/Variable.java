@@ -37,10 +37,10 @@ public class Variable {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if (obj == null || this.getClass() != obj.getClass())
             return false;
         Variable object = (Variable) obj;
-        return object.name == this.name;
+        return object.name.equals(this.name);
     }
 
     @Override

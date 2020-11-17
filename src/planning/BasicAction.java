@@ -13,17 +13,17 @@ public class BasicAction implements Action {
     /**
      * Précondition à satisfaire pour effectuer l'action.
      */
-    private final Map<Variable, Object> precondition;
+    protected final Map<Variable, Object> precondition;
 
     /**
      * Effet à appliquer sur un état donné.
      */
-    private final Map<Variable, Object> effect;
+    protected final Map<Variable, Object> effect;
 
     /**
      * Coût de l'action.
      */
-    private final int cost;
+    protected final int cost;
 
     /**
      * Constructeur par défaut.
