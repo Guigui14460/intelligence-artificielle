@@ -1,25 +1,25 @@
 package examples;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import planning.AStarPlanner;
 import planning.Action;
+import planning.BFSPlanner;
 import planning.BasicAction;
 import planning.BasicGoal;
+import planning.DFSPlanner;
+import planning.DijkstraPlanner;
 import planning.Goal;
 import planning.Heuristic;
 import planning.Planner;
-import representation.BinaryExtensionConstraint;
 import representation.BooleanVariable;
-import representation.Constraint;
-import representation.DifferenceConstraint;
-import representation.Rule;
 import representation.Variable;
 
 /**
@@ -29,7 +29,7 @@ public class HousePlanner {
     /**
      * Largeur et hauteur par défaut pour cette classe là uniquement.
      */
-    public static final int WIDTH = 3, HEIGHT = 2;
+    public static final int WIDTH = 3, HEIGHT = 1;
 
     /**
      * Méthode principale.
@@ -50,6 +50,7 @@ public class HousePlanner {
         BooleanVariable dalleHumide = new BooleanVariable("Dalle humide");
         BooleanVariable mursEleves = new BooleanVariable("Murs élevés");
         BooleanVariable toitureTerminee = new BooleanVariable("Toiture terminée");
+        BooleanVariable toitureCommencee = new BooleanVariable("Toiture commencée");
         Map<String, Variable> pieces = new HashMap<>();
         for (int i = 1; i <= HousePlanner.HEIGHT; i++) {
             for (int j = 1; j <= HousePlanner.WIDTH; j++) {
@@ -57,85 +58,121 @@ public class HousePlanner {
             }
         }
 
-        // contraintes de l'exemple
-        Constraint c1 = new Rule(toitureTerminee, true, mursEleves, true);
-        Constraint c2 = new Rule(mursEleves, true, dalleCoulee, true);
-        Constraint c3 = new Rule(mursEleves, true, dalleHumide, false);
-        Constraint c4 = new Rule(dalleHumide, true, dalleCoulee, true);
-        List<String> keys = new ArrayList<>(pieces.keySet());
-        for (int i = 0; i < keys.size(); i++) {
-            for (int j = i + 1; j < keys.size(); j++) {
-                house.addConstraints(new DifferenceConstraint(pieces.get(keys.get(i)), pieces.get(keys.get(j))));
-            }
-        }
-        BinaryExtensionConstraint c5 = new BinaryExtensionConstraint(pieces.get("2,1"), pieces.get("1,3"));
-        c5.addTuple("Salle de bain", "Chambre 1");
-        c5.addTuple("Chambre 1", "Cuisine");
-        c5.addTuple("Salle de bain", "Chambre 2");
-        c5.addTuple("Salle de bain", "Chambre 1");
-        BinaryExtensionConstraint c6 = new BinaryExtensionConstraint(pieces.get("2,3"), pieces.get("1,1"));
-        c6.addTuple("Salle de bain", "Chambre 1");
-        c6.addTuple("Chambre 1", "Cuisine");
-        c6.addTuple("Salle de bain", "Chambre 2");
-        c6.addTuple("Salle de bain", "Chambre 1");
-
-        // on ajoute les vars et les cons au problème
-        house.addVariables(dalleCoulee, dalleHumide, mursEleves, toitureTerminee);
+        house.addVariables(dalleCoulee, dalleHumide, mursEleves, toitureTerminee, toitureCommencee);
         house.addVariables(pieces.values());
-        house.addConstraints(c1, c2, c3, c4, c5, c6);
 
-        // état initial
-        Map<Variable, Object> initialState = new HashMap<>();
-        initialState.put(dalleCoulee, false);
-
-        // état but
-        Map<Variable, Object> instanciationGoal = new HashMap<>();
-        instanciationGoal.put(dalleCoulee, true);
-        instanciationGoal.put(dalleHumide, false);
-        instanciationGoal.put(mursEleves, true);
-        instanciationGoal.put(toitureTerminee, true);
-        Goal goal = new BasicGoal(instanciationGoal);
+        Map<Variable, Object> etatInitial = new HashMap<>(), etatBut = new HashMap<>();
+        etatInitial.put(dalleCoulee, false);
+        etatBut.put(dalleCoulee, true);
+        etatBut.put(dalleHumide, false);
+        etatBut.put(mursEleves, true);
+        etatBut.put(toitureTerminee, true);
+        etatBut.put(toitureCommencee, true);
+        etatBut.put(pieces.get("1,1"), "Salon");
+        etatBut.put(pieces.get("1,2"), "Cuisine");
+        etatBut.put(pieces.get("1,3"), "Chambre 1");
+        Goal goal = new BasicGoal(etatBut);
 
         Set<Action> actions = new HashSet<>();
-        Map<Variable, Object> preconditions = new HashMap<>();
-        Map<Variable, Object> effects = new HashMap<>();
-        effects.put(dalleCoulee, true);
-        actions.add((Action) new BasicAction(new HashMap<>(preconditions), new HashMap<>(effects), 1));
-        effects.put(dalleCoulee, true);
-        effects.put(dalleHumide, false);
-        effects.put(mursEleves, true);
-        effects.put(toitureTerminee, true);
-        Action actionToChange = (Action) new BasicAction(new HashMap<>(preconditions), new HashMap<>(effects), 10);
-        Action actionToChange2 = (Action) new BasicAction(new HashMap<>(preconditions), new HashMap<>(effects), 3);
+        Map<Variable, Object> precondition = new HashMap<>(), effect = new HashMap<>();
+        effect.put(dalleCoulee, true);
+        actions.add((Action) new BasicAction(new HashMap<>(precondition), new HashMap<>(effect), 1));
+        effect.put(dalleCoulee, true);
+        effect.put(dalleHumide, false);
+        effect.put(mursEleves, true);
+        effect.put(toitureTerminee, true);
+        Action actionToChange = (Action) new BasicAction(new HashMap<>(precondition), new HashMap<>(effect), 10);
         actions.add(actionToChange);
-        preconditions.put(dalleCoulee, true);
-        effects = new HashMap<>();
-        effects.put(dalleHumide, false);
-        actions.add((Action) new BasicAction(new HashMap<>(preconditions), new HashMap<>(effects), 1));
-        preconditions.put(dalleCoulee, true);
-        preconditions.put(dalleHumide, false);
-        effects.put(mursEleves, true);
-        actions.add((Action) new BasicAction(new HashMap<>(preconditions), new HashMap<>(effects), 1));
-        preconditions.put(dalleCoulee, true);
-        preconditions.put(dalleHumide, false);
-        preconditions.put(mursEleves, true);
-        effects.put(toitureTerminee, true);
-        actions.add((Action) new BasicAction(new HashMap<>(preconditions), new HashMap<>(effects), 1));
+        precondition.put(dalleCoulee, true);
+        effect = new HashMap<>();
+        effect.put(dalleHumide, false);
+        actions.add((Action) new BasicAction(new HashMap<>(precondition), new HashMap<>(effect), 1));
+        effect = new HashMap<>();
+        precondition.put(dalleCoulee, true);
+        precondition.put(dalleHumide, false);
+        effect.put(mursEleves, true);
+        actions.add((Action) new BasicAction(new HashMap<>(precondition), new HashMap<>(effect), 1));
+        effect = new HashMap<>();
+        precondition.put(dalleCoulee, true);
+        precondition.put(dalleHumide, false);
+        precondition.put(mursEleves, true);
+        effect.put(toitureCommencee, true);
+        actions.add((Action) new BasicAction(new HashMap<>(precondition), new HashMap<>(effect), 1));
+        effect = new HashMap<>();
+        precondition.put(dalleCoulee, true);
+        precondition.put(dalleHumide, false);
+        precondition.put(mursEleves, true);
+        precondition.put(toitureCommencee, true);
+        effect.put(toitureTerminee, true);
+        actions.add((Action) new BasicAction(new HashMap<>(precondition), new HashMap<>(effect), 1));
+        precondition = new HashMap<>();
+        precondition.put(dalleCoulee, true);
+        precondition.put(dalleHumide, false);
+        for (Object nomPiece : pieceDomaine) {
+            for (Variable position : pieces.values()) {
+                effect = new HashMap<>();
+                effect.put(position, nomPiece);
+                actions.add(new BasicAction(new HashMap<>(precondition), effect, 2));
+            }
+        }
 
-        Planner planer = new AStarPlanner(initialState, actions, goal, new Heuristic() {
+        Planner planner = new DFSPlanner(etatInitial, actions, goal);
+        List<Action> plan = HousePlanner.printExecutionTime(planner, "DFS");
+        planner = new BFSPlanner(etatInitial, actions, goal);
+        plan = HousePlanner.printExecutionTime(planner, "BFS");
+        planner = new DijkstraPlanner(etatInitial, actions, goal);
+        plan = HousePlanner.printExecutionTime(planner, "Dijkstra");
+        planner = new AStarPlanner(etatInitial, actions, goal, new Heuristic() {
             @Override
             public float estimate(Map<Variable, Object> state) {
-                return 0.0f;
+                return 0;
             }
         });
-        List<Action> plan = planer.plan();
+        plan = HousePlanner.printExecutionTime(planner, "A*");
         HousePlanner.printPlan(plan, "Ma super villa");
 
-        System.out.println("\n");
+        // on fait en sorte que les ouvriers soient multi-thread
+        Set<Set<Object>> subsetsPieces = HousePlanner.allSubsets(pieceDomaine);
+        Set<Set<Object>> filteredSubsets = subsetsPieces.stream().filter(item -> item.size() == 2)
+                .collect(Collectors.toSet());
+        for (Set<Object> subset : filteredSubsets) {
+            Iterator<Object> ite = subset.iterator();
+            Object piece1 = ite.next();
+            Object piece2 = ite.next();
+            for (Variable position1 : pieces.values()) {
+                for (Variable position2 : pieces.values()) {
+                    precondition = new HashMap<>();
+                    precondition.put(dalleCoulee, true);
+                    precondition.put(dalleHumide, false);
+                    effect = new HashMap<>();
+                    effect.put(position1, piece1);
+                    effect.put(position2, piece2);
+                    actions.add(new BasicAction(precondition, effect, 3));
+                }
+            }
+        }
+        planner = new AStarPlanner(new HashMap<>(), actions, goal, new Heuristic() {
+            @Override
+            public float estimate(Map<Variable, Object> state) {
+                return etatBut.size() - state.size();
+            }
+        });
+        plan = HousePlanner.printExecutionTime(planner, "A*");
+        HousePlanner.printPlan(plan, "Ma seconde villa");
+    }
 
-        actions.add(actionToChange2);
-        plan = planer.plan();
-        HousePlanner.printPlan(plan, "Ma deuxième super villa");
+    /**
+     * Affiche la durée d'exécution pour trouver le plan et retourne le plan trouvé.
+     * 
+     * @param planner planificateur
+     * @return plan trouvé
+     */
+    public static List<Action> printExecutionTime(Planner planner, String plannerName) {
+        long begin = System.currentTimeMillis();
+        List<Action> plan = planner.plan();
+        long finish = System.currentTimeMillis();
+        System.out.println(plannerName + " time : " + (finish - begin) / 1000.0);
+        return plan;
     }
 
     /**
@@ -146,6 +183,10 @@ public class HousePlanner {
      */
     public static void printPlan(List<Action> plan, String houseName) {
         System.out.println("Plan pour construire la maison : " + houseName);
+        if (plan == null) {
+            System.out.println("Aucun plan trouvé");
+            return;
+        }
         System.out.println("Nombre d'actions à effectuer : " + plan.size());
         int cost = 0;
         for (Action action : plan) {
@@ -153,5 +194,28 @@ public class HousePlanner {
             cost += action.getCost();
         }
         System.out.println("Coût du plan : " + cost);
+    }
+
+    /**
+     * Retourne l'ensemble de tous ses sous-ensembles.
+     * 
+     * @param objects ensemble d'objets
+     * @return l'ensemble de ses sous-ensembles
+     */
+    public static Set<Set<Object>> allSubsets(Set<Object> objects) {
+        Set<Set<Object>> subsets = new HashSet<>();
+        int max = 1 << objects.size(); // 2 puissance N
+        for (int i = 0; i < max; i++) { // génère tous les sous-ensembles
+            Set<Object> subset = new HashSet<>();
+            Iterator<Object> iterator = objects.iterator();
+            for (int j = 0; j < objects.size(); j++) {
+                Object item = iterator.next();
+                if (((i >> j) & 1) == 1) {
+                    subset.add(item);
+                }
+            }
+            subsets.add(subset);
+        }
+        return subsets;
     }
 }

@@ -1,6 +1,6 @@
 package planning;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,7 +58,7 @@ public class DFSPlanner implements Planner {
 
     @Override
     public List<Action> plan() {
-        return this.dfs(this.initialState, new LinkedList<>(), new LinkedList<>());
+        return this.dfs(this.initialState, new ArrayList<>(), new ArrayList<>());
     }
 
     /**

@@ -1,10 +1,12 @@
 package planning;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 import representation.Variable;
@@ -77,26 +79,30 @@ public class AStarPlanner implements Planner {
      * @return meilleur plan d'actions à réaliser pour passer de l'état initial à
      *         l'état but
      * @see #getBFSPlan(Map, Map, Map)
-     * @see #argmin(Map, List)
      */
     private List<Action> aStar() {
         // instanciation des différentes structures de données
         Map<Map<Variable, Object>, Map<Variable, Object>> father = new HashMap<>();
         Map<Map<Variable, Object>, Action> plan = new HashMap<>();
         Map<Map<Variable, Object>, Double> distance = new HashMap<>(), value = new HashMap<>();
-        List<Map<Variable, Object>> open = new LinkedList<>();
+        // List<Map<Variable, Object>> open = new ArrayList<>();
+        PriorityQueue<Map<Variable, Object>> open = new PriorityQueue<>((Comparator<Map<Variable, Object>>) (state1,
+                state2) -> (Double.valueOf(distance.get(state1) + value.get(state1)))
+                        .compareTo(Double.valueOf(distance.get(state2) + value.get(state2)))); // compare les distances
+                                                                                               // et les valeurs de
+                                                                                               // l'heuristique pour
+                                                                                               // prioriser la pile
+                                                                                               // (ordre croissant)
         open.add(this.initialState);
         father.put(this.initialState, null);
         distance.put(this.initialState, 0.0);
         value.put(this.initialState, Float.valueOf(this.heuristic.estimate(this.initialState)).doubleValue());
 
         while (open.size() != 0) { // tant qu'il reste des états ouvert
-            Map<Variable, Object> instanciation = this.argmin(value, open); // on prend l'état avec la plus petite
-                                                                            // valeur associé
+            Map<Variable, Object> instanciation = open.poll(); // prend la plus petite valeur
             if (this.goal.isSatisfiedBy(instanciation)) { // on est arrivé au but
                 return this.getBFSPlan(father, plan, instanciation); // on reconstruit le plan
             }
-            open.remove(instanciation);
             // on teste toutes les actions
             for (Action action : this.actions) {
                 if (action.isApplicable(instanciation)) { // si on peut appliquer l'action
@@ -131,7 +137,7 @@ public class AStarPlanner implements Planner {
      */
     private List<Action> getBFSPlan(Map<Map<Variable, Object>, Map<Variable, Object>> father,
             Map<Map<Variable, Object>, Action> plan, Map<Variable, Object> goal) {
-        List<Action> bfsPlan = new LinkedList<>();
+        List<Action> bfsPlan = new ArrayList<>(plan.size());
         // on ajoute les actions au plan tant qu'il reste un but
         while (goal != this.initialState) {
             bfsPlan.add(plan.get(goal));
@@ -140,28 +146,5 @@ public class AStarPlanner implements Planner {
         // on inverse le plan (pour le remettre dans le bon ordre)
         Collections.reverse(bfsPlan);
         return bfsPlan;
-    }
-
-    /**
-     * Permet de retourner l'élément ayant la valeur la plus petite dans une map.
-     * 
-     * @param values map contenant les valeurs associées aux états
-     * @param list   liste contenant les états concernés par la recherche de la
-     *               valeur minimale
-     * @return l'état associé à la valeur minimale trouvée
-     */
-    private Map<Variable, Object> argmin(Map<Map<Variable, Object>, Double> values, List<Map<Variable, Object>> list) {
-        Map<Variable, Object> state = null;
-        double min = Double.POSITIVE_INFINITY;
-        // on regarde chaque entrée des valeurs
-        for (Map.Entry<Map<Variable, Object>, Double> entry : values.entrySet()) {
-            if (list.contains(entry.getKey())) { // on vérifie si l'état (clé de l'entrée) est concerné par la recherche
-                if (entry.getValue() < min) {
-                    min = entry.getValue();
-                    state = entry.getKey();
-                }
-            }
-        }
-        return state;
     }
 }

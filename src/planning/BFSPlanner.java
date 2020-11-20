@@ -1,5 +1,6 @@
 package planning;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -80,7 +81,7 @@ public class BFSPlanner implements Planner {
         // instanciation des différentes structures de données
         Map<Map<Variable, Object>, Map<Variable, Object>> father = new HashMap<>();
         Map<Map<Variable, Object>, Action> plan = new HashMap<>();
-        List<Map<Variable, Object>> closed = new LinkedList<>();
+        List<Map<Variable, Object>> closed = new ArrayList<>();
         Queue<Map<Variable, Object>> open = new LinkedList<>();
         father.put(this.initialState, null);
         closed.add(this.initialState);
@@ -88,7 +89,7 @@ public class BFSPlanner implements Planner {
 
         // on vérifie que le but n'est pas déjà satisfait par l'état initial
         if (this.goal.isSatisfiedBy(this.initialState)) {
-            return new LinkedList<>();
+            return new ArrayList<>();
         }
 
         // tant qu'il reste des états ouverts
@@ -128,7 +129,7 @@ public class BFSPlanner implements Planner {
      */
     private List<Action> getBFSPlan(Map<Map<Variable, Object>, Map<Variable, Object>> father,
             Map<Map<Variable, Object>, Action> plan, Map<Variable, Object> goal) {
-        List<Action> bfsPlan = new LinkedList<>();
+        List<Action> bfsPlan = new ArrayList<>(plan.size());
         // on ajoute les actions au plan tant qu'on a pas atteint l'état initial
         while (goal != this.initialState) {
             bfsPlan.add(plan.get(goal));

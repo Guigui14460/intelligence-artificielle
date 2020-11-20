@@ -40,7 +40,8 @@ public class BasicAction implements Action {
 
     @Override
     public String toString() {
-        return "BasicAction[precondition=" + this.precondition + ", effect=" + this.effect + "]";
+        return "BasicAction[precondition=" + this.precondition + ", effect=" + this.effect + ", cost=" + this.cost
+                + "]";
     }
 
     @Override

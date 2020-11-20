@@ -1,9 +1,9 @@
 package datamining;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -34,7 +34,7 @@ public class Apriori extends AbstractItemsetMiner {
         results.addAll(frequentSize1);
 
         // trace des motifs fréquents de taille n
-        List<SortedSet<BooleanVariable>> itemsetTrace = new LinkedList<>();
+        List<SortedSet<BooleanVariable>> itemsetTrace = new ArrayList<>();
         for (Itemset itemset : frequentSize1) {
             SortedSet<BooleanVariable> size1 = new TreeSet<>(AbstractItemsetMiner.COMPARATOR);
             size1.addAll(itemset.getItems());
@@ -43,7 +43,7 @@ public class Apriori extends AbstractItemsetMiner {
 
         for (int i = 1; i < this.database.getItems().size(); i++) {
             // trace des motifs fréquents de taille n+1
-            List<SortedSet<BooleanVariable>> itemsetTrace2 = new LinkedList<>();
+            List<SortedSet<BooleanVariable>> itemsetTrace2 = new ArrayList<>();
             int itemSize = itemsetTrace.size();
 
             // on crée les motifs

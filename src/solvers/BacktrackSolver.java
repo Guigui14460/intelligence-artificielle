@@ -1,7 +1,7 @@
 package solvers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,7 +26,7 @@ public class BacktrackSolver extends AbstractSolver {
 
     @Override
     public Map<Variable, Object> solve() {
-        List<Variable> notInstanciatedVariables = new LinkedList<>(this.variables);
+        List<Variable> notInstanciatedVariables = new ArrayList<>(this.variables);
         return backtrack(new HashMap<>(), notInstanciatedVariables);
     }
 
@@ -62,7 +62,7 @@ public class BacktrackSolver extends AbstractSolver {
         // on prend une variables non instanciée et on copie la liste des variables non
         // instanciées (sauvegarde de contexte)
         Variable chosenVariable = notInstanciatedVariables.get(0);
-        List<Variable> newNotInstanciatedVariables = new LinkedList<>(notInstanciatedVariables);
+        List<Variable> newNotInstanciatedVariables = new ArrayList<>(notInstanciatedVariables);
         newNotInstanciatedVariables.remove(0);
 
         // on parcourt toutes les valeurs du domaine de la variable choisie

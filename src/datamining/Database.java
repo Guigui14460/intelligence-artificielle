@@ -1,8 +1,8 @@
 package datamining;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,7 +31,7 @@ public class Database {
      */
     public Database(Set<Variable> variables) {
         this.variables = variables;
-        this.instances = new LinkedList<>();
+        this.instances = new ArrayList<>();
     }
 
     /**

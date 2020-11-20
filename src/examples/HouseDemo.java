@@ -8,6 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import planning.AStarPlanner;
+import planning.Action;
+import planning.BasicGoal;
+import planning.Goal;
+import planning.Heuristic;
+import planning.NamedAction;
+import planning.Planner;
 import representation.BinaryExtensionConstraint;
 import representation.BooleanVariable;
 import representation.Constraint;
@@ -79,7 +86,72 @@ public class HouseDemo {
         house.addVariables(pieces.values());
         house.addConstraints(c1, c2, c3, c4, c5, c6);
 
+        /*
+         * Solveur
+         */
         Map<Variable, Object> resultatSolveur = HouseSolver.solveWithHeuristicMAC(house);
         HouseSolver.printResults(resultatSolveur, houseName);
+
+        /*
+         * Planificateur
+         */
+        Map<Variable, Object> etatInitial = new HashMap<>();
+        etatInitial.put(dalleCoulee, false);
+        Map<Variable, Object> etatFinal = new HashMap<>(resultatSolveur);
+        etatFinal.put(dalleCoulee, true);
+        etatFinal.put(dalleHumide, false);
+        Goal but = new BasicGoal(etatFinal);
+
+        Set<Action> actions = new HashSet<>();
+        Map<Variable, Object> precondition = new HashMap<>(), effect = new HashMap<>();
+        effect.put(dalleCoulee, true);
+        effect.put(dalleHumide, true);
+        actions.add(new NamedAction("Couler la dalle", precondition, effect, 5));
+
+        precondition = new HashMap<>();
+        precondition.put(dalleCoulee, true);
+        precondition.put(dalleHumide, true);
+        effect = new HashMap<>();
+        effect.put(dalleHumide, false);
+        actions.add(new NamedAction("Attendre séchage de la dalle", precondition, effect, 10));
+
+        precondition = new HashMap<>();
+        precondition.put(dalleCoulee, true);
+        precondition.put(dalleHumide, false);
+        effect = new HashMap<>();
+        effect.put(mursEleves, true);
+        actions.add(new NamedAction("Élever les murs", precondition, effect, 5));
+
+        precondition = new HashMap<>();
+        precondition.put(dalleCoulee, true);
+        precondition.put(mursEleves, true);
+        effect = new HashMap<>();
+        effect.put(toitureTerminee, true);
+        actions.add(new NamedAction("Faire le toit", precondition, effect, 5));
+
+        precondition = new HashMap<>();
+        precondition.put(dalleCoulee, true);
+        precondition.put(dalleHumide, false);
+        for (Object nomPiece : pieceDomaine) {
+            for (Variable position : pieces.values()) {
+                effect = new HashMap<>();
+                effect.put(position, nomPiece);
+                actions.add(new NamedAction("Placer \"" + nomPiece + "\" à l'emplacement " + position.getName(),
+                        new HashMap<>(precondition), effect, (position.getDomain().contains(nomPiece) ? 2 : 5)));
+            }
+        }
+
+        Planner planner = new AStarPlanner(etatInitial, actions, but, new Heuristic() {
+            @Override
+            public float estimate(Map<Variable, Object> state) {
+                return state.size() - etatFinal.size();
+            }
+        });
+        List<Action> planTrouve = HousePlanner.printExecutionTime(planner, "A*");
+        HousePlanner.printPlan(planTrouve, houseName);
+
+        /*
+         * Extractteur de connaissance
+         */
     }
 }

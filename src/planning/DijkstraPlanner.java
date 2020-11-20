@@ -1,10 +1,12 @@
 package planning;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 import representation.Variable;
@@ -75,22 +77,22 @@ public class DijkstraPlanner implements Planner {
      * 
      * @return plan d'actions
      * @see #getDijkstraPlan(Map, Map, List, Map)
-     * @see #argmin(Map, List)
      */
     private List<Action> dijkstra() {
         // instanciation des différentes structures de données
         Map<Map<Variable, Object>, Map<Variable, Object>> father = new HashMap<>();
         Map<Map<Variable, Object>, Action> plan = new HashMap<>();
         Map<Map<Variable, Object>, Double> distance = new HashMap<>();
-        List<Map<Variable, Object>> goals = new LinkedList<>(), open = new LinkedList<>();
+        List<Map<Variable, Object>> goals = new ArrayList<>();
+        PriorityQueue<Map<Variable, Object>> open = new PriorityQueue<>((Comparator<Map<Variable, Object>>) (state1,
+                state2) -> distance.get(state1).compareTo(distance.get(state2))); // compare les distances pour
+                                                                                  // prioriser la pile (ordre croissant)
         father.put(this.initialState, null);
         distance.put(this.initialState, 0.0);
         open.add(this.initialState);
 
         while (open.size() != 0) { // tant qu'il reste des états ouvert
-            Map<Variable, Object> instanciation = this.argmin(distance, open); // on prend l'état avec la plus petite
-                                                                               // distance
-            open.remove(instanciation);
+            Map<Variable, Object> instanciation = open.poll(); // prend le plus petit élément
 
             if (this.goal.isSatisfiedBy(instanciation)) { // on est arrivé à un des buts
                 goals.add(instanciation);
@@ -137,7 +139,7 @@ public class DijkstraPlanner implements Planner {
     private List<Action> getDijkstraPlan(Map<Map<Variable, Object>, Map<Variable, Object>> father,
             Map<Map<Variable, Object>, Action> plan, List<Map<Variable, Object>> goals,
             Map<Map<Variable, Object>, Double> distance) {
-        List<Action> dijPlan = new LinkedList<>();
+        List<Action> dijPlan = new ArrayList<>();
         // on prend le but le plus proche
         Map<Variable, Object> goal = this.argmin(distance, goals);
         // on ajoute les actions au plan tant qu'on a pas atteint l'état initial

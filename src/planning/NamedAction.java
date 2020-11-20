@@ -29,7 +29,7 @@ public class NamedAction extends BasicAction {
     @Override
     public String toString() {
         return "NamedAction[name=" + this.name + ", precondition=" + this.precondition + ", effect=" + this.effect
-                + "]";
+                + ", cost=" + this.cost + "]";
     }
 
     /**

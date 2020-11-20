@@ -36,7 +36,7 @@ public class BinaryTuple {
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if (obj == null || this.getClass() != obj.getClass())
             return false;
         BinaryTuple object = (BinaryTuple) obj;
         return object.val1.equals(this.val1) && object.val2.equals(this.val2);

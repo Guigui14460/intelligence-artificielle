@@ -1,8 +1,8 @@
 package solvers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -72,7 +72,7 @@ public class HeuristicMACSolver extends AbstractSolver {
      */
     private Map<Variable, Object> macHeuristic(Map<Variable, Set<Object>> domains,
             Map<Variable, Object> instanciation) {
-        List<Variable> notInstanciatedVariables = new LinkedList<>();
+        List<Variable> notInstanciatedVariables = new ArrayList<>();
         for (Variable variable : this.variables) {
             if (!instanciation.containsKey(variable))
                 notInstanciatedVariables.add(variable);
