@@ -5,13 +5,12 @@ Projet universitaire proposé par l'UE optionnel Aide à la décision & Intellig
 <img src="logo-UNICAEN.jpg" style="width: 100px;" />
 
 ## Table des matières
-- [Intelligence artificielle](#intelligence-artificielle)
-  - [Table des matières](#table-des-matières)
-  - [Introduction](#introduction)
-  - [Setup](#setup)
-  - [Commandes](#commandes)
-  - [Documentation](#documentation)
-  - [Auteurs du projet](#auteurs-du-projet)
+- [Table des matières](#table-des-matières)
+- [Introduction](#introduction)
+- [Setup](#setup)
+- [Commandes](#commandes)
+- [Documentation](#documentation)
+- [Auteurs du projet](#auteurs-du-projet)
 
 ## Introduction
 Le but du projet est de réaliser un intelligence artificielle pouvant créer une maison en fonction de variables et de contraines sur elles, de définir un plan de construction, et d'extraire des motifs et des règles fréquentes dans une base de données recenssant des maisons. 
