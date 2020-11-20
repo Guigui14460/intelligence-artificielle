@@ -15,6 +15,10 @@ import datamining.Itemset;
 import representation.BooleanVariable;
 import representation.Variable;
 
+/**
+ * Démonstration d'un extracteur de connaissances sur l'exemple de la maison du
+ * fil rouge.
+ */
 public class HouseMiner {
     /**
      * Largeur et hauteur par défaut pour cette classe là uniquement.
