@@ -38,4 +38,11 @@ public interface Planner {
      * @return le but attendu
      */
     public Goal getGoal();
+
+    /**
+     * Récupère le nombre de noeuds explorés.
+     * 
+     * @return nombre de noeuds explorés
+     */
+    public int getNumOfExploredNodes();
 }

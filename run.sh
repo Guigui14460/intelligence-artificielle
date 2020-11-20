@@ -1,1 +1,1 @@
-java -cp bin:lib/\* test.Tests
+java -cp bin:lib/\* $1

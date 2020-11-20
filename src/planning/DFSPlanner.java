@@ -29,6 +29,11 @@ public class DFSPlanner implements Planner {
     private final Set<Action> actions;
 
     /**
+     * Nombre de noeuds explorés.
+     */
+    private int numOfExploredNodes = 0;
+
+    /**
      * Constructeur par défaut.
      * 
      * @param initialState état initial
@@ -57,6 +62,11 @@ public class DFSPlanner implements Planner {
     }
 
     @Override
+    public int getNumOfExploredNodes() {
+        return this.numOfExploredNodes;
+    }
+
+    @Override
     public List<Action> plan() {
         return this.dfs(this.initialState, new ArrayList<>(), new ArrayList<>());
     }
@@ -71,6 +81,7 @@ public class DFSPlanner implements Planner {
      * @return nouveau plan
      */
     private List<Action> dfs(Map<Variable, Object> state, List<Action> plan, List<Map<Variable, Object>> closed) {
+        this.numOfExploredNodes++;
         // condition de terminaison
         if (this.goal.isSatisfiedBy(state)) { // but satisfait
             return plan;

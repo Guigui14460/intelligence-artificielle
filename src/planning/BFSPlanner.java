@@ -33,6 +33,11 @@ public class BFSPlanner implements Planner {
     private final Set<Action> actions;
 
     /**
+     * Nombre de noeuds explorés.
+     */
+    private int numOfExploredNodes = 0;
+
+    /**
      * Constructeur par défaut.
      * 
      * @param initialState état initial
@@ -67,6 +72,11 @@ public class BFSPlanner implements Planner {
     }
 
     @Override
+    public int getNumOfExploredNodes() {
+        return this.numOfExploredNodes;
+    }
+
+    @Override
     public List<Action> plan() {
         return this.bfs();
     }
@@ -94,6 +104,7 @@ public class BFSPlanner implements Planner {
 
         // tant qu'il reste des états ouverts
         while (open.size() != 0) {
+            this.numOfExploredNodes++;
             // on défile
             Map<Variable, Object> instanciation = open.poll();
             closed.add(instanciation);

@@ -1,32 +1,36 @@
-## Getting Started
+# Intelligence artificielle
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Projet universitaire proposé par l'UE optionnel Aide à la décision & Intelligence artificielle en L3 Informatique par l'Université de Caen Normandie afin de nous faire découvrir la base de l'AD&IA et du contenu de la M1/M2 DOP.
 
-## Folder Structure
+<img src="logo-UNICAEN.jpg" style="width: 100px;" />
 
-The workspace contains two folders by default, where:
+## Table des matières
+- [Intelligence artificielle](#intelligence-artificielle)
+  - [Table des matières](#table-des-matières)
+  - [Introduction](#introduction)
+  - [Setup](#setup)
+  - [Commandes](#commandes)
+  - [Documentation](#documentation)
+  - [Auteurs du projet](#auteurs-du-projet)
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Introduction
+Le but du projet est de réaliser un intelligence artificielle pouvant créer une maison en fonction de variables et de contraines sur elles, de définir un plan de construction, et d'extraire des motifs et des règles fréquentes dans une base de données recenssant des maisons. 
 
-## Dependency Management
+## Setup
+Aucun setup particulier n'est demandé. Tout est fourni dans ce dépôt.
 
-The `JAVA DEPENDENCIES` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-pack/blob/master/release-notes/v0.9.0.md#work-with-jar-files-directly).
+## Commandes
+Les commandes principales sont :
+- `$ ./compile.sh` pour compiler le projet
+- `$ ./test.sh` pour lancer l'exécution des tests
+- `$ ./run.sh <package.className>` pour lancer l'exécution d'une classe particulière (seules sont exécutables : examples.HouseDemo, examples.HouseSolver, examples.HousePlanner, examples.HouseMiner)
+- `$ ./doc.sh` pour compiler la documentation du projet
 
-## Commands
-To compile the program :
-```shell
-$ ./compile.sh
-```
-To run the tests :
-```shell
-$ ./run.sh
-```
-To run a specific class (<package.className>) :
-```shell
-$ ./run_class.sh <package.className>
-```
-To compile the documentation the program :
-```shell
-$ ./doc.sh
-```
+## Documentation
+Lien pour accéder à la documentation du projet : https://guigui14460.github.io/intelligence-artificielle/
+
+## Auteurs du projet
+- [BOCAGE Arthur](https://github.com/TurluTwoD)
+- [PIERRE Corentin](https://github.com/coco-ia)
+- [PIGNARD Alexandre](https://github.com/Myrani)
+- [LETELLIER Guillaume](https://github.com/Guigui14460)

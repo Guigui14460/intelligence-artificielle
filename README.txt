@@ -1,0 +1,5 @@
+Groupe 14:
+- 21806332	Arthur BOCAGE
+- 21804030	Guillaume LETELLIER
+- 21803752	Corentin PIERRE
+- 21701890	Alexandre PIGNARD

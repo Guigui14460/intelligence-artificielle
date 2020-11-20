@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import datamining.AssociationRule;
+import datamining.BooleanDatabase;
+import datamining.BruteForceAssociationRuleMiner;
+import datamining.Database;
 import planning.AStarPlanner;
 import planning.Action;
 import planning.BasicGoal;
@@ -30,6 +34,11 @@ public class HouseDemo {
      * Largeur et hauteur par défaut pour cette classe là uniquement.
      */
     public static final int WIDTH = 3, HEIGHT = 2;
+
+    /**
+     * Fréquence et confiance minimales par défaut pour cette classe là uniquement.
+     */
+    public static final float MIN_FREQUENCY = 0.35f, MIN_CONFIDENCE = 0.7f;
 
     /**
      * Méthode principale.
@@ -100,6 +109,8 @@ public class HouseDemo {
         Map<Variable, Object> etatFinal = new HashMap<>(resultatSolveur);
         etatFinal.put(dalleCoulee, true);
         etatFinal.put(dalleHumide, false);
+        etatFinal.put(mursEleves, true);
+        etatFinal.put(toitureTerminee, true);
         Goal but = new BasicGoal(etatFinal);
 
         Set<Action> actions = new HashSet<>();
@@ -144,14 +155,120 @@ public class HouseDemo {
         Planner planner = new AStarPlanner(etatInitial, actions, but, new Heuristic() {
             @Override
             public float estimate(Map<Variable, Object> state) {
-                return state.size() - etatFinal.size();
+                return state.size() - etatFinal.size(); // on regarde juste le nombre de variables qu'il reste à
+                                                        // instancier
             }
         });
         List<Action> planTrouve = HousePlanner.printExecutionTime(planner, "A*");
         HousePlanner.printPlan(planTrouve, houseName);
 
         /*
-         * Extractteur de connaissance
+         * Extracteur de connaissance
          */
+        Database database = new Database(house.getVariables());
+        // on crée les différences instances pour la BD
+        database.add(new HashMap<>());
+        Map<Variable, Object> instance = new HashMap<>();
+        instance.put(dalleCoulee, true);
+        database.add(new HashMap<>(instance));
+        instance.put(dalleHumide, true);
+        database.add(new HashMap<>(instance));
+        instance.put(dalleHumide, false);
+        database.add(new HashMap<>(instance));
+        instance.put(mursEleves, true);
+        database.add(new HashMap<>(instance));
+        instance.put(toitureTerminee, true);
+        database.add(new HashMap<>(instance));
+
+        instance = new HashMap<>();
+        instance.put(dalleCoulee, true);
+        instance.put(dalleHumide, false);
+        instance.put(pieces.get("1,1"), "Chambre 1");
+        instance.put(pieces.get("1,2"), "Chambre 2");
+        instance.put(pieces.get("1,3"), "Salon");
+        instance.put(pieces.get("2,1"), "Salle");
+        instance.put(pieces.get("2,2"), "Salle de bain");
+        instance.put(pieces.get("2,3"), "Cuisine");
+        database.add(new HashMap<>(instance));
+        instance.put(mursEleves, true);
+        instance.put(toitureTerminee, true);
+        database.add(new HashMap<>(instance));
+
+        instance = new HashMap<>();
+        instance.put(dalleCoulee, true);
+        instance.put(dalleHumide, false);
+        instance.put(pieces.get("1,1"), "Chambre 1");
+        instance.put(pieces.get("1,2"), "Chambre 2");
+        instance.put(pieces.get("1,3"), "Salle");
+        instance.put(pieces.get("2,1"), "Salon");
+        instance.put(pieces.get("2,2"), "Salle de bain");
+        instance.put(pieces.get("2,3"), "Cuisine");
+        database.add(new HashMap<>(instance));
+        instance.put(mursEleves, true);
+        instance.put(toitureTerminee, true);
+        database.add(new HashMap<>(instance));
+
+        instance = new HashMap<>();
+        instance.put(dalleCoulee, true);
+        instance.put(dalleHumide, false);
+        instance.put(pieces.get("1,1"), "Chambre 1");
+        instance.put(pieces.get("1,2"), "Chambre 2");
+        instance.put(pieces.get("1,3"), "Salle de bain");
+        instance.put(pieces.get("2,1"), "Salle");
+        instance.put(pieces.get("2,2"), "Salon");
+        instance.put(pieces.get("2,3"), "Cuisine");
+        database.add(new HashMap<>(instance));
+        instance.put(mursEleves, true);
+        instance.put(toitureTerminee, true);
+        database.add(new HashMap<>(instance));
+
+        instance = new HashMap<>();
+        instance.put(dalleCoulee, true);
+        instance.put(dalleHumide, false);
+        instance.put(pieces.get("1,1"), "Chambre 1");
+        instance.put(pieces.get("1,2"), "Chambre 2");
+        instance.put(pieces.get("1,3"), "Salle de bain");
+        instance.put(pieces.get("2,1"), "Salon");
+        instance.put(pieces.get("2,2"), "Salle");
+        instance.put(pieces.get("2,3"), "Cuisine");
+        database.add(new HashMap<>(instance));
+        instance.put(mursEleves, true);
+        instance.put(toitureTerminee, true);
+        database.add(new HashMap<>(instance));
+
+        instance = new HashMap<>();
+        instance.put(dalleCoulee, true);
+        instance.put(dalleHumide, false);
+        instance.put(pieces.get("1,1"), "Chambre 1");
+        instance.put(pieces.get("1,2"), "Salon");
+        instance.put(pieces.get("1,3"), "Salle de bain");
+        instance.put(pieces.get("2,1"), "Chambre 2");
+        instance.put(pieces.get("2,2"), "Salle");
+        instance.put(pieces.get("2,3"), "Cuisine");
+        database.add(new HashMap<>(instance));
+        instance.put(mursEleves, true);
+        instance.put(toitureTerminee, true);
+        database.add(new HashMap<>(instance));
+
+        instance = new HashMap<>();
+        instance.put(dalleCoulee, true);
+        instance.put(dalleHumide, false);
+        instance.put(pieces.get("1,1"), "Salon");
+        instance.put(pieces.get("1,2"), "Chambre 1");
+        instance.put(pieces.get("1,3"), "Salle de bain");
+        instance.put(pieces.get("2,1"), "Salle");
+        instance.put(pieces.get("2,2"), "Cuisine");
+        instance.put(pieces.get("2,3"), "Chambre 2");
+        database.add(new HashMap<>(instance));
+        instance.put(mursEleves, true);
+        instance.put(toitureTerminee, true);
+        database.add(new HashMap<>(instance));
+
+        BooleanDatabase booleanDatabase = database.propositionalize();// on transforme en BD booléenne pour extraire
+        // les motifs et les règles
+        Set<AssociationRule<BooleanVariable>> extractedAssociationRule = (new BruteForceAssociationRuleMiner(
+                booleanDatabase)).extract(HouseDemo.MIN_FREQUENCY, HouseDemo.MIN_CONFIDENCE);
+        HouseMiner.printExtractedAssociationRule(extractedAssociationRule, HouseDemo.MIN_FREQUENCY,
+                HouseDemo.MIN_CONFIDENCE);
     }
 }

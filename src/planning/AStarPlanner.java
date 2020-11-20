@@ -37,6 +37,11 @@ public class AStarPlanner implements Planner {
     private Heuristic heuristic;
 
     /**
+     * Nombre de noeuds explorés.
+     */
+    private int numOfExploredNodes = 0;
+
+    /**
      * Constructeur par défaut.
      * 
      * @param initialState état initial
@@ -67,6 +72,11 @@ public class AStarPlanner implements Planner {
     }
 
     @Override
+    public int getNumOfExploredNodes() {
+        return this.numOfExploredNodes;
+    }
+
+    @Override
     public List<Action> plan() {
         return this.aStar();
     }
@@ -87,18 +97,25 @@ public class AStarPlanner implements Planner {
         Map<Map<Variable, Object>, Double> distance = new HashMap<>(), value = new HashMap<>();
         // List<Map<Variable, Object>> open = new ArrayList<>();
         PriorityQueue<Map<Variable, Object>> open = new PriorityQueue<>((Comparator<Map<Variable, Object>>) (state1,
-                state2) -> (Double.valueOf(distance.get(state1) + value.get(state1)))
-                        .compareTo(Double.valueOf(distance.get(state2) + value.get(state2)))); // compare les distances
-                                                                                               // et les valeurs de
-                                                                                               // l'heuristique pour
-                                                                                               // prioriser la pile
-                                                                                               // (ordre croissant)
+                state2) -> (Double.valueOf(value.get(state1))).compareTo(Double.valueOf(value.get(state2)))); // compare
+                                                                                                              // les
+                                                                                                              // distances
+                                                                                                              // et les
+                                                                                                              // valeurs
+                                                                                                              // de
+                                                                                                              // l'heuristique
+                                                                                                              // pour
+                                                                                                              // prioriser
+                                                                                                              // la pile
+                                                                                                              // (ordre
+                                                                                                              // croissant)
         open.add(this.initialState);
         father.put(this.initialState, null);
         distance.put(this.initialState, 0.0);
         value.put(this.initialState, Float.valueOf(this.heuristic.estimate(this.initialState)).doubleValue());
 
         while (open.size() != 0) { // tant qu'il reste des états ouvert
+            this.numOfExploredNodes++;
             Map<Variable, Object> instanciation = open.poll(); // prend la plus petite valeur
             if (this.goal.isSatisfiedBy(instanciation)) { // on est arrivé au but
                 return this.getBFSPlan(father, plan, instanciation); // on reconstruit le plan

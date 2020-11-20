@@ -131,7 +131,7 @@ public class HousePlanner {
         plan = HousePlanner.printExecutionTime(planner, "A*");
         HousePlanner.printPlan(plan, "Ma super villa");
 
-        // on fait en sorte que les ouvriers soient multi-thread
+        // on fait en sorte que les ouvriers soient multi-thread :)
         Set<Set<Object>> subsetsPieces = HousePlanner.allSubsets(pieceDomaine);
         Set<Set<Object>> filteredSubsets = subsetsPieces.stream().filter(item -> item.size() == 2)
                 .collect(Collectors.toSet());
@@ -171,7 +171,8 @@ public class HousePlanner {
         long begin = System.currentTimeMillis();
         List<Action> plan = planner.plan();
         long finish = System.currentTimeMillis();
-        System.out.println(plannerName + " time : " + (finish - begin) / 1000.0);
+        System.out.println(plannerName + " (Durée : " + (finish - begin) / 1000.0 + " s, Noeuds explorés : "
+                + planner.getNumOfExploredNodes() + ")");
         return plan;
     }
 

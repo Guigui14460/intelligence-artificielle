@@ -33,6 +33,11 @@ public class DijkstraPlanner implements Planner {
     private final Set<Action> actions;
 
     /**
+     * Nombre de noeuds explorés.
+     */
+    private int numOfExploredNodes = 0;
+
+    /**
      * Constructeur par défaut.
      * 
      * @param initialState état initial
@@ -67,6 +72,11 @@ public class DijkstraPlanner implements Planner {
     }
 
     @Override
+    public int getNumOfExploredNodes() {
+        return this.numOfExploredNodes;
+    }
+
+    @Override
     public List<Action> plan() {
         return this.dijkstra();
     }
@@ -92,6 +102,7 @@ public class DijkstraPlanner implements Planner {
         open.add(this.initialState);
 
         while (open.size() != 0) { // tant qu'il reste des états ouvert
+            this.numOfExploredNodes++;
             Map<Variable, Object> instanciation = open.poll(); // prend le plus petit élément
 
             if (this.goal.isSatisfiedBy(instanciation)) { // on est arrivé à un des buts
