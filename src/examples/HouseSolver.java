@@ -99,8 +99,8 @@ public class HouseSolver {
         BooleanVariable mursEleves = new BooleanVariable("Murs élevés");
         BooleanVariable toitureTerminee = new BooleanVariable("Toiture terminée");
         Map<String, Variable> pieces = new HashMap<>();
-        for (int i = 1; i <= HouseDemo.HEIGHT; i++) {
-            for (int j = 1; j <= HouseDemo.WIDTH; j++) {
+        for (int i = 1; i <= HouseSolver.HEIGHT; i++) {
+            for (int j = 1; j <= HouseSolver.WIDTH; j++) {
                 pieces.put(i + "," + j, new Variable("Pièce " + i + "," + j, new HashSet<>(pieceDomaine)));
             }
         }
