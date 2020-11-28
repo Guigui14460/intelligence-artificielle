@@ -144,8 +144,12 @@ public class HouseSolver {
      */
     public static void printResults(Map<Variable, Object> results, String houseName) {
         System.out.println("Résultats du solveur pour la maison : " + houseName);
-        for (Map.Entry<Variable, Object> entry : results.entrySet()) {
-            System.out.println(entry.getKey() + " : " + entry.getValue());
+        if (results == null) {
+            System.out.println("Aucune solution possible");
+        } else {
+            for (Map.Entry<Variable, Object> entry : results.entrySet()) {
+                System.out.println(entry.getKey() + " : " + entry.getValue());
+            }
         }
     }
 }

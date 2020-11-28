@@ -1,1 +1,1 @@
-java -cp bin:lib/\* $1
+java -cp bin:lib/\* examples.HouseDemo $1 $2 $3 $4 $5

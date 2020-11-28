@@ -64,9 +64,9 @@ public class Database {
                         map2.put(value, boolVar);
                     }
                 } else {
-                    map2.put(value, new BooleanVariable(variable.getName() + "" + value)); // avoir des variables
-                                                                                           // différentes liées à leur
-                                                                                           // nom et à leur valeur
+                    map2.put(value, new BooleanVariable(variable.getName() + " pour " + value)); // avoir des variables
+                    // différentes liées à leur
+                    // nom et à leur valeur
                 }
             }
             map.put(variable, map2);

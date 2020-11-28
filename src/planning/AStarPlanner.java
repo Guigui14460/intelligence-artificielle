@@ -95,7 +95,6 @@ public class AStarPlanner implements Planner {
         Map<Map<Variable, Object>, Map<Variable, Object>> father = new HashMap<>();
         Map<Map<Variable, Object>, Action> plan = new HashMap<>();
         Map<Map<Variable, Object>, Double> distance = new HashMap<>(), value = new HashMap<>();
-        // List<Map<Variable, Object>> open = new ArrayList<>();
         PriorityQueue<Map<Variable, Object>> open = new PriorityQueue<>((Comparator<Map<Variable, Object>>) (state1,
                 state2) -> (Double.valueOf(value.get(state1))).compareTo(Double.valueOf(value.get(state2)))); // compare
                                                                                                               // les
@@ -109,21 +108,23 @@ public class AStarPlanner implements Planner {
                                                                                                               // la pile
                                                                                                               // (ordre
                                                                                                               // croissant)
-        open.add(this.initialState);
+
         father.put(this.initialState, null);
         distance.put(this.initialState, 0.0);
         value.put(this.initialState, Float.valueOf(this.heuristic.estimate(this.initialState)).doubleValue());
+        Map<Variable, Object> next, instanciation;
+        open.add(this.initialState);
 
         while (open.size() != 0) { // tant qu'il reste des états ouvert
             this.numOfExploredNodes++;
-            Map<Variable, Object> instanciation = open.poll(); // prend la plus petite valeur
+            instanciation = open.poll(); // prend la plus petite valeur
             if (this.goal.isSatisfiedBy(instanciation)) { // on est arrivé au but
                 return this.getBFSPlan(father, plan, instanciation); // on reconstruit le plan
             }
             // on teste toutes les actions
             for (Action action : this.actions) {
                 if (action.isApplicable(instanciation)) { // si on peut appliquer l'action
-                    Map<Variable, Object> next = action.successor(instanciation);
+                    next = action.successor(instanciation);
                     if (!distance.containsKey(next)) { // si le successeur n'a pas déjà été vu
                         distance.put(next, Double.POSITIVE_INFINITY);
                     }

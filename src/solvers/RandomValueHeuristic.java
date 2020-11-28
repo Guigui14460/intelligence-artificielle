@@ -29,6 +29,9 @@ public class RandomValueHeuristic implements ValueHeuristic {
 
     @Override
     public List<Object> ordering(Variable variable, Set<Object> domain) {
+        if (domain == null) {
+            return new ArrayList<>();
+        }
         List<Object> list = new ArrayList<>(domain);
         Collections.shuffle(list, this.random);
         return list;

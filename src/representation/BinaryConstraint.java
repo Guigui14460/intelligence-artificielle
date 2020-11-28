@@ -41,7 +41,7 @@ public class BinaryConstraint implements Constraint {
         if (!map.containsKey(this.v1) || !map.containsKey(this.v2)) {
             throw new IllegalArgumentException("one of the variable is not contains in the set");
         }
-        return true;
+        return map.get(this.v1) != null && map.get(this.v2) != null;
     }
 
     /**

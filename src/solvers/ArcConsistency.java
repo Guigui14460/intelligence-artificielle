@@ -70,21 +70,21 @@ public class ArcConsistency {
         // permet de récupérer les deux variables de la contrainte
         Iterator<Variable> iterator = constraint.getScope().iterator();
         Variable var1, var2;
-        if (!iterator.hasNext()) {
+        if (!iterator.hasNext()) { // on vérifie qu'il y a la première variable
             return false;
         }
         var1 = iterator.next();
-        if (!domains.keySet().contains(var1)) {
+        if (!domains.keySet().contains(var1)) { // on vérifie la première variable est dans les domaines
             return false;
         }
-        if (!iterator.hasNext()) {
+        if (!iterator.hasNext()) { // on vérifie qu'il y a la seconde variable
             return false;
         }
         var2 = iterator.next();
-        if (!domains.keySet().contains(var2)) {
+        if (!domains.keySet().contains(var2)) { // on vérifie la seconde variable est dans les domaines
             return false;
         }
-        if (iterator.hasNext()) {
+        if (iterator.hasNext()) { // on vérifie qu'il n'y a pas d'autres variables
             return false;
         }
         // on filtre pour les couples (var1, var2) et (var2, var1)
