@@ -101,7 +101,7 @@ public class DijkstraPlanner implements Planner {
         distance.put(this.initialState, 0.0);
         open.add(this.initialState);
 
-        while (open.size() != 0) { // tant qu'il reste des états ouvert
+        while (!open.isEmpty()) { // tant qu'il reste des états ouvert
             this.numOfExploredNodes++;
             Map<Variable, Object> instanciation = open.poll(); // prend le plus petit élément
 
@@ -127,7 +127,7 @@ public class DijkstraPlanner implements Planner {
                 }
             }
         }
-        if (goals.size() == 0) { // si aucun but trouvé
+        if (goals.isEmpty()) { // si aucun but trouvé
             return null;
         }
         return this.getDijkstraPlan(father, plan, goals, distance); // meilleur plan d'actions

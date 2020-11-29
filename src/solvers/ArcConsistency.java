@@ -56,7 +56,7 @@ public class ArcConsistency {
             }
         }
         var1Domain.removeAll(objectsToDelete);
-        return objectsToDelete.size() != 0; // vérifie que la poubelle n'est pas vide (=> domaine a été changé)
+        return !objectsToDelete.isEmpty(); // vérifie que la poubelle n'est pas vide (=> domaine a été changé)
     }
 
     /**
@@ -114,7 +114,7 @@ public class ArcConsistency {
 
         // vérifie si tous les domaines sont non vides
         for (Set<Object> domain : domains.values()) {
-            if (domain.size() == 0) {
+            if (domain.isEmpty()) {
                 return false;
             }
         }

@@ -104,7 +104,7 @@ public class Apriori extends AbstractItemsetMiner {
             return null;
         }
         // si ils sont vides, on les fusionnent pas
-        if (set1.size() == 0) {
+        if (set1.isEmpty()) {
             return null;
         }
         // vérification que les k-1 premiers éléments sont les mêmes

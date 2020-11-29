@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import datamining.AssociationRule;
@@ -25,7 +26,12 @@ import representation.Constraint;
 import representation.DifferenceConstraint;
 import representation.Rule;
 import representation.Variable;
-import solvers.BacktrackAllSolver;
+import solvers.BacktrackSolver;
+import solvers.DomainSizeVariableHeuristic;
+import solvers.HeuristicMACSolver;
+import solvers.MACSolver;
+import solvers.NbConstraintsVariableHeuristic;
+import solvers.RandomValueHeuristic;
 
 /**
  * Démonstration primitive sur l'exemple de la maison du fil rouge.
@@ -150,7 +156,7 @@ public class HouseDemo {
         /*
          * Solveur
          */
-        Map<Variable, Object> solverResults = HouseSolver.solveWithHeuristicMAC(house);
+        Map<Variable, Object> solverResults = HouseSolver.solveWithBacktrack(house);
         HouseSolver.printResults(solverResults, houseName);
         HouseSolver.printHousePlan(solverResults, houseName, house, pieces);
 
@@ -240,12 +246,28 @@ public class HouseDemo {
          */
         System.out.println("#~~~~~~~~~~~~~~~~ Extraction de connaissances ~~~~~~~~~~~~~~~~#");
         Database database = new Database(house.getVariables());
-        // on crée les différences instances pour la BD
-        BacktrackAllSolver allSolver = new BacktrackAllSolver(house.getVariables(), house.getConstraints());
-        allSolver.solve();
-        for (Map<Variable, Object> instance : allSolver.getAllSolutions()) {
-            database.add(instance);
-        }
+        database.add(new BacktrackSolver(house.getVariables(), house.getConstraints()).solve());
+        database.add(new BacktrackSolver(house.getVariables(), house.getConstraints()).solve());
+        database.add(new MACSolver(house.getVariables(), house.getConstraints()).solve());
+        database.add(new MACSolver(house.getVariables(), house.getConstraints()).solve());
+        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
+                new NbConstraintsVariableHeuristic(house.getVariables(), house.getConstraints(), true),
+                new RandomValueHeuristic(new Random())).solve());
+        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
+                new NbConstraintsVariableHeuristic(house.getVariables(), house.getConstraints(), false),
+                new RandomValueHeuristic(new Random())).solve());
+        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
+                new DomainSizeVariableHeuristic(house.getVariables(), house.getConstraints(), false),
+                new RandomValueHeuristic(new Random())).solve());
+        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
+                new DomainSizeVariableHeuristic(house.getVariables(), house.getConstraints(), true),
+                new RandomValueHeuristic(new Random())).solve());
+        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
+                new NbConstraintsVariableHeuristic(house.getVariables(), house.getConstraints(), true),
+                new RandomValueHeuristic(new Random())).solve());
+        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
+                new DomainSizeVariableHeuristic(house.getVariables(), house.getConstraints(), false),
+                new RandomValueHeuristic(new Random())).solve());
 
         BooleanDatabase booleanDatabase = database.propositionalize();// on transforme en BD booléenne pour extraire les
                                                                       // motifs et les règles

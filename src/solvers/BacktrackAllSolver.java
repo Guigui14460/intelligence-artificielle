@@ -37,7 +37,7 @@ public class BacktrackAllSolver extends AbstractSolver {
     public Map<Variable, Object> solve() {
         List<Variable> notInstanciatedVariables = new ArrayList<>(this.variables);
         backtrack(new HashMap<>(), notInstanciatedVariables);
-        if (this.solutions.size() != 0) {
+        if (!this.solutions.isEmpty()) {
             return this.solutions.get(0);
         }
         return null;
@@ -68,7 +68,7 @@ public class BacktrackAllSolver extends AbstractSolver {
     private Map<Variable, Object> backtrack(Map<Variable, Object> instanciation,
             List<Variable> notInstanciatedVariables) {
         // vérifie qu'il y a des variables non instanciées dans le problème
-        if (notInstanciatedVariables.size() == 0 && this.isConsistent(instanciation)) {
+        if (notInstanciatedVariables.isEmpty() && this.isConsistent(instanciation)) {
             return instanciation;
         }
 

@@ -78,7 +78,7 @@ public class HeuristicMACSolver extends AbstractSolver {
                 notInstanciatedVariables.add(variable);
         }
 
-        if (notInstanciatedVariables.size() == 0 && this.isConsistent(instanciation)) {
+        if (notInstanciatedVariables.isEmpty() && this.isConsistent(instanciation)) {
             return instanciation;
         }
 

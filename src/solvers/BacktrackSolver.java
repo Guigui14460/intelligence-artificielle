@@ -55,7 +55,7 @@ public class BacktrackSolver extends AbstractSolver {
     private Map<Variable, Object> backtrack(Map<Variable, Object> instanciation,
             List<Variable> notInstanciatedVariables) {
         // vérifie qu'il y a des variables non instanciées dans le problème
-        if (notInstanciatedVariables.size() == 0 && this.isConsistent(instanciation)) {
+        if (notInstanciatedVariables.isEmpty() && this.isConsistent(instanciation)) {
             return instanciation;
         }
 

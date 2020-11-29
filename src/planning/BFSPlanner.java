@@ -103,7 +103,7 @@ public class BFSPlanner implements Planner {
         }
 
         // tant qu'il reste des états ouverts
-        while (open.size() != 0) {
+        while (!open.isEmpty()) {
             this.numOfExploredNodes++;
             // on défile
             Map<Variable, Object> instanciation = open.poll();
