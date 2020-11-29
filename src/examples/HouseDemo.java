@@ -94,11 +94,14 @@ public class HouseDemo {
 
         System.out.println("#~~~~~~~~~~~~~~~~ Solveur ~~~~~~~~~~~~~~~~#");
         // contraintes d'état
-        Constraint c1 = new Rule(toitureTerminee, true, mursEleves, true);
-        Constraint c2 = new Rule(mursEleves, true, dalleCoulee, true);
-        Constraint c3 = new Rule(mursEleves, true, dalleHumide, false);
-        Constraint c4 = new Rule(dalleHumide, true, dalleCoulee, true);
-        house.addConstraints(c1, c2, c3, c4);
+        Constraint c1 = new Rule(dalleCoulee, false, dalleHumide, false);
+        Constraint c2 = new Rule(dalleHumide, true, dalleCoulee, true);
+        Constraint c3 = new Rule(dalleHumide, true, mursEleves, false);
+        Constraint c4 = new Rule(mursEleves, false, toitureTerminee, false);
+        Constraint c5 = new Rule(mursEleves, true, dalleCoulee, true);
+        Constraint c6 = new Rule(mursEleves, true, dalleHumide, false);
+        Constraint c7 = new Rule(toitureTerminee, true, mursEleves, true);
+        house.addConstraints(c1, c2, c3, c4, c5, c6, c7);
 
         // pièces uniques et non vides
         List<String> keys = new ArrayList<>(pieces.keySet());
@@ -130,22 +133,17 @@ public class HouseDemo {
         }
         // contrainte pour avoir des pièces d'eau côte à côte
         for (Map.Entry<Variable, Set<Variable>> entry : pieceNotNeighbors.entrySet()) {
+            Variable v1 = entry.getKey();
             for (Variable v2 : entry.getValue()) {
-                BinaryExtensionConstraint c = new BinaryExtensionConstraint(entry.getKey(), v2);
-                for (Object value : entry.getKey().getDomain()) {
-                    if (wetRooms.contains(value)) {
-                        for (Object dryRoom : dryRooms) {
-                            c.addTuple(value, dryRoom);
-                            c.addTuple(dryRoom, value);
-                        }
-                    } else {
-                        for (Object wetRoom : wetRooms) {
-                            c.addTuple(value, wetRoom);
-                            c.addTuple(wetRoom, value);
+                BinaryExtensionConstraint c = new BinaryExtensionConstraint(v1, v2);
+                for (Object firstRoom : v1.getDomain()) {
+                    for (Object secondRoom : v2.getDomain()) {
+                        if (!wetRooms.contains(firstRoom) || !wetRooms.contains(secondRoom)) {
+                            c.addTuple(firstRoom, secondRoom);
                         }
                     }
                 }
-                // house.addConstraints(c);
+                house.addConstraints(c);
             }
         }
 

@@ -170,24 +170,26 @@ public class HouseSolver {
         } else {
             boolean onePieceAtLeast = false;
             for (int i = 1; i <= house.getLength(); i++) {
-                StringBuilder sb = new StringBuilder();
-                for (int j = 1; j <= house.getWidth(); j++) {
-                    onePieceAtLeast = true;
-                    int maxStringLength = 0;
-                    for (int k = 1; k <= house.getLength(); k++) { // on prend la longueur maximale sur la colonne
-                        String str = (String) results.get(pieces.get(j + "," + k));
-                        if (str.length() > maxStringLength) {
-                            maxStringLength = str.length();
+                if (house.getWidth() > 0) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int j = 1; j <= house.getWidth(); j++) {
+                        onePieceAtLeast = true;
+                        int maxStringLength = 0;
+                        for (int k = 1; k <= house.getLength(); k++) { // on prend la longueur maximale sur la colonne
+                            String str = (String) results.get(pieces.get(j + "," + k));
+                            if (str.length() > maxStringLength) {
+                                maxStringLength = str.length();
+                            }
                         }
+                        String pieceType = (String) results.get(pieces.get(j + "," + i));
+                        sb.append("[ " + pieceType);
+                        for (int k = pieceType.length(); k <= maxStringLength; k++) {
+                            sb.append(" ");
+                        }
+                        sb.append("] ");
                     }
-                    String pieceType = (String) results.get(pieces.get(j + "," + i));
-                    sb.append("[ " + pieceType);
-                    for (int k = pieceType.length(); k <= maxStringLength; k++) {
-                        sb.append(" ");
-                    }
-                    sb.append("] ");
+                    System.out.println(sb.toString());
                 }
-                System.out.println(sb.toString());
             }
             if (!onePieceAtLeast) {
                 System.out.println("Maison pas assez grande pour avoir une pièce");
