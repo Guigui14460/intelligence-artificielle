@@ -29,14 +29,6 @@ public class BasicGoal implements Goal {
 
     @Override
     public boolean isSatisfiedBy(Map<Variable, Object> state) {
-        // vérifie que l'instanciation but est inclue dans l'état à tester
-        for (Map.Entry<Variable, Object> entry : this.partialInstantiation.entrySet()) {
-            // vérifie que chaque variable de l'instanciation but se trouvent dans l'état
-            // et que chacun sont égaux (entre état but et état donné)
-            if (state.get(entry.getKey()) == null || !state.get(entry.getKey()).equals(entry.getValue())) {
-                return false;
-            }
-        }
-        return true;
+        return state.entrySet().containsAll(this.partialInstantiation.entrySet());
     }
 }

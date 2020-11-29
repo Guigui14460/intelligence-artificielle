@@ -16,14 +16,14 @@ import representation.BooleanVariable;
 import representation.Variable;
 
 /**
- * Démonstration d'un extracteur de connaissances sur l'exemple de la maison du
- * fil rouge.
+ * Démonstration d'un extracteur de connaissances sur un exemple précis d'une
+ * maison pour le fil rouge.
  */
 public class HouseMiner {
     /**
-     * Largeur et hauteur par défaut pour cette classe là uniquement.
+     * Largeur et longueur par défaut pour cette classe là uniquement.
      */
-    public static final int WIDTH = 3, HEIGHT = 2;
+    public static final int WIDTH = 3, LENGTH = 2;
 
     /**
      * Fréquence et confiance minimales par défaut pour cette classe là uniquement.
@@ -37,7 +37,7 @@ public class HouseMiner {
         pieceDomaine.addAll(wetRooms);
         pieceDomaine.addAll(dryRooms);
 
-        HouseExample house = new HouseExample(HouseMiner.WIDTH, HouseMiner.HEIGHT, wetRooms, dryRooms);
+        HouseExample house = new HouseExample(HouseMiner.WIDTH, HouseMiner.LENGTH, wetRooms, dryRooms);
 
         // variables de l'exemple
         BooleanVariable dalleCoulee = new BooleanVariable("Dalle coulée");
@@ -45,7 +45,7 @@ public class HouseMiner {
         BooleanVariable mursEleves = new BooleanVariable("Murs élevés");
         BooleanVariable toitureTerminee = new BooleanVariable("Toiture terminée");
         Map<String, Variable> pieces = new HashMap<>();
-        for (int i = 1; i <= HouseMiner.HEIGHT; i++) {
+        for (int i = 1; i <= HouseMiner.LENGTH; i++) {
             for (int j = 1; j <= HouseMiner.WIDTH; j++) {
                 pieces.put(i + "," + j, new Variable("Pièce " + i + "," + j, new HashSet<>(pieceDomaine)));
             }

@@ -46,14 +46,7 @@ public class BasicAction implements Action {
 
     @Override
     public boolean isApplicable(Map<Variable, Object> state) {
-        for (Map.Entry<Variable, Object> entry : this.precondition.entrySet()) {
-            // vérifie que chaque variable de la précondition se trouvent dans l'état
-            // et que chacun sont égaux (entre précondition et état)
-            if (state.get(entry.getKey()) == null || !state.get(entry.getKey()).equals(entry.getValue())) {
-                return false;
-            }
-        }
-        return true;
+        return state.entrySet().containsAll(this.precondition.entrySet());
     }
 
     @Override

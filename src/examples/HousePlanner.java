@@ -23,13 +23,14 @@ import representation.BooleanVariable;
 import representation.Variable;
 
 /**
- * Démonstration d'un planificateur sur l'exemple de la maison du fil rouge.
+ * Démonstration d'un planificateur sur un exemple précis d'une maison pour le
+ * fil rouge.
  */
 public class HousePlanner {
     /**
-     * Largeur et hauteur par défaut pour cette classe là uniquement.
+     * Largeur et longueur par défaut pour cette classe là uniquement.
      */
-    public static final int WIDTH = 3, HEIGHT = 1;
+    public static final int WIDTH = 3, LENGTH = 1;
 
     /**
      * Méthode principale.
@@ -43,7 +44,7 @@ public class HousePlanner {
         pieceDomaine.addAll(wetRooms);
         pieceDomaine.addAll(dryRooms);
 
-        HouseExample house = new HouseExample(HousePlanner.WIDTH, HousePlanner.HEIGHT, wetRooms, dryRooms);
+        HouseExample house = new HouseExample(HousePlanner.WIDTH, HousePlanner.LENGTH, wetRooms, dryRooms);
 
         // variables de l'exemple
         BooleanVariable dalleCoulee = new BooleanVariable("Dalle coulée");
@@ -52,7 +53,7 @@ public class HousePlanner {
         BooleanVariable toitureTerminee = new BooleanVariable("Toiture terminée");
         BooleanVariable toitureCommencee = new BooleanVariable("Toiture commencée");
         Map<String, Variable> pieces = new HashMap<>();
-        for (int i = 1; i <= HousePlanner.HEIGHT; i++) {
+        for (int i = 1; i <= HousePlanner.LENGTH; i++) {
             for (int j = 1; j <= HousePlanner.WIDTH; j++) {
                 pieces.put(i + "," + j, new Variable("Pièce " + i + "," + j, new HashSet<>(pieceDomaine)));
             }
@@ -183,7 +184,7 @@ public class HousePlanner {
      * @param houseName nom de la maison
      */
     public static void printPlan(List<Action> plan, String houseName) {
-        System.out.println("Plan pour construire la maison : " + houseName);
+        System.out.println("Plan de construction de la maison : " + houseName);
         if (plan == null) {
             System.out.println("Aucun plan trouvé");
             return;

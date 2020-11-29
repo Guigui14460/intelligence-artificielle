@@ -24,14 +24,14 @@ import solvers.ValueHeuristic;
 import solvers.VariableHeuristic;
 
 /**
- * Démonstration d'un solveur de contraintes sur l'exemple de la maison du fil
- * rouge.
+ * Démonstration d'un solveur de contraintes sur un exemple précis d'une maison
+ * pour le fil rouge.
  */
 public class HouseSolver {
     /**
-     * Largeur et hauteur par défaut pour cette classe là uniquement.
+     * Largeur et longueur par défaut pour cette classe là uniquement.
      */
-    public static final int WIDTH = 3, HEIGHT = 2;
+    public static final int WIDTH = 3, LENGTH = 2;
 
     /**
      * Résout le problème de maison avec l'algorithme "backtrack".
@@ -87,11 +87,11 @@ public class HouseSolver {
     public static void main(String[] args) {
         Set<String> dryRooms = new HashSet<>(Arrays.asList("Chambre 1", "Chambre 2", "Salle", "Salon"));
         Set<String> wetRooms = new HashSet<>(Arrays.asList("Cuisine", "Salle de bain"));
-        Set<Object> pieceDomaine = new HashSet<>();
-        pieceDomaine.addAll(wetRooms);
-        pieceDomaine.addAll(dryRooms);
+        Set<Object> pieceDomain = new HashSet<>();
+        pieceDomain.addAll(wetRooms);
+        pieceDomain.addAll(dryRooms);
 
-        HouseExample house = new HouseExample(HouseSolver.WIDTH, HouseSolver.HEIGHT, wetRooms, dryRooms);
+        HouseExample house = new HouseExample(HouseSolver.WIDTH, HouseSolver.LENGTH, wetRooms, dryRooms);
 
         // variables de l'exemple
         BooleanVariable dalleCoulee = new BooleanVariable("Dalle coulée");
@@ -99,9 +99,9 @@ public class HouseSolver {
         BooleanVariable mursEleves = new BooleanVariable("Murs élevés");
         BooleanVariable toitureTerminee = new BooleanVariable("Toiture terminée");
         Map<String, Variable> pieces = new HashMap<>();
-        for (int i = 1; i <= HouseSolver.HEIGHT; i++) {
+        for (int i = 1; i <= HouseSolver.LENGTH; i++) {
             for (int j = 1; j <= HouseSolver.WIDTH; j++) {
-                pieces.put(i + "," + j, new Variable("Pièce " + i + "," + j, new HashSet<>(pieceDomaine)));
+                pieces.put(i + "," + j, new Variable("Pièce " + i + "," + j, new HashSet<>(pieceDomain)));
             }
         }
 
@@ -149,6 +149,48 @@ public class HouseSolver {
         } else {
             for (Map.Entry<Variable, Object> entry : results.entrySet()) {
                 System.out.println(entry.getKey() + " : " + entry.getValue());
+            }
+        }
+    }
+
+    /**
+     * Méthode permettant d'afficher proprement les pièces de la maison.
+     * 
+     * @param results   résultats
+     * @param houseName nom de la maison
+     * @param house     maison
+     * @param pieces    dictionnaire de pièces pour faciliter la récupération des
+     *                  pièces
+     */
+    public static final void printHousePlan(Map<Variable, Object> results, String houseName, HouseExample house,
+            Map<String, Variable> pieces) {
+        System.out.println("Plan de la maison : " + houseName);
+        if (results == null) {
+            System.out.println("Pas de plan de maison possible");
+        } else {
+            boolean onePieceAtLeast = false;
+            for (int i = 1; i <= house.getLength(); i++) {
+                StringBuilder sb = new StringBuilder();
+                for (int j = 1; j <= house.getWidth(); j++) {
+                    onePieceAtLeast = true;
+                    int maxStringLength = 0;
+                    for (int k = 1; k <= house.getLength(); k++) { // on prend la longueur maximale sur la colonne
+                        String str = (String) results.get(pieces.get(j + "," + k));
+                        if (str.length() > maxStringLength) {
+                            maxStringLength = str.length();
+                        }
+                    }
+                    String pieceType = (String) results.get(pieces.get(j + "," + i));
+                    sb.append("[ " + pieceType);
+                    for (int k = pieceType.length(); k <= maxStringLength; k++) {
+                        sb.append(" ");
+                    }
+                    sb.append("] ");
+                }
+                System.out.println(sb.toString());
+            }
+            if (!onePieceAtLeast) {
+                System.out.println("Maison pas assez grande pour avoir une pièce");
             }
         }
     }

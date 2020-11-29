@@ -27,7 +27,7 @@ public class DifferenceConstraint implements Constraint {
 
     @Override
     public String toString() {
-        return "DifferenceConstraint[v1=" + this.v1 + ", v2=" + this.v2 + "]";
+        return "DifferenceConstraint[" + this.v1 + " != " + this.v2 + "]";
     }
 
     @Override

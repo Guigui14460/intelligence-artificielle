@@ -27,7 +27,7 @@ public class BinaryConstraint implements Constraint {
 
     @Override
     public String toString() {
-        return "BinaryConstraint[v1=" + this.v1 + ", v2=" + this.v2 + "]";
+        return "BinaryConstraint[" + this.v1 + " && " + this.v2 + "]";
     }
 
     @Override

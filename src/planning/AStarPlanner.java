@@ -112,10 +112,10 @@ public class AStarPlanner implements Planner {
         father.put(this.initialState, null);
         distance.put(this.initialState, 0.0);
         value.put(this.initialState, Float.valueOf(this.heuristic.estimate(this.initialState)).doubleValue());
-        Map<Variable, Object> next, instanciation;
         open.add(this.initialState);
 
-        while (open.size() != 0) { // tant qu'il reste des états ouvert
+        Map<Variable, Object> next, instanciation;
+        while (!open.isEmpty()) { // tant qu'il reste des états ouvert
             this.numOfExploredNodes++;
             instanciation = open.poll(); // prend la plus petite valeur
             if (this.goal.isSatisfiedBy(instanciation)) { // on est arrivé au but

@@ -42,8 +42,8 @@ public class Rule implements Constraint {
 
     @Override
     public String toString() {
-        return "Rule[var1=" + this.var1 + ", var2=" + this.var2 + ", isPositive1=" + this.isPositive1 + ", isPositive2="
-                + this.isPositive2 + "]";
+        return "Rule[" + (this.isPositive1 ? "" : "!") + this.var1 + " => " + (this.isPositive2 ? "" : "!") + this.var2
+                + "]";
     }
 
     @Override
