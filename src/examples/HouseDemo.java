@@ -211,8 +211,8 @@ public class HouseDemo {
             precondition = new HashMap<>();
             precondition.put(dalleCoulee, true);
             precondition.put(dalleHumide, false);
-            for (Object nomPiece : pieceDomain) {
-                for (Variable position : pieces.values()) {
+            for (Variable position : pieces.values()) {
+                for (Object nomPiece : position.getDomain()) {
                     Map<Variable, Object> preconditionCopy = new HashMap<>(precondition);
                     preconditionCopy.put(position, null);
                     effect = new HashMap<>();
