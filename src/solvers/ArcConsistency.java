@@ -24,7 +24,7 @@ public class ArcConsistency {
      * 
      * @param constraints ensemble de contraintes
      */
-    public ArcConsistency(Set<Constraint> constraints) {
+    public ArcConsistency(final Set<Constraint> constraints) {
         this.constraints = constraints;
     }
 

@@ -18,7 +18,7 @@ public class BasicGoal implements Goal {
      * 
      * @param partialInstantiation instanciation à atteindre
      */
-    public BasicGoal(Map<Variable, Object> partialInstantiation) {
+    public BasicGoal(final Map<Variable, Object> partialInstantiation) {
         this.partialInstantiation = partialInstantiation;
     }
 

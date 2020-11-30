@@ -17,19 +17,19 @@ public class Database {
     /**
      * Liste d'instance.
      */
-    private List<Map<Variable, Object>> instances;
+    private final List<Map<Variable, Object>> instances;
 
     /**
      * L'ensemble des variables possibles du problème.
      */
-    private Set<Variable> variables;
+    private final Set<Variable> variables;
 
     /**
      * Constructeur par défaut.
      * 
      * @param variables l'ensemble des variables possibles du problème
      */
-    public Database(Set<Variable> variables) {
+    public Database(final Set<Variable> variables) {
         this.variables = variables;
         this.instances = new ArrayList<>();
     }

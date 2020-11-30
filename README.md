@@ -27,7 +27,7 @@ Les commandes principales sont :
 
 - `$ ./compile.sh` pour compiler le projet
 - `$ ./test.sh` pour lancer l'exécution des tests
-- `$ ./run.sh <width> <length> <minFrequency> <minConfidence> [<houseName>]` pour lancer l'exécution de la classe de démonstration
+- `$ ./run.sh <width> <length> <number_instance_database> <minFrequency> <minConfidence> [<houseName>]` pour lancer l'exécution de la classe de démonstration
 - `$ ./run_class.sh <package.className>` pour lancer l'exécution d'une classe particulière (seules sont exécutables : examples.HouseSolver, examples.HousePlanner, examples.HouseMiner)
 - `$ ./doc.sh` pour compiler la documentation du projet
 

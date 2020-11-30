@@ -21,7 +21,8 @@ public class NamedAction extends BasicAction {
      * @param effect       effet à appliquer sur l'état
      * @param cost         coût de l'action
      */
-    public NamedAction(String name, Map<Variable, Object> precondition, Map<Variable, Object> effect, int cost) {
+    public NamedAction(final String name, final Map<Variable, Object> precondition, final Map<Variable, Object> effect,
+            final int cost) {
         super(precondition, effect, cost);
         this.name = name;
     }

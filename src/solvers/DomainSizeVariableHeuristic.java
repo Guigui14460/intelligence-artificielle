@@ -38,7 +38,8 @@ public class DomainSizeVariableHeuristic implements VariableHeuristic {
      * @param greatest    booléen représentant une préférence au niveau du choix de
      *                    classement
      */
-    public DomainSizeVariableHeuristic(Set<Variable> variables, Set<Constraint> constraints, boolean greatest) {
+    public DomainSizeVariableHeuristic(final Set<Variable> variables, final Set<Constraint> constraints,
+            final boolean greatest) {
         this.variables = variables;
         this.constraints = constraints;
         this.greatest = greatest;

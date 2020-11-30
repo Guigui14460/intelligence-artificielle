@@ -23,7 +23,7 @@ public class RandomValueHeuristic implements ValueHeuristic {
      * @param random instance d'un objet permettant d'utiliser un générateur
      *               pseudo-aléatoire
      */
-    public RandomValueHeuristic(Random random) {
+    public RandomValueHeuristic(final Random random) {
         this.random = random;
     }
 

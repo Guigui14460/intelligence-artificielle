@@ -11,13 +11,13 @@ public class Itemset {
     /**
      * Ensemble de variables.
      */
-    private Set<BooleanVariable> items;
+    private final Set<BooleanVariable> items;
 
     /**
      * Fréquence d'apparition de l'ensemble de variables dans la base de données
      * transactionnelle.
      */
-    private float frequency;
+    private final float frequency;
 
     /**
      * Constructeur par défaut.
@@ -26,7 +26,7 @@ public class Itemset {
      * @param frequency fréquence d'apparition de l'ensemble de variables dans la
      *                  base de données transactionnelle
      */
-    public Itemset(Set<BooleanVariable> items, float frequency) {
+    public Itemset(final Set<BooleanVariable> items, final float frequency) {
         this.items = items;
         this.frequency = frequency;
     }

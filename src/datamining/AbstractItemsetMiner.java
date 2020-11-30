@@ -18,14 +18,14 @@ public abstract class AbstractItemsetMiner implements ItemsetMiner {
     /**
      * Base de données transactionnelle booléenne.
      */
-    protected BooleanDatabase database;
+    protected final BooleanDatabase database;
 
     /**
      * Contructeur par défaut.
      * 
      * @param database base de données à utiliser
      */
-    public AbstractItemsetMiner(BooleanDatabase database) {
+    public AbstractItemsetMiner(final BooleanDatabase database) {
         this.database = database;
     }
 

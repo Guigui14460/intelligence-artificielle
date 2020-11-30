@@ -23,7 +23,7 @@ public class Variable {
      * @param name   nom de la variable
      * @param domain ensemble de valeurs possibles pour instancier la variable
      */
-    public Variable(String name, Set<Object> domain) {
+    public Variable(final String name, final Set<Object> domain) {
         this.name = name;
         this.domain = domain;
     }

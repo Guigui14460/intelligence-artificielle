@@ -33,7 +33,8 @@ public class Rule implements Constraint {
      * @param isPositive2 booléen pour la valeur de la seconde variable de la
      *                    contrainte
      */
-    public Rule(BooleanVariable var1, boolean isPositive1, BooleanVariable var2, boolean isPositive2) {
+    public Rule(final BooleanVariable var1, final boolean isPositive1, final BooleanVariable var2,
+            final boolean isPositive2) {
         this.var1 = var1;
         this.var2 = var2;
         this.isPositive1 = isPositive1;

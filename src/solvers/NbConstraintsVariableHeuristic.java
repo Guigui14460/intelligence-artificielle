@@ -39,7 +39,8 @@ public class NbConstraintsVariableHeuristic implements VariableHeuristic {
      * @param most        booléen représentant une préférence au niveau du choix de
      *                    classement
      */
-    public NbConstraintsVariableHeuristic(Set<Variable> variables, Set<Constraint> constraints, boolean most) {
+    public NbConstraintsVariableHeuristic(final Set<Variable> variables, final Set<Constraint> constraints,
+            final boolean most) {
         this.variables = variables;
         this.constraints = constraints;
         this.most = most;

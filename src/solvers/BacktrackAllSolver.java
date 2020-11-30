@@ -20,7 +20,7 @@ public class BacktrackAllSolver extends AbstractSolver {
     /**
      * Liste contenant toutes les solutions du problème.
      */
-    private List<Map<Variable, Object>> solutions;
+    private final List<Map<Variable, Object>> solutions;
 
     /**
      * Constructeur par défaut.
@@ -28,13 +28,13 @@ public class BacktrackAllSolver extends AbstractSolver {
      * @param variables   ensemble de variables
      * @param constraints ensemble de contraintes
      */
-    public BacktrackAllSolver(Set<Variable> variables, Set<Constraint> constraints) {
+    public BacktrackAllSolver(final Set<Variable> variables, final Set<Constraint> constraints) {
         super(variables, constraints);
         this.solutions = new ArrayList<>();
     }
 
     @Override
-    public Map<Variable, Object> solve() {
+    public final Map<Variable, Object> solve() {
         List<Variable> notInstanciatedVariables = new ArrayList<>(this.variables);
         backtrack(new HashMap<>(), notInstanciatedVariables);
         if (!this.solutions.isEmpty()) {

@@ -19,22 +19,22 @@ public class AStarPlanner implements Planner {
     /**
      * État initial du planificateur.
      */
-    private Map<Variable, Object> initialState;
+    private final Map<Variable, Object> initialState;
 
     /**
      * But à atteindre.
      */
-    private Goal goal;
+    private final Goal goal;
 
     /**
      * Ensemble d'actions pouvant être effectuées.
      */
-    private Set<Action> actions;
+    private final Set<Action> actions;
 
     /**
      * Heuristique utilisé pour optimiser l'algorithme de recherche de plan.
      */
-    private Heuristic heuristic;
+    private final Heuristic heuristic;
 
     /**
      * Nombre de noeuds explorés.
@@ -49,7 +49,8 @@ public class AStarPlanner implements Planner {
      * @param goal         but à atteindre
      * @param heuristic    heuristique
      */
-    public AStarPlanner(Map<Variable, Object> initialState, Set<Action> actions, Goal goal, Heuristic heuristic) {
+    public AStarPlanner(final Map<Variable, Object> initialState, final Set<Action> actions, final Goal goal,
+            final Heuristic heuristic) {
         this.initialState = initialState;
         this.actions = actions;
         this.goal = goal;
@@ -77,7 +78,7 @@ public class AStarPlanner implements Planner {
     }
 
     @Override
-    public List<Action> plan() {
+    public final List<Action> plan() {
         return this.aStar();
     }
 

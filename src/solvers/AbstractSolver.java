@@ -28,7 +28,7 @@ public abstract class AbstractSolver implements Solver {
      * @param variables   ensemble de variables du problème
      * @param constraints ensemble de contraintes à satisfaire
      */
-    public AbstractSolver(Set<Variable> variables, Set<Constraint> constraints) {
+    public AbstractSolver(final Set<Variable> variables, final Set<Constraint> constraints) {
         this.variables = variables;
         this.constraints = constraints;
     }

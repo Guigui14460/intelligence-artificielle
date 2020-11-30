@@ -44,7 +44,7 @@ public class DijkstraPlanner implements Planner {
      * @param actions      ensemble d'actions pouvant être effectuées
      * @param goal         but à atteindre
      */
-    public DijkstraPlanner(Map<Variable, Object> initialState, Set<Action> actions, Goal goal) {
+    public DijkstraPlanner(final Map<Variable, Object> initialState, final Set<Action> actions, final Goal goal) {
         this.initialState = initialState;
         this.actions = actions;
         this.goal = goal;
@@ -77,7 +77,7 @@ public class DijkstraPlanner implements Planner {
     }
 
     @Override
-    public List<Action> plan() {
+    public final List<Action> plan() {
         return this.dijkstra();
     }
 

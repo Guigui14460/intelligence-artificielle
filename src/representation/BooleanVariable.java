@@ -12,7 +12,7 @@ public class BooleanVariable extends Variable {
      * 
      * @param name nom de la variable
      */
-    public BooleanVariable(String name) {
+    public BooleanVariable(final String name) {
         super(name, new HashSet<Object>(Arrays.asList(true, false)));
     }
 

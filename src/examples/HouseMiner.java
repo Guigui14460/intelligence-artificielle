@@ -169,7 +169,7 @@ public class HouseMiner {
      * @param itemsets     motifs
      * @param minFrequency fréquence minimale donnée à l'extracteur
      */
-    public static void printExtractedItemsets(Set<Itemset> itemsets, float minFrequency) {
+    public static final void printExtractedItemsets(Set<Itemset> itemsets, float minFrequency) {
         System.out.println(
                 "Il y a " + itemsets.size() + " motifs ayant une fréquence supérieure ou égale à " + minFrequency);
         for (Itemset itemset : itemsets) {
@@ -184,8 +184,8 @@ public class HouseMiner {
      * @param minFrequency  fréquence minimale donnée à l'extracteur
      * @param minConfidence confiance minimale donnée à l'extracteur
      */
-    public static void printExtractedAssociationRule(Set<AssociationRule<BooleanVariable>> rules, float minFrequency,
-            float minConfidence) {
+    public static final void printExtractedAssociationRule(Set<AssociationRule<BooleanVariable>> rules,
+            float minFrequency, float minConfidence) {
         System.out.println("Il y a " + rules.size() + " règles associatives ayant une fréquence supérieure ou égale à "
                 + minFrequency + " une confiance supérieure ou égale à " + minConfidence);
         for (AssociationRule<BooleanVariable> rule : rules) {

@@ -104,33 +104,63 @@ public class HouseSolver {
                 pieces.put(i + "," + j, new Variable("Pièce " + i + "," + j, new HashSet<>(pieceDomain)));
             }
         }
-
-        // contraintes de l'exemple
-        Constraint c1 = new Rule(toitureTerminee, true, mursEleves, true);
-        Constraint c2 = new Rule(mursEleves, true, dalleCoulee, true);
-        Constraint c3 = new Rule(mursEleves, true, dalleHumide, false);
-        Constraint c4 = new Rule(dalleHumide, true, dalleCoulee, true);
-        List<String> keys = new ArrayList<>(pieces.keySet());
-        for (int i = 0; i < keys.size(); i++) {
-            for (int j = i + 1; j < keys.size(); j++) {
-                house.addConstraints(new DifferenceConstraint(pieces.get(keys.get(i)), pieces.get(keys.get(j))));
-            }
-        }
-        BinaryExtensionConstraint c5 = new BinaryExtensionConstraint(pieces.get("2,1"), pieces.get("1,3"));
-        c5.addTuple("Salle de bain", "Chambre 1");
-        c5.addTuple("Chambre 1", "Cuisine");
-        c5.addTuple("Salle de bain", "Chambre 2");
-        c5.addTuple("Salle de bain", "Chambre 1");
-        BinaryExtensionConstraint c6 = new BinaryExtensionConstraint(pieces.get("2,3"), pieces.get("1,1"));
-        c6.addTuple("Salle de bain", "Chambre 1");
-        c6.addTuple("Chambre 1", "Cuisine");
-        c6.addTuple("Salle de bain", "Chambre 2");
-        c6.addTuple("Salle de bain", "Chambre 1");
-
-        // on ajoute les vars et les cons au problème
         house.addVariables(dalleCoulee, dalleHumide, mursEleves, toitureTerminee);
         house.addVariables(pieces.values());
-        house.addConstraints(c1, c2, c3, c4, c5, c6);
+
+        // contraintes d'état
+        Constraint c1 = new Rule(dalleCoulee, false, dalleHumide, false);
+        Constraint c2 = new Rule(dalleHumide, true, dalleCoulee, true);
+        Constraint c3 = new Rule(dalleHumide, true, mursEleves, false);
+        Constraint c4 = new Rule(mursEleves, false, toitureTerminee, false);
+        Constraint c5 = new Rule(mursEleves, true, dalleCoulee, true);
+        Constraint c6 = new Rule(mursEleves, true, dalleHumide, false);
+        Constraint c7 = new Rule(toitureTerminee, true, mursEleves, true);
+        house.addConstraints(c1, c2, c3, c4, c5, c6, c7);
+        // pièces uniques et non vides
+        List<String> keys = new ArrayList<>(pieces.keySet());
+        for (int i = 0; i < keys.size(); i++) {
+            Variable v1 = pieces.get(keys.get(i));
+            house.addConstraints(new DifferenceConstraint(v1, null));
+            for (int j = i + 1; j < keys.size(); j++) {
+                house.addConstraints(new DifferenceConstraint(v1, pieces.get(keys.get(j))));
+            }
+        }
+
+        // on récupère les pièces qui ne sont pas voisines
+        Map<Variable, Set<Variable>> pieceNotNeighbors = new HashMap<>();
+        for (int x = 1; x <= HouseSolver.WIDTH; x++) {
+            for (int y = 1; y <= HouseSolver.LENGTH; y++) {
+                Variable variable = pieces.get(x + "," + y);
+                if (variable != null) {
+                    Set<Variable> notNeighbors = new HashSet<>();
+                    for (int i = 1; i <= HouseSolver.WIDTH; i++) {
+                        for (int j = 1; j <= HouseSolver.LENGTH; j++) {
+                            if (i < x - 1 || i > x + 1 || j < y - 1 || j > y + 1) {
+                                notNeighbors.add(pieces.get(i + "," + j));
+                            }
+                        }
+                    }
+                    pieceNotNeighbors.put(variable, notNeighbors);
+                }
+            }
+        }
+        // contrainte pour avoir des pièces d'eau côte à côte
+        for (Map.Entry<Variable, Set<Variable>> entry : pieceNotNeighbors.entrySet()) {
+            Variable v1 = entry.getKey();
+            for (Variable v2 : entry.getValue()) {
+                BinaryExtensionConstraint c = new BinaryExtensionConstraint(v1, v2);
+                for (Object firstRoom : v1.getDomain()) {
+                    for (Object secondRoom : v2.getDomain()) {
+                        if (!wetRooms.contains(firstRoom) || !wetRooms.contains(secondRoom)) { // si au moins une des
+                                                                                               // deux pièces n'est pas
+                                                                                               // une pièce d'eau
+                            c.addTuple(firstRoom, secondRoom);
+                        }
+                    }
+                }
+                house.addConstraints(c);
+            }
+        }
 
         Map<Variable, Object> result = HouseSolver.solveWithHeuristicMAC(house);
         HouseSolver.printResults(result, "Ma super villa");
@@ -142,7 +172,7 @@ public class HouseSolver {
      * @param results   résultats
      * @param houseName nom de la maison
      */
-    public static void printResults(Map<Variable, Object> results, String houseName) {
+    public static final void printResults(Map<Variable, Object> results, String houseName) {
         System.out.println("Résultats du solveur pour la maison : " + houseName);
         if (results == null) {
             System.out.println("Aucune solution possible");

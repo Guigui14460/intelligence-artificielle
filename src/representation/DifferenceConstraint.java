@@ -20,7 +20,7 @@ public class DifferenceConstraint implements Constraint {
      * @param v1 première variable
      * @param v2 deuxième variable
      */
-    public DifferenceConstraint(Variable v1, Variable v2) {
+    public DifferenceConstraint(final Variable v1, final Variable v2) {
         this.v1 = v1;
         this.v2 = v2;
     }

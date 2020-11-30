@@ -12,14 +12,14 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
     /**
      * Base de données transactionnelles.
      */
-    protected BooleanDatabase database;
+    protected final BooleanDatabase database;
 
     /**
      * Constructeur par défaut.
      * 
      * @param database base de données transactionnelles
      */
-    public AbstractAssociationRuleMiner(BooleanDatabase database) {
+    public AbstractAssociationRuleMiner(final BooleanDatabase database) {
         this.database = database;
     }
 
@@ -35,7 +35,7 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
      * @param itemsets ensemble de motifs
      * @return fréquence de {@code itemset} dans {@code itemsets}
      */
-    public static float frequency(Set<BooleanVariable> itemset, Set<Itemset> itemsets) {
+    public static final float frequency(Set<BooleanVariable> itemset, Set<Itemset> itemsets) {
         for (Itemset transaction : itemsets) {
             if (itemset.equals(transaction.getItems())) { // on prend que si c'est exactement égal
                 return transaction.getFrequency();
@@ -53,7 +53,7 @@ public abstract class AbstractAssociationRuleMiner implements AssociationRuleMin
      * @param itemsets   ensemble de motifs
      * @return confiance de la règle d'association
      */
-    public static float confidence(Set<BooleanVariable> premise, Set<BooleanVariable> conclusion,
+    public static final float confidence(Set<BooleanVariable> premise, Set<BooleanVariable> conclusion,
             Set<Itemset> itemsets) {
         float premiseFreq = 0, ruleFreq = 0;
         for (Itemset itemset : itemsets) {

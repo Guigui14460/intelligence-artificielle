@@ -16,7 +16,7 @@ public class BruteForceAssociationRuleMiner extends AbstractAssociationRuleMiner
      * 
      * @param database base de données transactionnelles
      */
-    public BruteForceAssociationRuleMiner(BooleanDatabase database) {
+    public BruteForceAssociationRuleMiner(final BooleanDatabase database) {
         super(database);
     }
 
@@ -60,7 +60,7 @@ public class BruteForceAssociationRuleMiner extends AbstractAssociationRuleMiner
      * @param itemset motif
      * @return l'ensemble de ses sous-ensembles
      */
-    public static Set<Set<BooleanVariable>> allCandidatePremises(Set<BooleanVariable> itemset) {
+    public static final Set<Set<BooleanVariable>> allCandidatePremises(Set<BooleanVariable> itemset) {
         Set<Set<BooleanVariable>> subsets = new HashSet<>();
         int max = 1 << itemset.size(); // 2 puissance N
         for (int i = 0; i < max; i++) { // génère tous les sous-ensembles

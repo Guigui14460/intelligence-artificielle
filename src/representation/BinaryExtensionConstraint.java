@@ -27,7 +27,7 @@ public class BinaryExtensionConstraint implements Constraint {
      * @param v1 première variable de la contrainte
      * @param v2 seconde variable de la contrainte
      */
-    public BinaryExtensionConstraint(Variable v1, Variable v2) {
+    public BinaryExtensionConstraint(final Variable v1, final Variable v2) {
         this.v1 = v1;
         this.v2 = v2;
     }

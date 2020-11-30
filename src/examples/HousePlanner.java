@@ -18,6 +18,7 @@ import planning.DFSPlanner;
 import planning.DijkstraPlanner;
 import planning.Goal;
 import planning.Heuristic;
+import planning.NamedAction;
 import planning.Planner;
 import representation.BooleanVariable;
 import representation.Variable;
@@ -168,7 +169,7 @@ public class HousePlanner {
      * @param planner planificateur
      * @return plan trouvé
      */
-    public static List<Action> printExecutionTime(Planner planner, String plannerName) {
+    public static final List<Action> printExecutionTime(Planner planner, String plannerName) {
         long begin = System.currentTimeMillis();
         List<Action> plan = planner.plan();
         long finish = System.currentTimeMillis();
@@ -183,7 +184,7 @@ public class HousePlanner {
      * @param plan      plan trouvé
      * @param houseName nom de la maison
      */
-    public static void printPlan(List<Action> plan, String houseName) {
+    public static final void printPlan(List<Action> plan, String houseName) {
         System.out.println("Plan de construction de la maison : " + houseName);
         if (plan == null) {
             System.out.println("Aucun plan trouvé");
@@ -192,10 +193,14 @@ public class HousePlanner {
         System.out.println("Nombre d'actions à effectuer : " + plan.size());
         int cost = 0;
         for (Action action : plan) {
-            System.out.println(action);
+            if (action instanceof NamedAction) {
+                System.out.print("--> " + ((NamedAction) action).getName() + " ");
+            } else {
+                System.out.print("--> " + action + " ");
+            }
             cost += action.getCost();
         }
-        System.out.println("Coût du plan : " + cost);
+        System.out.println("\nCoût du plan : " + cost);
     }
 
     /**
@@ -204,7 +209,7 @@ public class HousePlanner {
      * @param objects ensemble d'objets
      * @return l'ensemble de ses sous-ensembles
      */
-    public static Set<Set<Object>> allSubsets(Set<Object> objects) {
+    public static final Set<Set<Object>> allSubsets(Set<Object> objects) {
         Set<Set<Object>> subsets = new HashSet<>();
         int max = 1 << objects.size(); // 2 puissance N
         for (int i = 0; i < max; i++) { // génère tous les sous-ensembles

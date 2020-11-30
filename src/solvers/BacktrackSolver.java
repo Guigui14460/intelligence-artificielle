@@ -20,12 +20,12 @@ public class BacktrackSolver extends AbstractSolver {
      * @param variables   ensemble de variables
      * @param constraints ensemble de contraintes
      */
-    public BacktrackSolver(Set<Variable> variables, Set<Constraint> constraints) {
+    public BacktrackSolver(final Set<Variable> variables, final Set<Constraint> constraints) {
         super(variables, constraints);
     }
 
     @Override
-    public Map<Variable, Object> solve() {
+    public final Map<Variable, Object> solve() {
         List<Variable> notInstanciatedVariables = new ArrayList<>(this.variables);
         return backtrack(new HashMap<>(), notInstanciatedVariables);
     }

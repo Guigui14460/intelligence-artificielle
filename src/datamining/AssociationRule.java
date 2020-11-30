@@ -9,22 +9,22 @@ public class AssociationRule<E> {
     /**
      * Représente la prémisse de cette règle d'association.
      */
-    private Set<E> premise;
+    private final Set<E> premise;
 
     /**
      * Représente la conclusion de cette règle d'association.
      */
-    private Set<E> conclusion;
+    private final Set<E> conclusion;
 
     /**
      * Représente la fréquence d'apparition de cette règle dans les transactions.
      */
-    private float frequency;
+    private final float frequency;
 
     /**
      * Représente la confiance dans cette règle.
      */
-    private float confidence;
+    private final float confidence;
 
     /**
      * Constructeur par défaut.
@@ -34,7 +34,8 @@ public class AssociationRule<E> {
      * @param frequency  fréquence d'apparition dans la base de données
      * @param confidence confiance de la règle
      */
-    public AssociationRule(Set<E> premise, Set<E> conclusion, float frequency, float confidence) {
+    public AssociationRule(final Set<E> premise, final Set<E> conclusion, final float frequency,
+            final float confidence) {
         this.premise = premise;
         this.conclusion = conclusion;
         this.frequency = frequency;

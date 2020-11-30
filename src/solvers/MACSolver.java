@@ -21,12 +21,12 @@ public class MACSolver extends AbstractSolver {
      * @param variables   ensemble de variables
      * @param constraints ensemble de contraintes
      */
-    public MACSolver(Set<Variable> variables, Set<Constraint> constraints) {
+    public MACSolver(final Set<Variable> variables, final Set<Constraint> constraints) {
         super(variables, constraints);
     }
 
     @Override
-    public Map<Variable, Object> solve() {
+    public final Map<Variable, Object> solve() {
         Map<Variable, Set<Object>> domains = new HashMap<>();
         for (Variable variable : this.variables) {
             domains.put(variable, new HashSet<>(variable.getDomain()));

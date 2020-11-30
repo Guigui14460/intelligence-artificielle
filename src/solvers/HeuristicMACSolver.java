@@ -33,15 +33,15 @@ public class HeuristicMACSolver extends AbstractSolver {
      * @param variableHeuristic heuristique sur les variables
      * @param valueHeuristic    heuristique sur les valeurs
      */
-    public HeuristicMACSolver(Set<Variable> variables, Set<Constraint> constraints, VariableHeuristic variableHeuristic,
-            ValueHeuristic valueHeuristic) {
+    public HeuristicMACSolver(final Set<Variable> variables, final Set<Constraint> constraints,
+            final VariableHeuristic variableHeuristic, ValueHeuristic valueHeuristic) {
         super(variables, constraints);
         this.variableHeuristic = variableHeuristic;
         this.valueHeuristic = valueHeuristic;
     }
 
     @Override
-    public Map<Variable, Object> solve() {
+    public final Map<Variable, Object> solve() {
         Map<Variable, Set<Object>> domains = new HashMap<>();
         for (Variable var : this.variables) {
             domains.put(var, var.getDomain());

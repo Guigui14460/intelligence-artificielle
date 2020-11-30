@@ -26,12 +26,11 @@ import representation.Constraint;
 import representation.DifferenceConstraint;
 import representation.Rule;
 import representation.Variable;
-import solvers.BacktrackSolver;
 import solvers.DomainSizeVariableHeuristic;
 import solvers.HeuristicMACSolver;
-import solvers.MACSolver;
 import solvers.NbConstraintsVariableHeuristic;
 import solvers.RandomValueHeuristic;
+import solvers.Solver;
 
 /**
  * Démonstration primitive sur l'exemple de la maison du fil rouge.
@@ -45,19 +44,20 @@ public class HouseDemo {
     public static void main(String[] args) {
         System.out.println("#~~~~~~~~~~~~~~~~ Vérification arguments ~~~~~~~~~~~~~~~~#");
         String houseName = "NoBodyHouse";
-        if (args.length < 4) {
+        if (args.length < 5) {
             System.err.println(
-                    "Usage : java [options] examples.HouseDemo <width> <length> <minFrequency> <minConfidence> [<houseName>]");
+                    "Usage : java [options] examples.HouseDemo <width> <length> <number_instance_database> <minFrequency> <minConfidence> [<houseName>]");
             System.exit(1);
         }
-        if (args.length >= 5) {
+        if (args.length > 5) {
             houseName = "";
-            for (int i = 4; i < args.length; i++) {
+            for (int i = 5; i < args.length; i++) {
                 houseName += args[i] + " ";
             }
         }
-        int width = Integer.parseInt(args[0]), length = Integer.parseInt(args[1]);
-        float minFrequency = Float.parseFloat(args[2]), minConfidence = Float.parseFloat(args[3]);
+        int width = Integer.parseInt(args[0]), length = Integer.parseInt(args[1]),
+                numberInstanceDatabase = Integer.parseInt(args[2]);
+        float minFrequency = Float.parseFloat(args[3]), minConfidence = Float.parseFloat(args[4]);
 
         System.out.println("#~~~~~~~~~~~~~~~~ Génération des types de pièce ~~~~~~~~~~~~~~~~#");
         List<String> dryRooms = new ArrayList<>(
@@ -144,7 +144,9 @@ public class HouseDemo {
                 BinaryExtensionConstraint c = new BinaryExtensionConstraint(v1, v2);
                 for (Object firstRoom : v1.getDomain()) {
                     for (Object secondRoom : v2.getDomain()) {
-                        if (!wetRooms.contains(firstRoom) || !wetRooms.contains(secondRoom)) {
+                        if (!wetRooms.contains(firstRoom) || !wetRooms.contains(secondRoom)) { // si au moins une des
+                                                                                               // deux pièces n'est pas
+                                                                                               // une pièce d'eau
                             c.addTuple(firstRoom, secondRoom);
                         }
                     }
@@ -215,7 +217,8 @@ public class HouseDemo {
                     preconditionCopy.put(position, null);
                     effect = new HashMap<>();
                     effect.put(position, nomPiece);
-                    actions.add(new NamedAction("Placer \"" + nomPiece + "\" à l'emplacement " + position.getName(),
+                    actions.add(new NamedAction(
+                            "Placer \"" + nomPiece + "\" à l'emplacement \"" + position.getName() + "\"",
                             preconditionCopy, effect, (position.getDomain().contains(nomPiece) ? 2 : 5)));
                 }
             }
@@ -246,28 +249,16 @@ public class HouseDemo {
          */
         System.out.println("#~~~~~~~~~~~~~~~~ Extraction de connaissances ~~~~~~~~~~~~~~~~#");
         Database database = new Database(house.getVariables());
-        database.add(new BacktrackSolver(house.getVariables(), house.getConstraints()).solve());
-        database.add(new BacktrackSolver(house.getVariables(), house.getConstraints()).solve());
-        database.add(new MACSolver(house.getVariables(), house.getConstraints()).solve());
-        database.add(new MACSolver(house.getVariables(), house.getConstraints()).solve());
-        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
+        Solver solver1Database = new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
                 new NbConstraintsVariableHeuristic(house.getVariables(), house.getConstraints(), true),
-                new RandomValueHeuristic(new Random())).solve());
-        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
-                new NbConstraintsVariableHeuristic(house.getVariables(), house.getConstraints(), false),
-                new RandomValueHeuristic(new Random())).solve());
-        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
+                new RandomValueHeuristic(new Random()));
+        Solver solver2Database = new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
                 new DomainSizeVariableHeuristic(house.getVariables(), house.getConstraints(), false),
-                new RandomValueHeuristic(new Random())).solve());
-        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
-                new DomainSizeVariableHeuristic(house.getVariables(), house.getConstraints(), true),
-                new RandomValueHeuristic(new Random())).solve());
-        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
-                new NbConstraintsVariableHeuristic(house.getVariables(), house.getConstraints(), true),
-                new RandomValueHeuristic(new Random())).solve());
-        database.add(new HeuristicMACSolver(house.getVariables(), house.getConstraints(),
-                new DomainSizeVariableHeuristic(house.getVariables(), house.getConstraints(), false),
-                new RandomValueHeuristic(new Random())).solve());
+                new RandomValueHeuristic(new Random()));
+        for (int i = 0; i < numberInstanceDatabase / 2; i++) {
+            database.add(solver1Database.solve());
+            database.add(solver2Database.solve());
+        }
 
         BooleanDatabase booleanDatabase = database.propositionalize();// on transforme en BD booléenne pour extraire les
                                                                       // motifs et les règles

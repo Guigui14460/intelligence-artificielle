@@ -15,32 +15,32 @@ public class HouseExample {
     /**
      * Largeur de la maison.
      */
-    private int width;
+    private final int width;
 
     /**
      * Longueur de la maison.
      */
-    private int length;
+    private final int length;
 
     /**
      * Ensemble de pièces d'eau.
      */
-    private Set<String> wetRooms;
+    private final Set<String> wetRooms;
 
     /**
      * Ensemble d'autres pièces autre que des pièces d'eau.
      */
-    private Set<String> dryRooms;
+    private final Set<String> dryRooms;
 
     /**
      * Ensemble de variables.
      */
-    private Set<Variable> variables;
+    private final Set<Variable> variables;
 
     /**
      * Ensemble de contraintes à satisfaire.
      */
-    private Set<Constraint> constraints;
+    private final Set<Constraint> constraints;
 
     /**
      * Constructeur par défaut.

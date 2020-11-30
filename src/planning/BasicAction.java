@@ -32,7 +32,7 @@ public class BasicAction implements Action {
      * @param effect       effet à appliquer sur l'état
      * @param cost         coût de l'action
      */
-    public BasicAction(Map<Variable, Object> precondition, Map<Variable, Object> effect, int cost) {
+    public BasicAction(final Map<Variable, Object> precondition, final Map<Variable, Object> effect, final int cost) {
         this.precondition = precondition;
         this.effect = effect;
         this.cost = cost;

@@ -14,19 +14,19 @@ public class BooleanDatabase {
     /**
      * Ensemble de variables booléennes pouvant être mis dans la base de données.
      */
-    private Set<BooleanVariable> items;
+    private final Set<BooleanVariable> items;
 
     /**
      * Liste de transactions (instances).
      */
-    private List<Set<BooleanVariable>> transactions;
+    private final List<Set<BooleanVariable>> transactions;
 
     /**
      * Constructeur par défaut.
      * 
      * @param items ensemble de variables booléennes
      */
-    public BooleanDatabase(Set<BooleanVariable> items) {
+    public BooleanDatabase(final Set<BooleanVariable> items) {
         this.items = items;
         this.transactions = new ArrayList<>();
     }

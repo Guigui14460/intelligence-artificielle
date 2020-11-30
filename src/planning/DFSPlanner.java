@@ -40,7 +40,7 @@ public class DFSPlanner implements Planner {
      * @param actions      ensemble d'actions pouvant être effectuées
      * @param goal         but à atteindre
      */
-    public DFSPlanner(Map<Variable, Object> initialState, Set<Action> actions, Goal goal) {
+    public DFSPlanner(final Map<Variable, Object> initialState, final Set<Action> actions, final Goal goal) {
         this.initialState = initialState;
         this.actions = actions;
         this.goal = goal;
@@ -67,7 +67,7 @@ public class DFSPlanner implements Planner {
     }
 
     @Override
-    public List<Action> plan() {
+    public final List<Action> plan() {
         return this.dfs(this.initialState, new ArrayList<>(), new ArrayList<>());
     }
 

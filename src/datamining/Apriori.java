@@ -21,7 +21,7 @@ public class Apriori extends AbstractItemsetMiner {
      * 
      * @param database base de données à utiliser
      */
-    public Apriori(BooleanDatabase database) {
+    public Apriori(final BooleanDatabase database) {
         super(database);
     }
 
@@ -98,7 +98,8 @@ public class Apriori extends AbstractItemsetMiner {
      * @param set2 second ensemble trié de variables
      * @return ensemble combinant les deux ensembles donnés en argument
      */
-    public static SortedSet<BooleanVariable> combine(SortedSet<BooleanVariable> set1, SortedSet<BooleanVariable> set2) {
+    public static final SortedSet<BooleanVariable> combine(SortedSet<BooleanVariable> set1,
+            SortedSet<BooleanVariable> set2) {
         // vérification qu'ils aient la même taille k
         if (set1.size() != set2.size()) {
             return null;
@@ -143,7 +144,7 @@ public class Apriori extends AbstractItemsetMiner {
      * @return booléen représentant le fait que tous les sous-ensembles (de taille
      *         k-1) sont contenus dans la collection
      */
-    public static boolean allSubsetsFrequent(Set<BooleanVariable> items,
+    public static final boolean allSubsetsFrequent(Set<BooleanVariable> items,
             Collection<SortedSet<BooleanVariable>> itemsCollection) {
         boolean allFrequent = true;
         for (BooleanVariable variable : items) {
